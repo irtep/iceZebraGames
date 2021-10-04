@@ -1,0 +1,23 @@
+{
+  "name": "icezebraback",
+  "version": "1.0.0",
+  "description": "There will be some games i develop etc.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irtep/iceZebraGamesBack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irtep/iceZebraGames/issues"
+  },
+  "homepage": "https://github.com/irtep/iceZebraGames#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

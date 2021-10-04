@@ -4,10 +4,10 @@ import { gameOptions } from './constants/constants';
 
 const App = () => {
   const [chosenGame, setGame] = useState('');
-  console.log('cg: ', chosenGame);
 
   // when this app is loaded
   useEffect(() => {
+    // create options menu
     gameOptions.forEach( (item) => {
       const o = document.createElement("option");
       o.text = item;
