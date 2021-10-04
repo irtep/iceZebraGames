@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getAll, create } from '../services/dbControl';
+import { create } from '../services/dbControl';
 
 const style = {
   margin: 20,
@@ -30,8 +30,6 @@ const Setups = () => {
   const addBBcard = async (event) => {
     event.preventDefault();
     let emptyValue = false;
-    const datas = await getAll();
-    console.log('getting: ', datas);
     setName(name);
     setTeam(team);
     setGame('blood bowl')
