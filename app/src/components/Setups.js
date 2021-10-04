@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { getAll, create } from '../services/dbControl';
+
 const style = {
   margin: 20,
   padding: 10,
@@ -25,9 +27,11 @@ const Setups = () => {
   const [cost, setCost] = useState('');
   const [specialRules, setSpecials] = useState('');
 
-  const addBBcard = (event) => {
+  const addBBcard = async (event) => {
     event.preventDefault();
-
+    let emptyValue = false;
+    const datas = await getAll();
+    console.log('getting: ', datas);
     setName(name);
     setTeam(team);
     setGame('blood bowl')
@@ -46,7 +50,17 @@ const Setups = () => {
       cost: cost
     };
 
-    console.log('add card ', cardEntry);
+    const allDatas = [name, team, game, stats, skills, specialRules, cost];
+
+    allDatas.forEach((item, i) => {
+      if (item === '') {
+        emptyValue = true;
+      }
+    });
+
+    if (emptyValue === false) {
+      await create(cardEntry);
+    }
   }
 
   return(

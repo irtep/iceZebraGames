@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "json-server -p3001 --watch db.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/irtep/iceZebraGamesBack.git"
+    "url": "git+https://github.com/irtep/iceZebraGames.git"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,11 @@
   },
   "homepage": "https://github.com/irtep/iceZebraGames#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8"
+  },
+  "devDependencies": {
+    "json-server": "^0.16.3"
   }
 }
