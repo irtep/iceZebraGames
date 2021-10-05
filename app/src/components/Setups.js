@@ -26,6 +26,7 @@ const Setups = () => {
   const [skills, setSkills] = useState('');
   const [cost, setCost] = useState('');
   const [specialRules, setSpecials] = useState('');
+  const [img, setImg] = useState('');
 
   const addBBcard = async (event) => {
     event.preventDefault();
@@ -45,10 +46,13 @@ const Setups = () => {
       stats: stats,
       skills: skills,
       specialRules: specialRules,
-      cost: cost
+      cost: cost,
+      img: img
     };
 
-    const allDatas = [name, team, game, stats, skills, specialRules, cost];
+    const allDatas = [
+      name, team, game, stats, skills, specialRules, cost, img
+    ];
 
     allDatas.forEach((item, i) => {
       if (item === '') {
@@ -58,6 +62,9 @@ const Setups = () => {
 
     if (emptyValue === false) {
       await create(cardEntry);
+      console.log('sent to db');
+    } else {
+      console.log('empty fields');
     }
   }
 
@@ -121,7 +128,16 @@ const Setups = () => {
               onChange={({ target }) => setCost(target.value)}
             />
           </div>
-
+          <div>
+            img<br/>
+            <input
+              id= "cardImg"
+              type="text"
+              value={ img }
+              onChange={({ target }) => setImg(target.value)}
+            />
+          </div>
+          <br/>
           <button id= "submitNew" type="submit">send new card</button>
         </form>
       </div>

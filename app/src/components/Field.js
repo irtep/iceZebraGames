@@ -1,11 +1,11 @@
-import BloodBowlStadium from './BloodBowlStadium';
+import BloodBowl from './BloodBowl';
 import Setups from './Setups';
 
 const Field = ({game}) => {
   if (game === 'Blood Bowl') {
     return(
       <>
-      <BloodBowlStadium />
+      <BloodBowl />
       </>
     );
   } else if (game === 'Setup') {

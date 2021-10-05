@@ -7,7 +7,7 @@ const ActionButton = ({id, action, name}) => {
         id= {id}
         onClick= {action}
         name= {name}>
-        delete
+        add
       </button>
     </>
   );
