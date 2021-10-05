@@ -2,7 +2,7 @@
   "cards": [
     {
       "name": "Imperial Lineman",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
       "skills": "Fend",
@@ -13,7 +13,7 @@
     },
     {
       "name": "Imperial Thrower",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
       "skills": "Pass, Running Pass",
@@ -24,7 +24,7 @@
     },
     {
       "name": "Noble Blitzer",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
       "skills": "Block, Catch",
@@ -35,7 +35,7 @@
     },
     {
       "name": "Bodyguard",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
       "skills": "Stand Firm, Wrestle",
@@ -46,7 +46,7 @@
     },
     {
       "name": "Ogre",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 5 ST 5 AG 4+ PA 5+ AV 10+",
       "skills": "Bone Head, Loner (4+), Mighty Blow (1+), Thick Skull, Throw Team-mate",
@@ -57,7 +57,7 @@
     },
     {
       "name": "Griff Oberwald",
-      "team": "Pirates",
+      "team": "Imperial Nobility",
       "game": "blood bowl",
       "stats": "MA 7 ST 4 AG 2+ PA 3+ AV 9+",
       "skills": "Block, Dodge, Fend, Loner (3+), Sprint, Sure Feet",
@@ -68,7 +68,7 @@
     },
     {
       "name": "Goblin Bruiser Lineman",
-      "team": "Predators",
+      "team": "Black Orc",
       "game": "blood bowl",
       "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
       "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
@@ -79,7 +79,7 @@
     },
     {
       "name": "Black Orc",
-      "team": "Predators",
+      "team": "Black Orc",
       "game": "blood bowl",
       "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
       "skills": "Brawl, Grab",
@@ -90,7 +90,7 @@
     },
     {
       "name": "Trained Troll",
-      "team": "Predators",
+      "team": "Black Orc",
       "game": "blood bowl",
       "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
       "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
@@ -101,7 +101,7 @@
     },
     {
       "name": "Varag Ghoul-Chewer",
-      "team": "Predators",
+      "team": "Black Orc",
       "game": "blood bowl",
       "stats": "MA 6 ST 5 AG 3+ PA 5+ AV 10+",
       "skills": "Block, Jump Up, Loner (4+), Mighty Blow (+1), Thick Skull",
