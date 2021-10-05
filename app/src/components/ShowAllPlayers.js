@@ -2,10 +2,9 @@ import React from 'react';
 import Player from './Player';
 import ActionButton from './ActionButton';
 
-const ShowAllPlayers = ({showThese, deleteFunc}) => {
-  console.log('show these: ', showThese);
+const ShowAllPlayers = ({showThese, addFunc}) => {
+
   if (showThese === []) {
-    console.log('show all null');
     return null;
   } else {
     return (
@@ -14,11 +13,11 @@ const ShowAllPlayers = ({showThese, deleteFunc}) => {
         return(
           <div key= {person.name}>
             <Player
-              person= {person}
+              player= {person}
             />
             <ActionButton
               id= {person.id}
-              action= {deleteFunc}
+              action= {addFunc}
               name= {person.name}
             />
           </div>

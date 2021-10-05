@@ -8,6 +8,7 @@
       "skills": "Fend",
       "specialRules": "-",
       "cost": "45000",
+      "img": "imperialLineman",
       "id": 2
     },
     {
@@ -18,6 +19,7 @@
       "skills": "Pass, Running Pass",
       "specialRules": "-",
       "cost": "75000",
+      "img": "imperialLineman",
       "id": 3
     },
     {
@@ -28,6 +30,7 @@
       "skills": "Block, Catch",
       "specialRules": "-",
       "cost": "105000",
+      "img": "imperialLineman",
       "id": 4
     },
     {
@@ -38,6 +41,7 @@
       "skills": "Stand Firm, Wrestle",
       "specialRules": "-",
       "cost": "90000",
+      "img": "imperialLineman",
       "id": 5
     },
     {
@@ -48,6 +52,7 @@
       "skills": "Bone Head, Loner (4+), Mighty Blow (1+), Thick Skull, Throw Team-mate",
       "specialRules": "-",
       "cost": "140000",
+      "img": "imperialLineman",
       "id": 6
     },
     {
@@ -58,6 +63,7 @@
       "skills": "Block, Dodge, Fend, Loner (3+), Sprint, Sure Feet",
       "specialRules": "Once per game re-roll free, can't be armour, injury or casualty",
       "cost": "280000",
+      "img": "imperialLineman",
       "id": 7
     },
     {
@@ -68,6 +74,7 @@
       "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
       "specialRules": "-",
       "cost": "45000",
+      "img": "imperialLineman",
       "id": 8
     },
     {
@@ -78,6 +85,7 @@
       "skills": "Brawl, Grab",
       "specialRules": "-",
       "cost": "90000",
+      "img": "imperialLineman",
       "id": 9
     },
     {
@@ -88,6 +96,7 @@
       "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
       "specialRules": "-",
       "cost": "115000",
+      "img": "imperialLineman",
       "id": 10
     },
     {
@@ -98,7 +107,30 @@
       "skills": "Block, Jump Up, Loner (4+), Mighty Blow (+1), Thick Skull",
       "specialRules": "Crushing blow: Once per game if knocks someone down with block => +1 mod to armour roll, can apply after roll has been made",
       "cost": "280000",
+      "img": "imperialLineman",
       "id": 11
+    },
+    {
+      "name": "Dwarf Blocker",
+      "team": "Dwarf",
+      "game": "blood bowl",
+      "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+      "skills": "Block, Tackle, Thick Skull",
+      "specialRules": "-",
+      "cost": "70000",
+      "img": "dwarfBlocker",
+      "id": 12
+    },
+    {
+      "name": "Dwarf Runner",
+      "team": "Dwarf",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 9+",
+      "skills": "Sure Hands, Thick Skull",
+      "specialRules": "-",
+      "cost": "85000",
+      "img": "dwarfRunner",
+      "id": 13
     }
   ]
 }
