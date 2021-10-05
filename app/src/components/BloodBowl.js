@@ -1,4 +1,5 @@
 import { drawBBfield } from '../functions/bloodBowl';
+import { initialBloodBowlObject } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getAll } from '../services/dbControl';
 import ShowAllPlayers from './ShowAllPlayers';
@@ -12,6 +13,7 @@ const BloodBowl = ({game}) => {
   const [activeTeam, setActiveTeam] = useState ('Team 1');
   const [roster1, setRoster1] = useState ([]);
   const [roster2, setRoster2] = useState ([]);
+  const [gameObject, setGameObject] = useState (initialBloodBowlObject);
 
   // when this app is loaded
   useEffect( () => {
@@ -35,7 +37,6 @@ const BloodBowl = ({game}) => {
     }
 
     const selectedPlayer = players.filter( player => clickedEntry === player.id);
-    console.log('selected player: ', selectedPlayer[0]);
     activeRoster.push(selectedPlayer[0]);
 
     if (activeTeam === 'Team 1') {
