@@ -28,3 +28,11 @@ export const rerollPrices = [
   {team : 'Black Orc', price: 60000},
   {team : 'Dwarf', price: 50000}
 ];
+
+export const blockDices = [
+  '(player down)',
+  '(both down)',
+  '(push back)',
+  '(stumble)',
+  '(pow!)'
+];

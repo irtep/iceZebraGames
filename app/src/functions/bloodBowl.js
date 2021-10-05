@@ -134,12 +134,17 @@ export const arcVsArc = (sub, obj, subSize, objSize) => {
   }
 };
 
+// calls random dice, for example 6 is 1d6
+export const callDice = (max) => {
+  const result =  1 + Math.floor(Math.random() * max);
+  return result;
+}
 /*
 d6,
 d6 with reroll,
 random dir nw,n,ne,e,se,s,sw,w,
 d3
-block dice 1, 2, 3x
+block dice 1, 2, 3x : player down, both down, push back, stumble, pow!
 d8
 d16
 deviate

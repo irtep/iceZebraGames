@@ -1,5 +1,5 @@
-import { drawBBfield, arcVsArc } from '../functions/bloodBowl';
-import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
+import { drawBBfield, arcVsArc, callDice } from '../functions/bloodBowl';
+import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getAll } from '../services/dbControl';
 import ShowAllPlayers from './ShowAllPlayers';
@@ -13,6 +13,7 @@ const BloodBowl = ({game}) => {
   const [gameObject, setGameObject] = useState (initialBloodBowlObject);
   const [mousePosition, setMp] = useState('');
   const [action, setAction] = useState('nothing');
+  const [dices, setDices] = useState('');
 
   // when this app is loaded
   useEffect( () => {
@@ -23,6 +24,58 @@ const BloodBowl = ({game}) => {
        console.log('error', err.response);
      });
   }, []);
+
+/*
+<button id= "d6" onClick= {diceThrow}>d6</button>
+<button id= "2d6" onClick= {diceThrow}>2d6</button>
+<button id= "1block" onClick= {diceThrow}>1 x block</button>
+<button id= "2block" onClick= {diceThrow}>2 x block</button>
+<button id= "3block" onClick= {diceThrow}>3 x block</button>
+<button id= "d3" onClick= {diceThrow}>d3</button>
+<button id= "d8" onClick= {diceThrow}>d8</button>
+<button id= "d16" onClick= {diceThrow}>d16</button>
+*/
+  const diceThrow = (e) => {
+    const dicesSelect = e.target.id;
+    let results = null;
+
+    switch (dicesSelect) {
+      case 'd6':
+        results = callDice(6);
+      break;
+      case 'd3':
+        results = callDice(3);
+      break;
+      case 'd8':
+        results = callDice(8);
+      break;
+      case 'd16':
+        results = callDice(16);
+      break;
+      case '2d6':
+        const dice1 = JSON.stringify(callDice(6));
+        const dice2 = JSON.stringify(callDice(6));
+        results = `${dice1} ${dice2}`;
+      break;
+      case '1block':
+        const dice3 = callDice(5)-1;
+        results = blockDices[dice3];
+      break;
+      case '2block':
+        const dice4 = callDice(5)-1;
+        const dice5 = callDice(5)-1;
+        results = `${blockDices[dice4]} ${blockDices[dice5]}`;
+      break;
+      case '3block':
+        const dice6 = callDice(5)-1;
+        const dice7 = callDice(5)-1;
+        const dice8 = callDice(5)-1;
+        results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
+      break;
+      default: console.log('dice not found!');
+    }
+    setDices(results);
+  }
 
   const hovering = (e) => {
     // get mouse locations offsets to get where mouse is hovering.
@@ -293,7 +346,16 @@ const BloodBowl = ({game}) => {
           <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
           <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
           <br/>
-          <button id= "d6">d6</button>
+          <button id= "d6" onClick= {diceThrow}>d6</button>
+          <button id= "2d6" onClick= {diceThrow}>2d6</button>
+          <button id= "1block" onClick= {diceThrow}>1 x block</button>
+          <button id= "2block" onClick= {diceThrow}>2 x block</button>
+          <button id= "3block" onClick= {diceThrow}>3 x block</button>
+          <button id= "d3" onClick= {diceThrow}>d3</button>
+          <button id= "d8" onClick= {diceThrow}>d8</button>
+          <button id= "d16" onClick= {diceThrow}>d16</button>
+          <br/>
+          {dices}
         </div>
         <div id= "infos">
           Activated team: {activeTeam}<br/>
