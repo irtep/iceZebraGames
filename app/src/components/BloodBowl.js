@@ -3,10 +3,7 @@ import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getAll } from '../services/dbControl';
 import ShowAllPlayers from './ShowAllPlayers';
-
-const style = {
-  background: 'green'
-};
+import '../styles/bloodBowl.css';
 
 const BloodBowl = ({game}) => {
   const [players, setPlayers] = useState([]);
@@ -176,10 +173,9 @@ const BloodBowl = ({game}) => {
   }
 
   const clicked = () => {
-    console.log('click action: ', action);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
-      // check if someone is moving
+    // check if someone is moving
     copyOfRoster1.forEach((item, i) => {
       if (item.status === 'move') {
         item.status = 'activated';
@@ -214,72 +210,96 @@ const BloodBowl = ({game}) => {
 
   const statuses = (e) => {
     const selectedAction = e.target.id;
-    setAction(selectedAction);
+
+    if (selectedAction === 'team1ready') {
+      const copyOfRoster1 = roster1.concat([]);
+        copyOfRoster1.forEach((item, i) => {
+          if (item.status === 'activated' || item.status === 'lostBlockZone') {
+            item.status = 'ready';
+          }
+        });
+        setRoster1(copyOfRoster1);
+    } else if (selectedAction === 'team2ready') {
+      const copyOfRoster2 = roster2.concat([]);
+      copyOfRoster2.forEach((item, i) => {
+        if (item.status === 'activated' || item.status === 'lostBlockZone') {
+          item.status = 'ready';
+        }
+      });
+      setRoster2(copyOfRoster2);
+    } else {
+      setAction(selectedAction);
+    }
   }
 
   return(
-    <div style= {style}>
+    <div id= "container">
+      <div id= "controls">
+        <div id= "leftSide">
+        mouse: {mousePosition.x} {mousePosition.y}<br/>
+        <button id= "Imperial Nobility" onClick= {toggleTeam}>
+          Imperial Nobility
+        </button>
+        <button id= "Black Orc" onClick= {toggleTeam}>
+          Black Orc
+        </button>
+        <button id= "Dwarf" onClick= {toggleTeam}>
+          Dwarf
+        </button>
+        <br/>
+        <button onClick= {checki}>
+          checki
+        </button>
+        <button onClick= {popPlayer}>
+          delete latest player
+        </button>
+        <button id= "activateTeam1" onClick= {activateTeam}>
+          team1
+        </button>
+        <button id= "activateTeam2" onClick= {activateTeam}>
+          team2
+        </button>
+        <br/>
+        <button id= "turnPlus" onClick= {turnToggle}>
+          turn+
+        </button>
+        <button id= "turnMinus" onClick= {turnToggle}>
+          turn-
+        </button>
+        <button id= "rerollPlus" onClick= {rerollToggle}>
+          reroll+
+        </button>
+        <button id= "rerollMinus" onClick= {rerollToggle}>
+          reroll-
+        </button>
+        <button id= "scorePlus" onClick= {scoreToggle}>
+          score+
+        </button>
+        <button id= "scoreMinus" onClick= {scoreToggle}>
+          score-
+        </button>
+        <br/>
+        </div>
+        <div id= "rightSide">
+          <button id= "move" onClick= {statuses}>move</button>
+          <button id= "prone" onClick= {statuses}>prone</button>
 
-      <div>
-      mouse: {mousePosition.x} {mousePosition.y}<br/>
-      <button id= "Imperial Nobility" onClick= {toggleTeam}>
-        Imperial Nobility
-      </button>
-      <button id= "Black Orc" onClick= {toggleTeam}>
-        Black Orc
-      </button>
-      <button id= "Dwarf" onClick= {toggleTeam}>
-        Dwarf
-      </button>
-      <br/>
-      <button onClick= {checki}>
-        checki
-      </button>
-      <button onClick= {popPlayer}>
-        delete latest player
-      </button>
-      <button id= "activateTeam1" onClick= {activateTeam}>
-        team1
-      </button>
-      <button id= "activateTeam2" onClick= {activateTeam}>
-        team2
-      </button>
-      <br/>
-      <button id= "turnPlus" onClick= {turnToggle}>
-        turn+
-      </button>
-      <button id= "turnMinus" onClick= {turnToggle}>
-        turn-
-      </button>
-      <button id= "rerollPlus" onClick= {rerollToggle}>
-        reroll+
-      </button>
-      <button id= "rerollMinus" onClick= {rerollToggle}>
-        reroll-
-      </button>
-      <button id= "scorePlus" onClick= {scoreToggle}>
-        score+
-      </button>
-      <button id= "scoreMinus" onClick= {scoreToggle}>
-        score-
-      </button>
-      <br/>
-      <button id= "move" onClick= {statuses}>move</button>
-      <button id= "prone" onClick= {statuses}>prone</button>
+          <button id= "fallen" onClick= {statuses}>fallen</button>
+          <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
+          <button id= "activated" onClick= {statuses}>activated</button>
 
-      <button id= "fallen" onClick= {statuses}>fallen</button>
-      <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
-      <button id= "activated" onClick= {statuses}>activated</button>
+          <button id= "ready" onClick= {statuses}>ready</button>
 
-      <button id= "ready" onClick= {statuses}>ready</button>
-
-      <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
-      <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
-      <div>
-        Activated team: {activeTeam}<br/>
-        {gameObject.team1.team}. score: {gameObject.team1.score} turn: {gameObject.team1.turn} rerolls: {gameObject.team1.rerolls} value: {gameObject.team1.value}<br/>
-        {gameObject.team2.team}. score: {gameObject.team2.score} turn: {gameObject.team2.turn} rerolls: {gameObject.team2.rerolls} value: {gameObject.team2.value}
-      </div>
+          <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
+          <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
+          <br/>
+          <button id= "d6">d6</button>
+        </div>
+        <div id= "infos">
+          Activated team: {activeTeam}<br/>
+          {gameObject.team1.team}. score: {gameObject.team1.score} turn: {gameObject.team1.turn} rerolls: {gameObject.team1.rerolls} value: {gameObject.team1.value}<br/>
+          {gameObject.team2.team}. score: {gameObject.team2.score} turn: {gameObject.team2.turn} rerolls: {gameObject.team2.rerolls} value: {gameObject.team2.value}
+        </div>
       </div>
       <div id= "canvasPlace">
         <canvas
@@ -290,7 +310,8 @@ const BloodBowl = ({game}) => {
           height = {1000}>
         </canvas>
       </div>
-      <div>
+      <div id= "rules"></div>
+      <div id= "players">
         players:<br/>
         <ShowAllPlayers
          showThese = {players}

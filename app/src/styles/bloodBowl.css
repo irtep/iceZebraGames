@@ -1,0 +1,48 @@
+
+#bloodBowlStadium {
+  background: green;
+}
+#container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto auto;
+  grid-template-areas:
+    'ctrl ctrl ctrl ctrl ctrl'
+    'canv canv canv canv rulz'
+    'canv canv canv canv rulz'
+    'play play play play play';
+    grid-gap: 1px;
+}
+
+#controls {
+  grid-area: ctrl;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'lefty righty';
+    grid-gap: 1px;
+  height: auto;
+}
+
+#canvasPlace {
+  grid-area: canv;
+  height: auto;
+}
+
+#rules  {
+  grid-area: rulz;
+  height: auto;
+}
+
+#players {
+  grid-area: play;
+  height: auto;
+}
+
+#leftSide {
+  grid-area: lefty;
+}
+
+#rightSide {
+  grid-area: righty;
+}

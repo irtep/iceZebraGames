@@ -133,3 +133,18 @@ export const arcVsArc = (sub, obj, subSize, objSize) => {
     return false;
   }
 };
+
+/*
+d6,
+d6 with reroll,
+random dir nw,n,ne,e,se,s,sw,w,
+d3
+block dice 1, 2, 3x
+d8
+d16
+deviate
+scatter
+bounce
+add stunned to statuses (they become prone after own turn)
+
+*/
