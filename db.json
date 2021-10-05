@@ -131,6 +131,39 @@
       "cost": "85000",
       "img": "dwarfRunner",
       "id": 13
+    },
+    {
+      "name": "Dwarf Blitzer",
+      "team": "Dwarf",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+      "skills": "Block, Thick Skull",
+      "specialRules": "-",
+      "cost": "80000",
+      "img": "dwarfBlitzer",
+      "id": 14
+    },
+    {
+      "name": "Dwarf Slayer",
+      "team": "Dwarf",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 3 AG 4+ PA - 9+",
+      "skills": "Block, Dauntless, Frenzy, Thick Skull",
+      "specialRules": "-",
+      "cost": "95000",
+      "img": "dwarfSlayer",
+      "id": 15
+    },
+    {
+      "name": "Deathroller",
+      "team": "Dwarf",
+      "game": "blood bowl",
+      "stats": "MA 4 ST 7 AG 5+ PA - AV 11",
+      "skills": "Break tackle, Dirty Player 2+, Juggernaut, Loner (5+), Mighty Blow (+1), No Hands, Secret Weapon, Stand Firm",
+      "specialRules": "-",
+      "cost": "170000",
+      "img": "deathroller",
+      "id": 16
     }
   ]
 }

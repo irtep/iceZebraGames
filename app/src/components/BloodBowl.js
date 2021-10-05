@@ -14,6 +14,7 @@ const BloodBowl = ({game}) => {
   const [mousePosition, setMp] = useState('');
   const [action, setAction] = useState('nothing');
   const [dices, setDices] = useState('');
+  const [details, setDetails] = useState('');
 
   // when this app is loaded
   useEffect( () => {
@@ -25,16 +26,6 @@ const BloodBowl = ({game}) => {
      });
   }, []);
 
-/*
-<button id= "d6" onClick= {diceThrow}>d6</button>
-<button id= "2d6" onClick= {diceThrow}>2d6</button>
-<button id= "1block" onClick= {diceThrow}>1 x block</button>
-<button id= "2block" onClick= {diceThrow}>2 x block</button>
-<button id= "3block" onClick= {diceThrow}>3 x block</button>
-<button id= "d3" onClick= {diceThrow}>d3</button>
-<button id= "d8" onClick= {diceThrow}>d8</button>
-<button id= "d16" onClick= {diceThrow}>d16</button>
-*/
   const diceThrow = (e) => {
     const dicesSelect = e.target.id;
     let results = null;
@@ -83,6 +74,18 @@ const BloodBowl = ({game}) => {
     let x = e.clientX - r.left;
     let y = e.clientY - r.top;
     const hoverDetails = {x: x, y: y};
+    const allPlayers = roster1.concat(roster2);
+    // check if hovering over someone
+    allPlayers.forEach((item, i) => {
+      const collision = arcVsArc(mousePosition, item, 10, 15);
+      if (collision) {
+        const presenting = `(${item.name})
+        (${item.stats})
+        (${item.skills})
+        (${item.specialRules})`;
+        setDetails(presenting);
+      }
+    });
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2);
     setMp(hoverDetails)
   }
@@ -372,7 +375,9 @@ const BloodBowl = ({game}) => {
           height = {1000}>
         </canvas>
       </div>
-      <div id= "rules"></div>
+      <div id= "rules">
+        {details}
+      </div>
       <div id= "players">
         players:<br/>
         <ShowAllPlayers
