@@ -1,4 +1,4 @@
-import { drawBBfield, drawPlayers } from '../functions/bloodBowl';
+import { drawBBfield, arcVsArc } from '../functions/bloodBowl';
 import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getAll } from '../services/dbControl';
@@ -14,6 +14,8 @@ const BloodBowl = ({game}) => {
   const [roster1, setRoster1] = useState ([]);
   const [roster2, setRoster2] = useState ([]);
   const [gameObject, setGameObject] = useState (initialBloodBowlObject);
+  const [mousePosition, setMp] = useState('');
+  const [action, setAction] = useState('nothing');
 
   // when this app is loaded
   useEffect( () => {
@@ -25,10 +27,19 @@ const BloodBowl = ({game}) => {
      });
   }, []);
 
+  const hovering = (e) => {
+    // get mouse locations offsets to get where mouse is hovering.
+    let r = document.getElementById('bloodBowlStadium').getBoundingClientRect();
+    let x = e.clientX - r.left;
+    let y = e.clientY - r.top;
+    const hoverDetails = {x: x, y: y};
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2);
+    setMp(hoverDetails)
+  }
   // adds player to roster
   const addFunc = (e) => {
     const clickedEntry = Number(e.target.id);
-    let startPoint = {x: 50, y: 400};
+    let startPoint = {x: 50, y: 100};
     let activeRoster = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
@@ -36,17 +47,16 @@ const BloodBowl = ({game}) => {
       activeRoster = activeRoster.concat(roster1);
     } else {
       activeRoster = activeRoster.concat(roster2);
-      startPoint.x = 450;
+      startPoint.y = 450;
     }
 
     const selectedPlayer = players.filter( player => clickedEntry === player.id);
-    selectedPlayer[0].x = startPoint.x + (activeRoster.length + 1) * 31;
-    selectedPlayer[0].y = startPoint.y;
-    if (activeRoster.length > 10) {
-      selectedPlayer[0].y = startPoint.y + 40;
-      selectedPlayer[0].x = startPoint.x + (activeRoster.length - 10) * 31;;
-    }
-    activeRoster.push(selectedPlayer[0]);
+    const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
+    newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
+    newPlayer.y = startPoint.y;
+    newPlayer.status = 'ready';
+
+    activeRoster.push(newPlayer);
 
     if (activeTeam === 'Team 1') {
       copyOfgameObject.team1.value += Number(selectedPlayer[0].cost);
@@ -55,8 +65,9 @@ const BloodBowl = ({game}) => {
       copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
       setRoster2(activeRoster);
     }
-    drawPlayers(("bloodBowlStadium", roster1, roster2);
+    //drawPlayers("bloodBowlStadium", roster1, roster2);
     setGameObject(copyOfgameObject);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2);
   }
 
   // sets team 1 or 2 to as active team, for player adding
@@ -73,6 +84,8 @@ const BloodBowl = ({game}) => {
     console.log('roster 1', roster1);
     console.log('roster 2', roster2);
     console.log('gameObject ', gameObject);
+    console.log('mouse: ', mousePosition);
+    console.log('action: ', action);
   }
 
   // game control buttons
@@ -117,6 +130,7 @@ const BloodBowl = ({game}) => {
 
     setGameObject(copyOfgameObject);
   }
+
   const scoreToggle = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let toggling = 'team1';
@@ -133,6 +147,7 @@ const BloodBowl = ({game}) => {
 
     setGameObject(copyOfgameObject);
   }
+
   const toggleTeam = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let toggling = 'team1';
@@ -160,10 +175,52 @@ const BloodBowl = ({game}) => {
     setGameObject(copyOfgameObject);
   }
 
+  const clicked = () => {
+    if (action !== 'nothing') {
+      const copyOfRoster1 = roster1.concat([]);
+      const copyOfRoster2 = roster2.concat([]);
+
+      // check if someone is moving
+      copyOfRoster1.forEach((item, i) => {
+        if (item.status === 'move') {
+          item.status = 'activated';
+          item.x = mousePosition.x;
+          item.y = mousePosition.y;
+          setRoster1(copyOfRoster1);
+        }
+      });
+      copyOfRoster2.forEach((item, i) => {
+        if (item.status === 'move') {
+          item.status = 'activated';
+          item.x = mousePosition.x;
+          item.y = mousePosition.y;
+          setRoster2(copyOfRoster2);
+        }
+      });
+      // check who and set status
+      copyOfRoster1.forEach((item, i) => {
+        const collision = arcVsArc(mousePosition, item, 10, 15);
+        if (collision) {item.status = action; setRoster1(copyOfRoster1);}
+      });
+      // check who and set status
+      copyOfRoster2.forEach((item, i) => {
+        const collision = arcVsArc(mousePosition, item, 10, 15);
+        if (collision) {item.status = action; setRoster2(copyOfRoster2);}
+      });
+      setAction('nothing');
+    }
+  }
+
+  const statuses = (e) => {
+    const selectedAction = e.target.id;
+    setAction(selectedAction);
+  }
+
   return(
     <div style= {style}>
 
       <div>
+      mouse: {mousePosition.x} {mousePosition.y}<br/>
       <button id= "Imperial Nobility" onClick= {toggleTeam}>
         Imperial Nobility
       </button>
@@ -205,6 +262,18 @@ const BloodBowl = ({game}) => {
       <button id= "scoreMinus" onClick= {scoreToggle}>
         score-
       </button>
+      <br/>
+      <button id= "move" onClick= {statuses}>move</button>
+      <button id= "prone" onClick= {statuses}>prone</button>
+
+      <button id= "fallen" onClick= {statuses}>fallen</button>
+      <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
+      <button id= "activated" onClick= {statuses}>activated</button>
+
+      <button id= "ready" onClick= {statuses}>ready</button>
+
+      <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
+      <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
       <div>
         Activated team: {activeTeam}<br/>
         {gameObject.team1.team}. score: {gameObject.team1.score} turn: {gameObject.team1.turn} rerolls: {gameObject.team1.rerolls} value: {gameObject.team1.value}<br/>
@@ -213,6 +282,8 @@ const BloodBowl = ({game}) => {
       </div>
       <div id= "canvasPlace">
         <canvas
+          onMouseMove= {hovering}
+          onClick= {clicked}
           id= "bloodBowlStadium"
           width = {950}
           height = {1000}>
