@@ -176,38 +176,39 @@ const BloodBowl = ({game}) => {
   }
 
   const clicked = () => {
-    if (action !== 'nothing') {
-      const copyOfRoster1 = roster1.concat([]);
-      const copyOfRoster2 = roster2.concat([]);
-
+    console.log('click action: ', action);
+    const copyOfRoster1 = roster1.concat([]);
+    const copyOfRoster2 = roster2.concat([]);
       // check if someone is moving
-      copyOfRoster1.forEach((item, i) => {
-        if (item.status === 'move') {
-          item.status = 'activated';
-          item.x = mousePosition.x;
-          item.y = mousePosition.y;
-          setRoster1(copyOfRoster1);
-        }
-      });
-      copyOfRoster2.forEach((item, i) => {
-        if (item.status === 'move') {
-          item.status = 'activated';
-          item.x = mousePosition.x;
-          item.y = mousePosition.y;
-          setRoster2(copyOfRoster2);
-        }
-      });
+    copyOfRoster1.forEach((item, i) => {
+      if (item.status === 'move') {
+        item.status = 'activated';
+        item.x = mousePosition.x;
+        item.y = mousePosition.y;
+        setRoster1(copyOfRoster1);
+      }
+    });
+    copyOfRoster2.forEach((item, i) => {
+      if (item.status === 'move') {
+        item.status = 'activated';
+        item.x = mousePosition.x;
+        item.y = mousePosition.y;
+        setRoster2(copyOfRoster2);
+      }
+    });
+    if (action !== 'nothing') {
       // check who and set status
       copyOfRoster1.forEach((item, i) => {
         const collision = arcVsArc(mousePosition, item, 10, 15);
         if (collision) {item.status = action; setRoster1(copyOfRoster1);}
+        setAction('nothing');
       });
       // check who and set status
       copyOfRoster2.forEach((item, i) => {
         const collision = arcVsArc(mousePosition, item, 10, 15);
         if (collision) {item.status = action; setRoster2(copyOfRoster2);}
+        setAction('nothing');
       });
-      setAction('nothing');
     }
   }
 
