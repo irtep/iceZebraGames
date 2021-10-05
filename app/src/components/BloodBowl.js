@@ -1,4 +1,4 @@
-import { drawBBfield } from '../functions/bloodBowl';
+import { drawBBfield, drawPlayers } from '../functions/bloodBowl';
 import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getAll } from '../services/dbControl';
@@ -28,6 +28,7 @@ const BloodBowl = ({game}) => {
   // adds player to roster
   const addFunc = (e) => {
     const clickedEntry = Number(e.target.id);
+    let startPoint = {x: 50, y: 400};
     let activeRoster = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
@@ -35,9 +36,16 @@ const BloodBowl = ({game}) => {
       activeRoster = activeRoster.concat(roster1);
     } else {
       activeRoster = activeRoster.concat(roster2);
+      startPoint.x = 450;
     }
 
     const selectedPlayer = players.filter( player => clickedEntry === player.id);
+    selectedPlayer[0].x = startPoint.x + (activeRoster.length + 1) * 31;
+    selectedPlayer[0].y = startPoint.y;
+    if (activeRoster.length > 10) {
+      selectedPlayer[0].y = startPoint.y + 40;
+      selectedPlayer[0].x = startPoint.x + (activeRoster.length - 10) * 31;;
+    }
     activeRoster.push(selectedPlayer[0]);
 
     if (activeTeam === 'Team 1') {
@@ -47,6 +55,7 @@ const BloodBowl = ({game}) => {
       copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
       setRoster2(activeRoster);
     }
+    drawPlayers(("bloodBowlStadium", roster1, roster2);
     setGameObject(copyOfgameObject);
   }
 
@@ -134,6 +143,7 @@ const BloodBowl = ({game}) => {
     copyOfgameObject[toggling].team = e.target.id;
     setGameObject(copyOfgameObject);
   }
+
   const popPlayer = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     if (activeTeam === "Team 1") {
@@ -149,7 +159,7 @@ const BloodBowl = ({game}) => {
     }
     setGameObject(copyOfgameObject);
   }
-  
+
   return(
     <div style= {style}>
 

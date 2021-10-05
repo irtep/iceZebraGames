@@ -1,5 +1,5 @@
 
-// draw a grid
+// draw a grid to football field
 export const drawBBfield = (kanv, xLines, yLines) => {
   const grid_size = 35;
   const canvas = document.getElementById(kanv);
@@ -8,6 +8,8 @@ export const drawBBfield = (kanv, xLines, yLines) => {
   const canvas_height = canvas.height;
   const num_lines_x = Math.floor(xLines);
   const num_lines_y = Math.floor(yLines);
+
+  // call clear
 
   // Draw grid lines along X-axis
   for(let i = 0; i <= num_lines_x; i++) {
@@ -73,4 +75,18 @@ export const drawBBfield = (kanv, xLines, yLines) => {
     ctx.strokeStyle = "rgb(190,190,190)";
     ctx.arc(490, 300, 50, 0, 2 * Math.PI);
     ctx.stroke();
+}
+
+// draw football players, clear and field need to always call before this
+export const drawPlayers = (kanv, team1, team2) => {
+  const baseSize = 30;
+  const canvas = document.getElementById(kanv);
+  const ctx = canvas.getContext("2d");
+
+  team1
+  // draw center circle
+  ctx.beginPath();
+  ctx.strokeStyle = "rgb(190,190,190)";
+  ctx.arc(490, 300, 50, 0, 2 * Math.PI);
+  ctx.stroke();
 }
