@@ -1,6 +1,6 @@
 
 // draw a grid to football field
-export const drawBBfield = (kanv, xLines, yLines, team1, team2) => {
+export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
   const baseSize = 15;
   const grid_size = 35;
   const canvas = document.getElementById(kanv);
@@ -76,6 +76,14 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2) => {
     ctx.strokeStyle = "rgb(190,190,190)";
     ctx.arc(490, 300, 50, 0, 2 * Math.PI);
     ctx.stroke();
+
+    // draw the ball
+    if (ball !== undefined) {
+      ctx.beginPath();
+      ctx.strokeStyle = 'yellow';
+      ctx.arc(ball.x, ball.y, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
 
     //draw teams
     if (team1 !== undefined) {

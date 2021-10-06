@@ -15,6 +15,7 @@ const BloodBowl = ({game}) => {
   const [action, setAction] = useState('nothing');
   const [dices, setDices] = useState('');
   const [details, setDetails] = useState('');
+  const [ball, setBall] = useState({x:10, y:10});
 
   // when this app is loaded
   useEffect( () => {
@@ -86,7 +87,7 @@ const BloodBowl = ({game}) => {
         setDetails(presenting);
       }
     });
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
     setMp(hoverDetails)
   }
   // adds player to roster
@@ -120,7 +121,7 @@ const BloodBowl = ({game}) => {
     }
     //drawPlayers("bloodBowlStadium", roster1, roster2);
     setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
   }
 
   // sets team 1 or 2 to as active team, for player adding
@@ -262,6 +263,11 @@ const BloodBowl = ({game}) => {
         setAction('nothing');
       });
     }
+    // move ball
+    if (action === 'moveBall') {
+      const newPosition = {x: mousePosition.x, y: mousePosition.y};
+      setBall(newPosition);
+    }
   }
 
   const statuses = (e) => {
@@ -358,6 +364,7 @@ const BloodBowl = ({game}) => {
           <button id= "d8" onClick= {diceThrow}>d8</button>
           <button id= "d16" onClick= {diceThrow}>d16</button>
           <br/>
+          <button id= "moveBall" onClick= {statuses}>move ball</button>
           {dices}
         </div>
         <div id= "infos">
