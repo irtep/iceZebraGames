@@ -308,6 +308,9 @@ const BloodBowl = ({game}) => {
         <button id= "Dwarf" onClick= {toggleTeam}>
           Dwarf
         </button>
+        <button id= "Wood Elf" onClick= {toggleTeam}>
+          Wood Elf
+        </button>
         <br/>
         <button onClick= {checki}>
           checki

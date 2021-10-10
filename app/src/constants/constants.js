@@ -26,7 +26,8 @@ export const initialBloodBowlObject = {
 export const rerollPrices = [
   {team : 'Imperial Nobility', price: 70000},
   {team : 'Black Orc', price: 60000},
-  {team : 'Dwarf', price: 50000}
+  {team : 'Dwarf', price: 50000},
+  {team : 'Wood Elf', price: 50000}
 ];
 
 export const blockDices = [

@@ -164,6 +164,72 @@
       "cost": "170000",
       "img": "deathroller",
       "id": 16
+    },
+    {
+      "name": "Iron Bra",
+      "team": "Elven Kingdoms League",
+      "game": "blood bowl",
+      "stats": "MA 7 S 2 AG 2+ PA 2+ AV 8+ ",
+      "skills": "Accurate, Dodge, Loner (3+), Pass, Side Step, Sure Hands ",
+      "specialRules": "Once per game can play Hail Mary",
+      "cost": "150000",
+      "img": "ironbra",
+      "id": 17
+    },
+    {
+      "name": "Lineman",
+      "team": "Wood Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 S 3 AG 2+ PA 4+ AV 8+ ",
+      "skills": " -",
+      "specialRules": "-",
+      "cost": "70000",
+      "img": "elf",
+      "id": 18
+    },
+    {
+      "name": "Thrower",
+      "team": "Wood Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 S 3 AG 2+ PA 2+ AV 8+ ",
+      "skills": "Pass",
+      "specialRules": "-",
+      "cost": "95000",
+      "img": "elf",
+      "id": 19
+    },
+    {
+      "name": "Catcher",
+      "team": "Wood Elf",
+      "game": "blood bowl",
+      "stats": "MA 8 S 2 AG 2+ PA 4+ AV 8+ ",
+      "skills": "Catch, Dodge",
+      "specialRules": "-",
+      "cost": "90000",
+      "img": "elf",
+      "id": 20
+    },
+    {
+      "name": "Wardancer",
+      "team": "Wood Elf",
+      "game": "blood bowl",
+      "stats": "MA 8 S 3 AG 2+ PA 4+ AV 8+ ",
+      "skills": "Block, Dodge, Leap",
+      "specialRules": "-",
+      "cost": "125000",
+      "img": "elf",
+      "id": 21
+    },
+    {
+      "name": "Treeman",
+      "team": "Wood Elf",
+      "game": "blood bowl",
+      "stats": "MA 2 S 6 AG 5+ PA 5+ AV 11+ ",
+      "skills": "Loner (4+), Mighty Blow (+1), Stand Firm, Strong Arm, Take Root, Thick Skull, Throw Team-Mate",
+      "specialRules": "-",
+      "cost": "120000",
+      "img": "elf",
+      "id": 22
     }
   ]
 }
