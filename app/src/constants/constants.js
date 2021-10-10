@@ -23,11 +23,13 @@ export const initialBloodBowlObject = {
   },
 };
 
+// from here picks all teams too
 export const rerollPrices = [
   {team : 'Imperial Nobility', price: 70000},
   {team : 'Black Orc', price: 60000},
   {team : 'Dwarf', price: 50000},
-  {team : 'Wood Elf', price: 50000}
+  {team : 'Wood Elf', price: 50000},
+  {team : 'Ogre', price: 70000}
 ];
 
 export const blockDices = [

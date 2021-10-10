@@ -1,14 +1,28 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/cards';
+const cardUrl = 'http://localhost:3001/cards';
+const teamUrl = 'http://localhost:3001/teams';
 
+// gets football players
 export const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  const request = axios.get(cardUrl);
+  return request.then(response => response.data);
 }
 
-export const create = newObject => {
-  const request = axios.post(baseUrl, newObject)
-  return request.then(response => response.data)
+// get saved teams
+export const getTeams = () => {
+  const request = axios.get(teamUrl);
+  return request.then(response => response.data);
+}
+
+
+export const createPlayer = newObject => {
+  const request = axios.post(cardUrl, newObject);
+  return request.then(response => response.data);
+}
+
+export const saveTeam = newObject => {
+  const request = axios.post(teamUrl, newObject);
+  return request.then(response => response.data);
 }
 /*
 const update = (id, newObject) => {

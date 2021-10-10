@@ -5,4 +5,6 @@ in setup adding bb card
 Gotta make dynamic get for factions, now hard coded buttons...
 
 Gotta filter cards by Faction... or too messy draft
+
+i think setup should have team making and they just could be loaded from blood bowl etc.
 */

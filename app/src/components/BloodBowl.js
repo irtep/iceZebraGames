@@ -1,12 +1,13 @@
 import { drawBBfield, arcVsArc, callDice } from '../functions/bloodBowl';
 import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
-import { getAll } from '../services/dbControl';
-import ShowAllPlayers from './ShowAllPlayers';
+import { getTeams, getAll } from '../services/dbControl';
+import ShowAllTeams from './ShowAllTeams';
 import '../styles/bloodBowl.css';
 
 const BloodBowl = ({game}) => {
   const [players, setPlayers] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [activeTeam, setActiveTeam] = useState ('Team 1');
   const [roster1, setRoster1] = useState ([]);
   const [roster2, setRoster2] = useState ([]);
@@ -20,11 +21,16 @@ const BloodBowl = ({game}) => {
   // when this app is loaded
   useEffect( () => {
     drawBBfield("bloodBowlStadium", 16, 27);
-    getAll().then(initialData => {
-       setPlayers(initialData);
+    getTeams().then(initialData => {
+       setTeams(initialData);
      }).catch(err => {
        console.log('error', err.response);
      });
+     getAll().then(initialData => {
+        setPlayers(initialData);
+      }).catch(err => {
+        console.log('error', err.response);
+      });
   }, []);
 
   const diceThrow = (e) => {
@@ -90,9 +96,12 @@ const BloodBowl = ({game}) => {
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
     setMp(hoverDetails)
   }
+
   // adds player to roster
-  const addFunc = (e) => {
-    const clickedEntry = Number(e.target.id);
+  // change this so that it return the player and then set it in add team place....
+  const addFunc = (idImport) => {
+    console.log('got to add func', idImport);
+    const idOfPlayer = Number(idImport);
     let startPoint = {x: 50, y: 100};
     let activeRoster = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
@@ -104,7 +113,7 @@ const BloodBowl = ({game}) => {
       startPoint.y = 450;
     }
 
-    const selectedPlayer = players.filter( player => clickedEntry === player.id);
+    const selectedPlayer = players.filter( player => idOfPlayer === player.id);
     const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
     newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
     newPlayer.y = startPoint.y;
@@ -113,10 +122,10 @@ const BloodBowl = ({game}) => {
     activeRoster.push(newPlayer);
 
     if (activeTeam === 'Team 1') {
-      copyOfgameObject.team1.value += Number(selectedPlayer[0].cost);
+  //    copyOfgameObject.team1.value += Number(selectedPlayer[0].cost);
       setRoster1(activeRoster);
     } else {
-      copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
+  //    copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
       setRoster2(activeRoster);
     }
     //drawPlayers("bloodBowlStadium", roster1, roster2);
@@ -294,6 +303,34 @@ const BloodBowl = ({game}) => {
     }
   }
 
+  const addTeam =  (e) => {
+    const clickedEntry = Number(e.target.id);
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    let active = 'team1';
+    const selectedTeam = teams.filter( team => team.id === clickedEntry);
+    console.log('=> ', selectedTeam);
+    if (activeTeam === 'Team 2') {
+      active = 'team2';
+    }
+    copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
+    copyOfgameObject[active].team = selectedTeam[0].teamName;
+
+    selectedTeam[0].roster.forEach((item) => {
+      addFunc(item.id);
+    });
+
+/*
+team1: {
+  rerolls: 0,
+  team: 'Imperial Nobility',
+  value: 0,
+  score: 0,
+  turn: 0
+},
+*/
+
+  }
+
   return(
     <div id= "container">
       <div id= "controls">
@@ -388,12 +425,15 @@ const BloodBowl = ({game}) => {
       <div id= "rules">
         {details}
       </div>
-      <div id= "players">
-        players:<br/>
-        <ShowAllPlayers
-         showThese = {players}
-         addFunc = {addFunc}/>
+
+      <div id= "teams">
+        select team:<br/>
+        <ShowAllTeams
+         showThese = {teams}
+         addFunc = {addTeam}/>
+
       </div>
+
     </div>
     );
 }
