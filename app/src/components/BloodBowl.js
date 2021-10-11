@@ -56,18 +56,18 @@ const BloodBowl = ({game}) => {
         results = `${dice1} ${dice2}`;
       break;
       case '1block':
-        const dice3 = callDice(5)-1;
+        const dice3 = callDice(6)-1;
         results = blockDices[dice3];
       break;
       case '2block':
-        const dice4 = callDice(5)-1;
-        const dice5 = callDice(5)-1;
+        const dice4 = callDice(6)-1;
+        const dice5 = callDice(6)-1;
         results = `${blockDices[dice4]} ${blockDices[dice5]}`;
       break;
       case '3block':
-        const dice6 = callDice(5)-1;
-        const dice7 = callDice(5)-1;
-        const dice8 = callDice(5)-1;
+        const dice6 = callDice(6)-1;
+        const dice7 = callDice(6)-1;
+        const dice8 = callDice(6)-1;
         results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
       break;
       default: console.log('dice not found!');
@@ -95,42 +95,6 @@ const BloodBowl = ({game}) => {
     });
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
     setMp(hoverDetails)
-  }
-
-  // adds player to roster
-  // change this so that it return the player and then set it in add team place....
-  const addFunc = (idImport) => {
-    console.log('got to add func', idImport);
-    const idOfPlayer = Number(idImport);
-    let startPoint = {x: 50, y: 100};
-    let activeRoster = [];
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-
-    if (activeTeam === 'Team 1') {
-      activeRoster = activeRoster.concat(roster1);
-    } else {
-      activeRoster = activeRoster.concat(roster2);
-      startPoint.y = 450;
-    }
-
-    const selectedPlayer = players.filter( player => idOfPlayer === player.id);
-    const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
-    newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
-    newPlayer.y = startPoint.y;
-    newPlayer.status = 'ready';
-
-    activeRoster.push(newPlayer);
-
-    if (activeTeam === 'Team 1') {
-  //    copyOfgameObject.team1.value += Number(selectedPlayer[0].cost);
-      setRoster1(activeRoster);
-    } else {
-  //    copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
-      setRoster2(activeRoster);
-    }
-    //drawPlayers("bloodBowlStadium", roster1, roster2);
-    setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
   }
 
   // sets team 1 or 2 to as active team, for player adding
@@ -307,28 +271,38 @@ const BloodBowl = ({game}) => {
     const clickedEntry = Number(e.target.id);
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let active = 'team1';
+    let startPoint = {x: 50, y: 100};
+    let activeRoster = [];
     const selectedTeam = teams.filter( team => team.id === clickedEntry);
-    console.log('=> ', selectedTeam);
+
     if (activeTeam === 'Team 2') {
       active = 'team2';
+      activeRoster = activeRoster.concat(roster2);
+      startPoint.y = 450;
+    } else {
+      activeRoster = activeRoster.concat(roster1);
     }
+
     copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
     copyOfgameObject[active].team = selectedTeam[0].teamName;
 
     selectedTeam[0].roster.forEach((item) => {
-      addFunc(item.id);
+      const selectedPlayer = players.filter( player => item.id === player.id);
+      const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
+      newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
+      newPlayer.y = startPoint.y;
+      newPlayer.status = 'ready';
+      activeRoster.push(newPlayer);
     });
 
-/*
-team1: {
-  rerolls: 0,
-  team: 'Imperial Nobility',
-  value: 0,
-  score: 0,
-  turn: 0
-},
-*/
+    if (activeTeam === 'Team 2') {
+      setRoster2(activeRoster);
+    } else {
+      setRoster1(activeRoster);
+    }
 
+    setGameObject(copyOfgameObject);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
   }
 
   return(
@@ -336,18 +310,6 @@ team1: {
       <div id= "controls">
         <div id= "leftSide">
         mouse: {mousePosition.x} {mousePosition.y}<br/>
-        <button id= "Imperial Nobility" onClick= {toggleTeam}>
-          Imperial Nobility
-        </button>
-        <button id= "Black Orc" onClick= {toggleTeam}>
-          Black Orc
-        </button>
-        <button id= "Dwarf" onClick= {toggleTeam}>
-          Dwarf
-        </button>
-        <button id= "Wood Elf" onClick= {toggleTeam}>
-          Wood Elf
-        </button>
         <br/>
         <button onClick= {checki}>
           checki
@@ -385,6 +347,7 @@ team1: {
         <div id= "rightSide">
           <button id= "move" onClick= {statuses}>move</button>
           <button id= "prone" onClick= {statuses}>prone</button>
+          <button id= "stunned" onClick= {statuses}>stunned</button>
 
           <button id= "fallen" onClick= {statuses}>fallen</button>
           <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>

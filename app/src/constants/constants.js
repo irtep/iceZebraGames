@@ -36,6 +36,7 @@ export const blockDices = [
   '(player down)',
   '(both down)',
   '(push back)',
+  '(push back)',
   '(stumble)',
   '(pow!)'
 ];
