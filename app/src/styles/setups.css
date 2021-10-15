@@ -8,8 +8,10 @@
 
 #bb {
   grid-area: leftSide;
+  background: red;
 }
 
 #wMachine {
   grid-area: rightSide;
+  background: black;
 }

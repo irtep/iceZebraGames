@@ -21,7 +21,6 @@ specialRules
 const NewBBcard = () => {
   const [name, setName] = useState('');
   const [team, setTeam] = useState('');
-  const [game, setGame] = useState('');
   const [stats, setStats] = useState('');
   const [skills, setSkills] = useState('');
   const [cost, setCost] = useState('');
@@ -31,18 +30,17 @@ const NewBBcard = () => {
   const addBBcard = async (event) => {
     event.preventDefault();
     let emptyValue = false;
-    setName(name);
-    setTeam(team);
-    setGame('blood bowl')
-    setStats(stats);
-    setSkills(skills)
-    setCost(cost);
-    setSpecials(specialRules);
+//    setName(name);
+//    setTeam(team);
+//    setStats(stats);
+//    setSkills(skills)
+//    setCost(cost);
+//    setSpecials(specialRules);
 
     const cardEntry = {
       name: name,
       team: team,
-      game: game,
+      game: 'blood bowl',
       stats: stats,
       skills: skills,
       specialRules: specialRules,
@@ -51,7 +49,7 @@ const NewBBcard = () => {
     };
 
     const allDatas = [
-      name, team, game, stats, skills, specialRules, cost, img
+      name, team, stats, skills, specialRules, cost, img
     ];
 
     allDatas.forEach((item, i) => {
@@ -87,7 +85,6 @@ const NewBBcard = () => {
           <div>
             team
             <input
-              id= "cardName"
               type="text"
               value={ team }
               onChange={({ target }) => setTeam(target.value)}
@@ -96,7 +93,6 @@ const NewBBcard = () => {
           <div>
             stats<br/>
             <input
-              id= "cardName"
               type="text"
               value={ stats }
               onChange={({ target }) => setStats(target.value)}
@@ -105,7 +101,6 @@ const NewBBcard = () => {
           <div>
             skills<br/>
             <input
-              id= "cardName"
               type="text"
               value={ skills }
               onChange={({ target }) => setSkills(target.value)}
@@ -114,7 +109,6 @@ const NewBBcard = () => {
           <div>
             specialRules<br/>
             <input
-              id= "cardName"
               type="text"
               value={ specialRules }
               onChange={({ target }) => setSpecials(target.value)}
@@ -123,7 +117,6 @@ const NewBBcard = () => {
           <div>
             cost<br/>
             <input
-              id= "cardName"
               type="text"
               value={ cost }
               onChange={({ target }) => setCost(target.value)}

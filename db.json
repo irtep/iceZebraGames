@@ -252,6 +252,28 @@
       "cost": "145000",
       "img": "ogre",
       "id": 24
+    },
+    {
+      "name": "Ogre Blocker",
+      "team": "Ogre",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+      "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+      "specialRules": "-",
+      "cost": "140000",
+      "img": "ogre",
+      "id": 25
+    },
+    {
+      "name": "Goblin Lineman",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+      "skills": "Dodge, Right stuff, Stunty",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "goblin",
+      "id": 26
     }
   ],
   "teams": [
