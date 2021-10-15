@@ -12,6 +12,7 @@ blood bowl bug:
    field:
    size should be 4f x 4f / 1200mm x 1200mm / 48 inch x 48 inch (gotta think some conversion,
    propably 48 x 48 boxes should be correct enough and would be easy to calculate by that)
-   1 inch = 25.4mm 
+   1 inch = 25.4mm i try so that i convert mm to pixels and lets check what happens
+   ok conversion rate = 1 inch = 25.4 / 1.25
 
 */

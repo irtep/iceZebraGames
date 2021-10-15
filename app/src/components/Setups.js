@@ -1,23 +1,23 @@
-import NewCard from './NewCard';
+import NewBBcard from './NewBBcard';
+import NewWMcard from './NewWMcard';
 import CreateTeam from './CreateTeam';
-/*
-name,
-team,
-game,
-stats,
-skills,
-cost,
-specialRules
-*/
+import '../styles/setups.css';
+
 const Setups = () => {
   return(
-    <div>
+    <div id= "setupContainer">
       <div id= "bb">
         <div>
-          <NewCard />
+          <NewBBcard />
         </div>
         <div>
           <CreateTeam />
+        </div>
+      </div>
+
+      <div id= "wMachine">
+        <div>
+          <NewWMcard />
         </div>
       </div>
     </div>

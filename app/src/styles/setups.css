@@ -1,0 +1,15 @@
+#setupContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'leftSide rightSide';
+    grid-gap: 1px;
+}
+
+#bb {
+  grid-area: leftSide;
+}
+
+#wMachine {
+  grid-area: rightSide;
+}

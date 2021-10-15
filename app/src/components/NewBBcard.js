@@ -18,7 +18,7 @@ skills,
 cost,
 specialRules
 */
-const NewCard = () => {
+const NewBBcard = () => {
   const [name, setName] = useState('');
   const [team, setTeam] = useState('');
   const [game, setGame] = useState('');
@@ -146,4 +146,4 @@ const NewCard = () => {
     );
 }
 
-export default NewCard;
+export default NewBBcard;

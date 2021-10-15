@@ -1,11 +1,12 @@
-import { drawBBfield, arcVsArc, callDice } from '../functions/bloodBowl';
+import { arcVsArc, callDice } from '../functions/bloodBowl';
+import { drawWMfield } from '../functions/warmachine';
 import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
-import '../styles/bloodBowl.css';
+import '../styles/warmachine.css';
 
-const BloodBowl = ({game}) => {
+const Warmachine = ({game}) => {
   const [players, setPlayers] = useState([]);
   const [teams, setTeams] = useState([]);
   const [activeTeam, setActiveTeam] = useState ('Team 1');
@@ -20,7 +21,7 @@ const BloodBowl = ({game}) => {
 
   // when this app is loaded
   useEffect( () => {
-    drawBBfield("bloodBowlStadium", 16, 27);
+    drawWMfield("warmachineField", 47, 47);
     getTeams().then(initialData => {
        setTeams(initialData);
      }).catch(err => {
@@ -77,7 +78,7 @@ const BloodBowl = ({game}) => {
 
   const hovering = (e) => {
     // get mouse locations offsets to get where mouse is hovering.
-    let r = document.getElementById('bloodBowlStadium').getBoundingClientRect();
+    let r = document.getElementById('warmachineField').getBoundingClientRect();
     let x = e.clientX - r.left;
     let y = e.clientY - r.top;
     const hoverDetails = {x: x, y: y};
@@ -93,7 +94,7 @@ const BloodBowl = ({game}) => {
         setDetails(presenting);
       }
     });
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawWMfield("warmachineField", 47, 47, roster1, roster2, ball);
     setMp(hoverDetails)
   }
 
@@ -186,7 +187,6 @@ const BloodBowl = ({game}) => {
     setGameObject(copyOfgameObject);
   }
 */
-/* i think this is not used anymore here
   const popPlayer = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     if (activeTeam === "Team 1") {
@@ -202,7 +202,7 @@ const BloodBowl = ({game}) => {
     }
     setGameObject(copyOfgameObject);
   }
-*/
+
   const clicked = () => {
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
@@ -303,7 +303,7 @@ const BloodBowl = ({game}) => {
     }
 
     setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawWMfield("warmachineField", 47, 47, roster1, roster2, ball);
   }
 
   return(
@@ -314,10 +314,10 @@ const BloodBowl = ({game}) => {
         <br/>
         <button onClick= {checki}>
           checki
-        </button>{/*}
+        </button>
         <button onClick= {popPlayer}>
           delete latest player
-        </button>{*/}
+        </button>
         <button id= "activateTeam1" onClick= {activateTeam}>
           team1
         </button>
@@ -381,9 +381,9 @@ const BloodBowl = ({game}) => {
         <canvas
           onMouseMove= {hovering}
           onClick= {clicked}
-          id= "bloodBowlStadium"
-          width = {950}
-          height = {1000}>
+          id= "warmachineField"
+          width = {1000}
+          height = {1300}>
         </canvas>
       </div>
       <div id= "rules">
@@ -402,7 +402,7 @@ const BloodBowl = ({game}) => {
     );
 }
 
-export default BloodBowl;
+export default Warmachine;
 
 /*
 the arena should be
