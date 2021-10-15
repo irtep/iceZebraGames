@@ -33,6 +33,11 @@ export const rerollPrices = [
   {team : 'Goblin', price: 60000}
 ];
 
+// warmachine factions
+export const factions = [
+  'cryx', 'circle', 'trollbloods', 'cygnar', 'khador'
+];
+
 export const blockDices = [
   '(player down)',
   '(both down)',

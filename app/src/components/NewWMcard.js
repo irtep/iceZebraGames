@@ -1,5 +1,5 @@
 import { useState } from 'react';
-//import { createPlayer } from '../services/dbControl';
+import { createCard } from '../services/dbControl';
 
 const style = {
   margin: 20,
@@ -61,7 +61,7 @@ const NewWMcard = () => {
 
     if (emptyValue === false) {
     // i think all is ok, could enable...
-    //  await createPlayer(cardEntry);
+      await createCard(cardEntry);
       console.log('send would ok', cardEntry);
     } else {
       console.log('empty fields');

@@ -1,6 +1,7 @@
 import NewBBcard from './NewBBcard';
 import NewWMcard from './NewWMcard';
 import CreateTeam from './CreateTeam';
+import CreateWmArmy from './CreateWmArmy';
 import '../styles/setups.css';
 
 const Setups = () => {
@@ -18,6 +19,9 @@ const Setups = () => {
       <div id= "wMachine">
         <div>
           <NewWMcard />
+        </div>
+        <div>
+          <CreateWmArmy />
         </div>
       </div>
     </div>

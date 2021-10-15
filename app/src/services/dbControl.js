@@ -14,8 +14,8 @@ export const getTeams = () => {
   return request.then(response => response.data);
 }
 
-
-export const createPlayer = newObject => {
+// creates players and units
+export const createCard = newObject => {
   const request = axios.post(cardUrl, newObject);
   return request.then(response => response.data);
 }

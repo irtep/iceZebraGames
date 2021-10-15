@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createPlayer } from '../services/dbControl';
+import { createCard } from '../services/dbControl';
 
 const style = {
   margin: 20,
@@ -60,7 +60,7 @@ const NewBBcard = () => {
     });
 
     if (emptyValue === false) {
-      await createPlayer(cardEntry);
+      await createCard(cardEntry);
       console.log('sent to db');
     } else {
       console.log('empty fields');
