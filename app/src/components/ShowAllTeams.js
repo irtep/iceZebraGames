@@ -3,7 +3,6 @@ import React from 'react';
 import ActionButton from './ActionButton';
 
 const ShowAllTeams = ({showThese, addFunc}) => {
-
   if (showThese === []) {
     return null;
   } else {

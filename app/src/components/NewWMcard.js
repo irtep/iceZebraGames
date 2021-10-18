@@ -82,7 +82,7 @@ const NewWMcard = () => {
               value={ name }
               onChange={({ target }) => setName(target.value)}
             />
-            units type: (caster, beast, warrior)<br/>
+            units type: (caster, beast, warrior, unit, solo, jack)<br/>
             <input
               type="text"
               value={ unitType }

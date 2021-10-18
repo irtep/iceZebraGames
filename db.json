@@ -334,6 +334,21 @@
       "weapons": "Rifle: 14 1 10 (magical), sword: 7",
       "img": "mageRiflerSolo",
       "id": 30
+    },
+    {
+      "name": "Deathripper",
+      "unitType": "jack",
+      "factions": "cryx",
+      "baseSize": "40",
+      "hitpoints": "20",
+      "game": "warmachine",
+      "stats": "7,7,5,5,14,14",
+      "skills": "arc node",
+      "specialRules": "sustained attack",
+      "cost": "6",
+      "weapons": "mandibles: 0,5 12",
+      "img": "chicken",
+      "id": 31
     }
   ],
   "teams": [
@@ -775,6 +790,95 @@
         }
       ],
       "id": 3
+    }
+  ],
+  "whArmies": [
+    {
+      "teamName": "testiArmy1",
+      "roster": [
+        {
+          "name": "Agathia",
+          "unitType": "caster",
+          "factions": "cryx",
+          "baseSize": "30",
+          "hitpoints": "16",
+          "game": "warmachine",
+          "stats": "6,6,7,4,15,15,9,7",
+          "skills": "undead",
+          "specialRules": "apparation, death shroud, ghostly, henchman, irregulars(bane knight), soul taker. Feat: Shadowfall. Spells: Ghost walk, Hellfire, hellwrought, parasite, vanish",
+          "cost": "29",
+          "weapons": "death kiss R2 P6 P+S12 (magical)",
+          "img": "agathia",
+          "id": 27
+        },
+        {
+          "name": "6 x Steelhead Rifleman",
+          "unitType": "warrior",
+          "factions": "cryx,mercenary,cygnar,khador,protectorate",
+          "baseSize": "30",
+          "hitpoints": "1",
+          "game": "warmachine",
+          "stats": "6,6,5,5,13,13,7,0",
+          "skills": "shoot together",
+          "specialRules": "war tempered, combined arms",
+          "cost": "8",
+          "weapons": "rifle: 10 1 11, sword: p+s: 9",
+          "img": "steelhead",
+          "id": 28
+        },
+        {
+          "name": "Deathripper",
+          "unitType": "jack",
+          "factions": "cryx",
+          "baseSize": "40",
+          "hitpoints": "20",
+          "game": "warmachine",
+          "stats": "7,7,5,5,14,14",
+          "skills": "arc node",
+          "specialRules": "sustained attack",
+          "cost": "6",
+          "weapons": "mandibles: 0,5 12",
+          "img": "chicken",
+          "id": 31
+        }
+      ],
+      "id": 4
+    },
+    {
+      "teamName": "2xtrolls",
+      "roster": [
+        {
+          "name": "Dire Troll Bomber",
+          "unitType": "beast",
+          "factions": "trollbloods",
+          "baseSize": "50",
+          "hitpoints": "30",
+          "game": "warmachine",
+          "stats": "5,12,6,5,12,18,4,0",
+          "skills": "-",
+          "specialRules": "regeneration(d3), snacking, reload(1), animus: far strike",
+          "cost": "17",
+          "weapons": "bomb: 8 1 4 16, claw: r1 p15",
+          "img": "bomber",
+          "id": 29
+        },
+        {
+          "name": "Dire Troll Bomber",
+          "unitType": "beast",
+          "factions": "trollbloods",
+          "baseSize": "50",
+          "hitpoints": "30",
+          "game": "warmachine",
+          "stats": "5,12,6,5,12,18,4,0",
+          "skills": "-",
+          "specialRules": "regeneration(d3), snacking, reload(1), animus: far strike",
+          "cost": "17",
+          "weapons": "bomb: 8 1 4 16, claw: r1 p15",
+          "img": "bomber",
+          "id": 29
+        }
+      ],
+      "id": 5
     }
   ]
 }

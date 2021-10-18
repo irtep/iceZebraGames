@@ -2,7 +2,7 @@ import { arcVsArc, callDice } from '../functions/bloodBowl';
 import { drawWMfield } from '../functions/warmachine';
 import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
-import { getTeams, getAll } from '../services/dbControl';
+import { getWhArmies, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
 import '../styles/warmachine.css';
 
@@ -22,7 +22,7 @@ const Warmachine = ({game}) => {
   // when this app is loaded
   useEffect( () => {
     drawWMfield("warmachineField", 47, 47);
-    getTeams().then(initialData => {
+    getWhArmies().then(initialData => {
        setTeams(initialData);
      }).catch(err => {
        console.log('error', err.response);

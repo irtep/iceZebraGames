@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAll, saveTeam } from '../services/dbControl';
+import { getAll, saveWhArmy } from '../services/dbControl';
 import { callDice } from '../functions/bloodBowl';
 import { factions } from '../constants/constants';
 import ShowWhUnits from './ShowWhUnits';
@@ -11,7 +11,10 @@ const CreateWmArmy = () => {
   const [teamName, setTeamName] = useState('');
   const [faction, setFaction] = useState('cryx');
   const [newRoster, setNewRoster] = useState([]);
-  const [cost, setCost] = useState(0);/*
+  const [cost, setCost] = useState(0);
+//  const [unitCost, setUnitCost] = useState(0);
+//  const [battleGroupPoints, setBattleGroupPoints] = useState(0);
+  /*
   const [rerolls, setRerolls] = useState(0);*/
   //const [reRolls, setRerolls] = useState(0);
 
@@ -33,15 +36,47 @@ const CreateWmArmy = () => {
      });
   }, []);
 
+  const updatePoints = (newArmy) => {
+    let bgPointsLeft = 0;
+    let unitPoints = 0;
+    let jackAndBeastPoints = 0;
+    let exceedingPoints = 0;
+
+    // gather points from units:
+    for (let i = 0; i < newArmy.length; i++) {
+      // if warcaster or warlock found:
+      if (newArmy[i].unitType === 'caster'){
+        bgPointsLeft = Number(newArmy[i].cost);
+      }
+      // if beast or jack
+      if (newArmy[i].unitType === 'jack' || newArmy[i].unitType === 'beast'){
+        jackAndBeastPoints = jackAndBeastPoints + Number(newArmy[i].cost);
+      }
+      // if solo or unit
+      if (newArmy[i].unitType === 'solo' || newArmy[i].unitType === 'unit' || newArmy[i].unitType === 'warrior'){
+        unitPoints = unitPoints + Number(newArmy[i].cost);
+      }
+    }
+
+    // deal with jack/beast points
+    exceedingPoints = jackAndBeastPoints - bgPointsLeft;
+    console.log('ex jb bg ', exceedingPoints, jackAndBeastPoints, bgPointsLeft);
+    if (exceedingPoints < 0) { exceedingPoints = 0; }
+    unitPoints = unitPoints + exceedingPoints;
+  //  console.log();
+    setCost(unitPoints);
+  }
+
   const addFunc = (e) => {
     const clickedEntry = Number(e.target.id);
     let activeRoster = newRoster.concat([]);
     const selectedPlayer = units.filter( player => clickedEntry === player.id);
     const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
-    const newCost = Number(cost) + Number(newPlayer.cost);
+  //  const newCost = Number(unitCost) + Number(newPlayer.cost);
+    console.log('newPlayer', newPlayer);
     activeRoster.push(newPlayer);
     setNewRoster(activeRoster);
-    setCost(newCost);
+    updatePoints(activeRoster);
   }
   /*
   const addFunc = (e) => {
@@ -89,7 +124,7 @@ const CreateWmArmy = () => {
       roster: newRoster
     }
     if (teamName !== '' && newRoster.length > 0) {
-      saveTeam(newTeam);
+      saveWhArmy(newTeam);
       console.log('team saved');
     } else {
       console.log('empty fields');
@@ -104,7 +139,7 @@ const CreateWmArmy = () => {
       const newCost = Number(cost) - Number(costMod);
       activeRoster.pop();
       setNewRoster(activeRoster);
-      setCost(newCost);
+      updatePoints(activeRoster);
     }
   }
 
