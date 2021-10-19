@@ -288,6 +288,7 @@
       "cost": "29",
       "weapons": "death kiss R2 P6 P+S12 (magical)",
       "img": "agathia",
+      "cardLink": "https://warmachineuniversity.com/mw/index.php/Bane_Witch_Agathia",
       "id": 27
     },
     {
@@ -303,6 +304,7 @@
       "cost": "8",
       "weapons": "rifle: 10 1 11, sword: p+s: 9",
       "img": "steelhead",
+      "cardLink": "https://warmachineuniversity.com/mw/index.php/Steelhead_Riflemen",
       "id": 28
     },
     {
@@ -318,6 +320,7 @@
       "cost": "17",
       "weapons": "bomb: 8 1 4 16, claw: r1 p15",
       "img": "bomber",
+      "cardLink": "https://warmachineuniversity.com/mw/index.php/Dire_Troll_Bomber",
       "id": 29
     },
     {
@@ -333,6 +336,7 @@
       "cost": "4",
       "weapons": "Rifle: 14 1 10 (magical), sword: 7",
       "img": "mageRiflerSolo",
+      "cardLink": "https://warmachineuniversity.com/mw/index.php/Arcane_Tempest_Rifleman",
       "id": 30
     },
     {
@@ -348,6 +352,7 @@
       "cost": "6",
       "weapons": "mandibles: 0,5 12",
       "img": "chicken",
+      "cardLink": "https://warmachineuniversity.com/mw/index.php/Deathripper",
       "id": 31
     }
   ],

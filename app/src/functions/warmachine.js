@@ -1,3 +1,5 @@
+import { wmTerrain1 } from '../constants/constants';
+
 // draw a grid to warmachine field
 export const drawWMfield = (kanv, xLines, yLines, team1, team2, ball) => {
   const baseSize = 15;
@@ -11,6 +13,26 @@ export const drawWMfield = (kanv, xLines, yLines, team1, team2, ball) => {
 
   // call clear
   ctx.clearRect(0, 0, canvas_width, canvas_height);
+
+  // draw the terrain
+  wmTerrain1.forEach((item, i) => {
+//    console.log('item: ', item);
+    if (item.form === 'square') {
+      ctx.beginPath();
+      ctx.fillStyle = item.color;
+      ctx.rect(item.x, item.y, item.w, item.h);
+      ctx.fill();
+      ctx.closePath();
+    }
+    if (item.form === 'circle') {
+      ctx.beginPath();
+      ctx.fillStyle = item.color;
+      ctx.arc(item.x, item.y, item.s, 0, 2 * Math.PI);
+      ctx.fill();  
+      ctx.closePath();
+    }
+  });
+
   // Draw grid lines along X-axis
   for(let i = 0; i <= num_lines_x; i++) {
     ctx.beginPath();

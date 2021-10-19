@@ -1,6 +1,6 @@
 import { arcVsArc, callDice } from '../functions/bloodBowl';
 import { drawWMfield } from '../functions/warmachine';
-import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
+import { initialWarmachineObject, pointsPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getWhArmies, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
@@ -12,7 +12,7 @@ const Warmachine = ({game}) => {
   const [activeTeam, setActiveTeam] = useState ('Team 1');
   const [roster1, setRoster1] = useState ([]);
   const [roster2, setRoster2] = useState ([]);
-  const [gameObject, setGameObject] = useState (initialBloodBowlObject);
+  const [gameObject, setGameObject] = useState (initialWarmachineObject);
   const [mousePosition, setMp] = useState('');
   const [action, setAction] = useState('nothing');
   const [dices, setDices] = useState('');
@@ -133,60 +133,22 @@ const Warmachine = ({game}) => {
 
     setGameObject(copyOfgameObject);
   }
-  const rerollToggle = (e) => {
+  const pointsToggle = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let toggling = 'team1';
-
+    
     if (activeTeam === "Team 2") {
       toggling = 'team2';
     }
-
-    if (e.target.id === 'rerollPlus') {
-      let rerollCost = 0;
-      copyOfgameObject[toggling].rerolls++;
-      // add value of reroll to teams value
-      rerollPrices.forEach((item, i) => {
-        if (item.team === copyOfgameObject[toggling].team) {
-          console.log('found the team ', item.team, item.price);
-          rerollCost = item.price;
-        }
-      });
-      copyOfgameObject[toggling].value += rerollCost;
+    if (e.target.id === 'pointsPlus') {
+      copyOfgameObject[toggling].points++;
     } else {
-      copyOfgameObject[toggling].rerolls--;
+      copyOfgameObject[toggling].points--;
     }
 
     setGameObject(copyOfgameObject);
   }
 
-  const scoreToggle = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
-
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-
-    if (e.target.id === 'scorePlus') {
-      copyOfgameObject[toggling].score++;
-    } else {
-      copyOfgameObject[toggling].score--;
-    }
-
-    setGameObject(copyOfgameObject);
-  }
-/* not used
-  const toggleTeam = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
-
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-    copyOfgameObject[toggling].team = e.target.id;
-    setGameObject(copyOfgameObject);
-  }
-*/
   const popPlayer = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     if (activeTeam === "Team 1") {
@@ -284,7 +246,7 @@ const Warmachine = ({game}) => {
       activeRoster = activeRoster.concat(roster1);
     }
 
-    copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
+    copyOfgameObject[active].points = selectedTeam[0].reRolls;
     copyOfgameObject[active].team = selectedTeam[0].teamName;
 
     selectedTeam[0].roster.forEach((item) => {
@@ -315,9 +277,6 @@ const Warmachine = ({game}) => {
         <button onClick= {checki}>
           checki
         </button>
-        <button onClick= {popPlayer}>
-          delete latest player
-        </button>
         <button id= "activateTeam1" onClick= {activateTeam}>
           team1
         </button>
@@ -331,17 +290,11 @@ const Warmachine = ({game}) => {
         <button id= "turnMinus" onClick= {turnToggle}>
           turn-
         </button>
-        <button id= "rerollPlus" onClick= {rerollToggle}>
-          reroll+
+        <button id= "pointsPlus" onClick= {pointsToggle}>
+          points+
         </button>
-        <button id= "rerollMinus" onClick= {rerollToggle}>
-          reroll-
-        </button>
-        <button id= "scorePlus" onClick= {scoreToggle}>
-          score+
-        </button>
-        <button id= "scoreMinus" onClick= {scoreToggle}>
-          score-
+        <button id= "pointsMinus" onClick= {pointsToggle}>
+          points-
         </button>
         <br/>
         </div>
@@ -373,8 +326,8 @@ const Warmachine = ({game}) => {
         </div>
         <div id= "infos">
           Activated team: {activeTeam}<br/>
-          {gameObject.team1.team}. score: {gameObject.team1.score} turn: {gameObject.team1.turn} rerolls: {gameObject.team1.rerolls} value: {gameObject.team1.value}<br/>
-          {gameObject.team2.team}. score: {gameObject.team2.score} turn: {gameObject.team2.turn} rerolls: {gameObject.team2.rerolls} value: {gameObject.team2.value}
+          {gameObject.team1.team}. turn: {gameObject.team1.turn} points: {gameObject.team1.points}<br/>
+          {gameObject.team2.team}. turn: {gameObject.team2.turn} points: {gameObject.team2.points}
         </div>
       </div>
       <div id= "canvasPlace">

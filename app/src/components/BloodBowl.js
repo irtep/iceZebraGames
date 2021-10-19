@@ -1,4 +1,4 @@
-import { drawBBfield, arcVsArc, callDice } from '../functions/bloodBowl';
+import { drawBBfield, arcVsArc, bloodBowlDices } from '../functions/bloodBowl';
 import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
@@ -34,45 +34,7 @@ const BloodBowl = ({game}) => {
   }, []);
 
   const diceThrow = (e) => {
-    const dicesSelect = e.target.id;
-    let results = null;
-
-    switch (dicesSelect) {
-      case 'd6':
-        results = callDice(6);
-      break;
-      case 'd3':
-        results = callDice(3);
-      break;
-      case 'd8':
-        results = callDice(8);
-      break;
-      case 'd16':
-        results = callDice(16);
-      break;
-      case '2d6':
-        const dice1 = JSON.stringify(callDice(6));
-        const dice2 = JSON.stringify(callDice(6));
-        results = `${dice1} ${dice2}`;
-      break;
-      case '1block':
-        const dice3 = callDice(6)-1;
-        results = blockDices[dice3];
-      break;
-      case '2block':
-        const dice4 = callDice(6)-1;
-        const dice5 = callDice(6)-1;
-        results = `${blockDices[dice4]} ${blockDices[dice5]}`;
-      break;
-      case '3block':
-        const dice6 = callDice(6)-1;
-        const dice7 = callDice(6)-1;
-        const dice8 = callDice(6)-1;
-        results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
-      break;
-      default: console.log('dice not found!');
-    }
-    setDices(results);
+    setDices(bloodBowlDices(e.target.id));
   }
 
   const hovering = (e) => {
@@ -174,35 +136,7 @@ const BloodBowl = ({game}) => {
 
     setGameObject(copyOfgameObject);
   }
-/* not used
-  const toggleTeam = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
 
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-    copyOfgameObject[toggling].team = e.target.id;
-    setGameObject(copyOfgameObject);
-  }
-*/
-/* i think this is not used anymore here
-  const popPlayer = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    if (activeTeam === "Team 1") {
-      if (roster1.length > 0) {
-        copyOfgameObject.team1.value -= roster1[roster1.length-1].cost;
-        roster1.pop();
-      }
-    } else {
-      if (roster2.length > 0) {
-        copyOfgameObject.team2.value -= roster1[roster2.length-1].cost;
-        roster2.pop();
-      }
-    }
-    setGameObject(copyOfgameObject);
-  }
-*/
   const clicked = () => {
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
@@ -314,10 +248,7 @@ const BloodBowl = ({game}) => {
         <br/>
         <button onClick= {checki}>
           checki
-        </button>{/*}
-        <button onClick= {popPlayer}>
-          delete latest player
-        </button>{*/}
+        </button>
         <button id= "activateTeam1" onClick= {activateTeam}>
           team1
         </button>
@@ -389,15 +320,12 @@ const BloodBowl = ({game}) => {
       <div id= "rules">
         {details}
       </div>
-
       <div id= "teams">
         select team:<br/>
         <ShowAllTeams
          showThese = {teams}
          addFunc = {addTeam}/>
-
       </div>
-
     </div>
     );
 }

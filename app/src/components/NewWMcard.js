@@ -27,6 +27,7 @@ const NewWMcard = () => {
   const [cost, setCost] = useState('');
   const [specialRules, setSpecials] = useState('');
   const [img, setImg] = useState('');
+  const [cardLink, setLink] = useState('');
 
   const addWMcard = async (event) => {
     event.preventDefault();
@@ -44,12 +45,13 @@ const NewWMcard = () => {
       specialRules: specialRules,
       cost: cost,
       weapons: weapons,
-      img: img
+      img: img,
+      cardLink: cardLink
     };
 
     const allDatas = [
       name, factions, baseSize, hitpoints, weapons, stats,
-      skills, specialRules, cost, img, unitType
+      skills, specialRules, cost, img, unitType, cardLink
     ];
 
     allDatas.forEach((item, i) => {
@@ -162,6 +164,15 @@ const NewWMcard = () => {
             />
           </div>
           <br/>
+          <div>
+            external link<br/>
+            <input
+              id= "cardLink"
+              type="text"
+              value={ cardLink }
+              onChange={({ target }) => setLink(target.value)}
+            />
+          </div>
           <button id= "submitNew" type="submit">send new card</button>
         </form>
       </div>

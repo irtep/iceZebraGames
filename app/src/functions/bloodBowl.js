@@ -1,3 +1,4 @@
+import { blockDices } from '../constants/constants';
 
 // draw a grid to football field
 export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
@@ -146,6 +147,47 @@ export const arcVsArc = (sub, obj, subSize, objSize) => {
 export const callDice = (max) => {
   const result =  1 + Math.floor(Math.random() * max);
   return result;
+}
+
+export const bloodBowlDices = (dicesSelect) => {
+  let results = null;
+
+  switch (dicesSelect) {
+    case 'd6':
+      results = callDice(6);
+    break;
+    case 'd3':
+      results = callDice(3);
+    break;
+    case 'd8':
+      results = callDice(8);
+    break;
+    case 'd16':
+      results = callDice(16);
+    break;
+    case '2d6':
+      const dice1 = JSON.stringify(callDice(6));
+      const dice2 = JSON.stringify(callDice(6));
+      results = `${dice1} ${dice2}`;
+    break;
+    case '1block':
+      const dice3 = callDice(6)-1;
+      results = blockDices[dice3];
+    break;
+    case '2block':
+      const dice4 = callDice(6)-1;
+      const dice5 = callDice(6)-1;
+      results = `${blockDices[dice4]} ${blockDices[dice5]}`;
+    break;
+    case '3block':
+      const dice6 = callDice(6)-1;
+      const dice7 = callDice(6)-1;
+      const dice8 = callDice(6)-1;
+      results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
+    break;
+    default: console.log('dice not found!');
+  }
+  return results;
 }
 /*
 d6,
