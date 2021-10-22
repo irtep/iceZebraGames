@@ -82,7 +82,8 @@ export const rerollPrices = [
   {team : 'Dwarf', price: 50000},
   {team : 'Wood Elf', price: 50000},
   {team : 'Ogre', price: 70000},
-  {team : 'Goblin', price: 60000}
+  {team : 'Goblin', price: 60000},
+  {team : 'Necromantic Horror', price: 70000}
 ];
 
 // warmachine factions

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAll, saveTeam } from '../services/dbControl';
-import { callDice } from '../functions/bloodBowl';
+import { callDice } from '../functions/supportFuncs';
 import { rerollPrices } from '../constants/constants';
 import ShowAllPlayers from './ShowAllPlayers';
 import Player from './Player';
@@ -93,7 +93,7 @@ const CreateTeam = () => {
       console.log('team saved');
     } else {
       console.log('empty fields');
-    } 
+    }
     console.log('submitting: ', teamName, newRoster, rerolls);
   }
 

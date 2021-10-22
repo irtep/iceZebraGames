@@ -1,4 +1,5 @@
 import { blockDices } from '../constants/constants';
+import { callDice } from './supportFuncs';
 
 // draw a grid to football field
 export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
@@ -129,24 +130,6 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
     } else {
       console.log('team1 undefined');
     }
-}
-
-export const arcVsArc = (sub, obj, subSize, objSize) => {
-  const dx = sub.x - obj.x;
-  const dy = sub.y - obj.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-
-  if (distance < subSize + objSize) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-// calls random dice, for example 6 is 1d6
-export const callDice = (max) => {
-  const result =  1 + Math.floor(Math.random() * max);
-  return result;
 }
 
 export const bloodBowlDices = (dicesSelect) => {

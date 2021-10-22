@@ -1,5 +1,6 @@
-import { drawBBfield, arcVsArc, bloodBowlDices } from '../functions/bloodBowl';
-import { initialBloodBowlObject, rerollPrices, blockDices } from '../constants/constants';
+import { drawBBfield, bloodBowlDices } from '../functions/bloodBowl';
+import { arcVsArc } from '../functions/supportFuncs';
+import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';

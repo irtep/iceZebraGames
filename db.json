@@ -354,6 +354,61 @@
       "img": "chicken",
       "cardLink": "https://warmachineuniversity.com/mw/index.php/Deathripper",
       "id": 31
+    },
+    {
+      "name": "Zombie Lineman",
+      "team": "Necromantic Horror",
+      "game": "blood bowl",
+      "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+      "skills": "Regeneration",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "zombie",
+      "id": 32
+    },
+    {
+      "name": "Ghoul Runner",
+      "team": "Necromantic Horror",
+      "game": "blood bowl",
+      "stats": "MA 7 S 3 AG 3+ PA 4+ AV 8+",
+      "skills": "Dodge",
+      "specialRules": "-",
+      "cost": "75000",
+      "img": "ghoul",
+      "id": 33
+    },
+    {
+      "name": "Wraith",
+      "team": "Necromantic Horror",
+      "game": "blood bowl",
+      "stats": "MA 6 S 3 AG 3+ PA - AV 9+",
+      "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+      "specialRules": "-",
+      "cost": "95000",
+      "img": "wraith",
+      "id": 34
+    },
+    {
+      "name": "Werewolf",
+      "team": "Necromantic Horror",
+      "game": "blood bowl",
+      "stats": "MA 8 S 3 AG 3+ PA 4+ AV 9+",
+      "skills": "Claws, Frenzy, Regeneration",
+      "specialRules": "-",
+      "cost": "125000",
+      "img": "werewolf",
+      "id": 35
+    },
+    {
+      "name": "Flesh Golem",
+      "team": "Necromantic Horror",
+      "game": "blood bowl",
+      "stats": "MA 4 S 4 AG 4+ PA - AV 10+",
+      "skills": "Regeneration, Stand Firm, Thick Skull",
+      "specialRules": "-",
+      "cost": "115000",
+      "img": "fleshGolem",
+      "id": 36
     }
   ],
   "teams": [
@@ -795,6 +850,145 @@
         }
       ],
       "id": 3
+    },
+    {
+      "teamName": "Pupuhuhta Dolphins",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 S 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 S 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 S 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 S 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Werewolf",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 8 S 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Claws, Frenzy, Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "werewolf",
+          "id": 35
+        },
+        {
+          "name": "Werewolf",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 8 S 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Claws, Frenzy, Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "werewolf",
+          "id": 35
+        },
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        },
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        }
+      ],
+      "id": 4
     }
   ],
   "whArmies": [

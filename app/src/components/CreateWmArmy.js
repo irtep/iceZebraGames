@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAll, saveWhArmy } from '../services/dbControl';
-import { callDice } from '../functions/bloodBowl';
+import { callDice } from '../functions/supportFuncs';
 import { factions } from '../constants/constants';
 import ShowWhUnits from './ShowWhUnits';
 import Player from './Player';
@@ -135,8 +135,7 @@ const CreateWmArmy = () => {
   const popPlayer = (e) => {
     if (newRoster.length > 0) {
       let activeRoster = newRoster.concat([]);
-      const costMod = activeRoster[activeRoster.length - 1].cost;
-      const newCost = Number(cost) - Number(costMod);
+  //    const costMod = activeRoster[activeRoster.length - 1].cost;
       activeRoster.pop();
       setNewRoster(activeRoster);
       updatePoints(activeRoster);

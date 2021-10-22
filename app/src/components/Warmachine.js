@@ -1,6 +1,6 @@
-import { arcVsArc, callDice } from '../functions/bloodBowl';
+import { arcVsArc, diceThrows } from '../functions/supportFuncs';
 import { drawWMfield } from '../functions/warmachine';
-import { initialWarmachineObject, pointsPrices, blockDices } from '../constants/constants';
+import { initialWarmachineObject } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getWhArmies, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
@@ -35,45 +35,7 @@ const Warmachine = ({game}) => {
   }, []);
 
   const diceThrow = (e) => {
-    const dicesSelect = e.target.id;
-    let results = null;
-
-    switch (dicesSelect) {
-      case 'd6':
-        results = callDice(6);
-      break;
-      case 'd3':
-        results = callDice(3);
-      break;
-      case 'd8':
-        results = callDice(8);
-      break;
-      case 'd16':
-        results = callDice(16);
-      break;
-      case '2d6':
-        const dice1 = JSON.stringify(callDice(6));
-        const dice2 = JSON.stringify(callDice(6));
-        results = `${dice1} ${dice2}`;
-      break;
-      case '1block':
-        const dice3 = callDice(6)-1;
-        results = blockDices[dice3];
-      break;
-      case '2block':
-        const dice4 = callDice(6)-1;
-        const dice5 = callDice(6)-1;
-        results = `${blockDices[dice4]} ${blockDices[dice5]}`;
-      break;
-      case '3block':
-        const dice6 = callDice(6)-1;
-        const dice7 = callDice(6)-1;
-        const dice8 = callDice(6)-1;
-        results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
-      break;
-      default: console.log('dice not found!');
-    }
-    setDices(results);
+    setDices(diceThrows(e.target.id));
   }
 
   const hovering = (e) => {
@@ -136,7 +98,7 @@ const Warmachine = ({game}) => {
   const pointsToggle = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let toggling = 'team1';
-    
+
     if (activeTeam === "Team 2") {
       toggling = 'team2';
     }
@@ -149,21 +111,6 @@ const Warmachine = ({game}) => {
     setGameObject(copyOfgameObject);
   }
 
-  const popPlayer = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    if (activeTeam === "Team 1") {
-      if (roster1.length > 0) {
-        copyOfgameObject.team1.value -= roster1[roster1.length-1].cost;
-        roster1.pop();
-      }
-    } else {
-      if (roster2.length > 0) {
-        copyOfgameObject.team2.value -= roster1[roster2.length-1].cost;
-        roster2.pop();
-      }
-    }
-    setGameObject(copyOfgameObject);
-  }
 
   const clicked = () => {
     const copyOfRoster1 = roster1.concat([]);
@@ -300,11 +247,12 @@ const Warmachine = ({game}) => {
         </div>
         <div id= "rightSide">
           <button id= "move" onClick= {statuses}>move</button>
-          <button id= "prone" onClick= {statuses}>prone</button>
-          <button id= "stunned" onClick= {statuses}>stunned</button>
+          <button id= "acid" onClick= {statuses}>acid</button>
+          <button id= "knocked down" onClick= {statuses}>knocked down</button>
 
-          <button id= "fallen" onClick= {statuses}>fallen</button>
-          <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
+          <button id= "frozen" onClick= {statuses}>frozen</button>
+      {/*    <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
+          */}
           <button id= "activated" onClick= {statuses}>activated</button>
 
           <button id= "ready" onClick= {statuses}>ready</button>
@@ -314,12 +262,9 @@ const Warmachine = ({game}) => {
           <br/>
           <button id= "d6" onClick= {diceThrow}>d6</button>
           <button id= "2d6" onClick= {diceThrow}>2d6</button>
-          <button id= "1block" onClick= {diceThrow}>1 x block</button>
-          <button id= "2block" onClick= {diceThrow}>2 x block</button>
-          <button id= "3block" onClick= {diceThrow}>3 x block</button>
+          <button id= "3d6" onClick= {diceThrow}>3d6</button>
+          <button id= "4d6" onClick= {diceThrow}>4d6</button>
           <button id= "d3" onClick= {diceThrow}>d3</button>
-          <button id= "d8" onClick= {diceThrow}>d8</button>
-          <button id= "d16" onClick= {diceThrow}>d16</button>
           <br/>
           <button id= "moveBall" onClick= {statuses}>move ball</button>
           {dices}

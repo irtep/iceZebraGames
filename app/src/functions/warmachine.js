@@ -28,7 +28,7 @@ export const drawWMfield = (kanv, xLines, yLines, team1, team2, ball) => {
       ctx.beginPath();
       ctx.fillStyle = item.color;
       ctx.arc(item.x, item.y, item.s, 0, 2 * Math.PI);
-      ctx.fill();  
+      ctx.fill();
       ctx.closePath();
     }
   });
@@ -60,14 +60,14 @@ export const drawWMfield = (kanv, xLines, yLines, team1, team2, ball) => {
 
     // Draw grid lines along Y-axis
     for (let i = 0; i <= num_lines_y; i++) {
-      ctx.beginPath();
+      ctx.beginPath(); /*
       if ( i === 14 || i === 1 || i === 27 ) {
         ctx.strokeStyle = "#000000";
         ctx.lineWidth = 3;
-      } else {
+      } else {*/
         ctx.strokeStyle = "#e9e9e9";
         ctx.lineWidth = 1;
-      }
+      //}
       if(i === num_lines_y) {
         ctx.moveTo(grid_size*i, 20);
         ctx.lineTo(grid_size*i, canvas_height);
@@ -81,6 +81,20 @@ export const drawWMfield = (kanv, xLines, yLines, team1, team2, ball) => {
       }
       ctx.stroke();
     }
+
+    // draw objectives:
+      ctx.beginPath();
+      ctx.strokeStyle = 'yellow';
+      ctx.arc(200, 490, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = 'yellow';
+      ctx.arc(490, 490, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = 'yellow';
+      ctx.arc(800, 490, 20, 0, 2 * Math.PI);
+      ctx.stroke();
 
     // draw endZones
     /*
