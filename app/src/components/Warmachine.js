@@ -155,9 +155,24 @@ const Warmachine = ({game}) => {
 
   const statuses = (e) => {
     const selectedAction = e.target.id;
+    const copyOfRoster1 = roster1.concat([]);
+    const copyOfRoster2 = roster2.concat([]);
+
+    // clear earlier moves to avoid dublicated positions
+    if (selectedAction === 'move') {
+      copyOfRoster1.forEach((item, i) => {
+        if (item.status === 'move') {
+          item.status = 'ready';
+        }
+      });
+      copyOfRoster2.forEach((item, i) => {
+        if (item.status === 'move') {
+          item.status = 'ready';
+        }
+      });
+    }
 
     if (selectedAction === 'team1ready') {
-      const copyOfRoster1 = roster1.concat([]);
         copyOfRoster1.forEach((item, i) => {
           if (item.status === 'activated' || item.status === 'lostBlockZone') {
             item.status = 'ready';
@@ -165,7 +180,6 @@ const Warmachine = ({game}) => {
         });
         setRoster1(copyOfRoster1);
     } else if (selectedAction === 'team2ready') {
-      const copyOfRoster2 = roster2.concat([]);
       copyOfRoster2.forEach((item, i) => {
         if (item.status === 'activated' || item.status === 'lostBlockZone') {
           item.status = 'ready';
