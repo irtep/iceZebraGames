@@ -1344,6 +1344,668 @@
         }
       ],
       "id": 6
+    },
+    {
+      "teamName": "Predators (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Trained Troll",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
+          "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "imperialLineman",
+          "id": 10
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        }
+      ],
+      "id": 7
+    },
+    {
+      "teamName": "Vikings (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Dwarf Slayer",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA - 9+",
+          "skills": "Block, Dauntless, Frenzy, Thick Skull",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "dwarfSlayer",
+          "id": 15
+        },
+        {
+          "name": "Dwarf Slayer",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA - 9+",
+          "skills": "Block, Dauntless, Frenzy, Thick Skull",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "dwarfSlayer",
+          "id": 15
+        },
+        {
+          "name": "Dwarf Blitzer",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Block, Thick Skull",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "dwarfBlitzer",
+          "id": 14
+        },
+        {
+          "name": "Dwarf Blitzer",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Block, Thick Skull",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "dwarfBlitzer",
+          "id": 14
+        },
+        {
+          "name": "Dwarf Runner",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Sure Hands, Thick Skull",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "dwarfRunner",
+          "id": 13
+        },
+        {
+          "name": "Dwarf Runner",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Sure Hands, Thick Skull",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "dwarfRunner",
+          "id": 13
+        },
+        {
+          "name": "Dwarf Blocker",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+          "skills": "Block, Tackle, Thick Skull",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "dwarfBlocker",
+          "id": 12
+        },
+        {
+          "name": "Dwarf Blocker",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+          "skills": "Block, Tackle, Thick Skull",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "dwarfBlocker",
+          "id": 12
+        },
+        {
+          "name": "Dwarf Blocker",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+          "skills": "Block, Tackle, Thick Skull",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "dwarfBlocker",
+          "id": 12
+        },
+        {
+          "name": "Dwarf Blocker",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+          "skills": "Block, Tackle, Thick Skull",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "dwarfBlocker",
+          "id": 12
+        },
+        {
+          "name": "Dwarf Blocker",
+          "team": "Dwarf",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 5+ AV 10+",
+          "skills": "Block, Tackle, Thick Skull",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "dwarfBlocker",
+          "id": 12
+        }
+      ],
+      "id": 8
+    },
+    {
+      "teamName": "Pirates (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        }
+      ],
+      "id": 9
+    },
+    {
+      "teamName": "JYP (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Gutter Runner",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
+        },
+        {
+          "name": "Gutter Runner",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
+        },
+        {
+          "name": "Gutter Runner",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
+        },
+        {
+          "name": "Gutter Runner",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
+        },
+        {
+          "name": "Blitzer",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "skavenBlitzer",
+          "id": 40
+        },
+        {
+          "name": "Thrower",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 2+ AV 8+",
+          "skills": "Pass, Sure Hands",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 38
+        },
+        {
+          "name": "Thrower",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 2+ AV 8+",
+          "skills": "Pass, Sure Hands",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 38
+        },
+        {
+          "name": "Blitzer",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "skavenBlitzer",
+          "id": 40
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        }
+      ],
+      "id": 10
+    },
+    {
+      "teamName": "Dolphins (1M)",
+      "reRolls": 0,
+      "roster": [
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        },
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        },
+        {
+          "name": "Werewolf",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 8 S 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Claws, Frenzy, Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "werewolf",
+          "id": 35
+        },
+        {
+          "name": "Werewolf",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 8 S 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Claws, Frenzy, Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "werewolf",
+          "id": 35
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 S 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 S 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 S 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 S 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 S 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        }
+      ],
+      "id": 11
     }
   ],
   "whArmies": [
