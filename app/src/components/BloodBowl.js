@@ -200,14 +200,16 @@ const BloodBowl = ({game}) => {
 
     if (selectedAction === 'team1ready') {
         copyOfRoster1.forEach((item, i) => {
-          if (item.status === 'activated' || item.status === 'lostBlockZone') {
+          if (item.status === 'activated' || item.status === 'lostBlockZone'
+         || item.status === 'move') {
             item.status = 'ready';
           }
         });
         setRoster1(copyOfRoster1);
     } else if (selectedAction === 'team2ready') {
       copyOfRoster2.forEach((item, i) => {
-        if (item.status === 'activated' || item.status === 'lostBlockZone') {
+        if (item.status === 'activated' || item.status === 'lostBlockZone'
+        || item.status === 'move') {
           item.status = 'ready';
         }
       });
