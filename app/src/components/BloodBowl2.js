@@ -35,7 +35,7 @@ export that is action
 */
 import { drawBBfield, bloodBowlDices, makePlayer } from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
-import { setDefence, setOffence} from '../functions/ai/ai';
+import { setDefence/*, setOffence*/} from '../functions/ai/ai';
 import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 //import { Player } from '../constants/classes';
 import { useEffect, useState } from 'react';
@@ -351,6 +351,13 @@ const BloodBowl2 = ({game}) => {
 
     setRoster1(convertedRoster1);
     setRoster2(convertedRoster2);
+
+    if (activeTeam === 'Team 1') {
+
+    } else {
+      const updatedRoster2 = setDefence(JSON.parse(JSON.stringify(roster2)));
+      setRoster2(updatedRoster2);
+    }
   }
 
   return(
