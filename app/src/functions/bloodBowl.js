@@ -1,4 +1,5 @@
 import { blockDices } from '../constants/constants';
+import { Player } from '../constants/classes';
 import { callDice } from './supportFuncs';
 
 // draw a grid to football field
@@ -171,6 +172,40 @@ export const bloodBowlDices = (dicesSelect) => {
     default: console.log('dice not found!');
   }
   return results;
+}
+
+export const makePlayer = (player, index, team) => {
+  let avIndex = 25;
+  // passsing skill - might mess, so need to do this:
+  if (player.stats[avIndex] === '+') {
+    avIndex--;
+  }
+  if (player.stats[avIndex] === '0') {
+    console.log('is + with: ', player.name);
+    avIndex--;
+  }
+
+  const newPlayer = new Player(
+    index, player.img, player.name, player.skills.split(', '), player.specialRules.split(', '),
+    Number(player.stats[3]), // ma
+    Number(player.stats[8]), // st
+    Number(player.stats[13]), // ag
+    Number(player.stats[19]), // pa
+    Number(player.stats[avIndex]), // av
+    'ready', team, player.x, player.y
+  );
+
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '1') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '0') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  return newPlayer;
 }
 /*
 d6,

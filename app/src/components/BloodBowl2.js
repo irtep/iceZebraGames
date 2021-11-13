@@ -33,9 +33,11 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices } from '../functions/bloodBowl';
+import { drawBBfield, bloodBowlDices, makePlayer } from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
+import { setDefence, setOffence} from '../functions/ai/ai';
 import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
+//import { Player } from '../constants/classes';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
@@ -91,7 +93,11 @@ const BloodBowl2 = ({game}) => {
       const collision = arcVsArc(mousePosition, item, 10, 15);
       if (collision) {
         const presenting = `(${item.name})
-        (${item.stats})
+        (MA ${item.ma})
+        (ST ${item.st})
+        (AG ${item.ag}+)
+        (PA ${item.pa}+)
+        (AV${item.av}+)
         (${item.skills})
         (${item.specialRules})`;
         setDetails(presenting);
@@ -300,55 +306,51 @@ const BloodBowl2 = ({game}) => {
     setGameObject(copyOfgameObject);
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
   }
-/*
-cost: "85000"
-game: "blood bowl"
-id: 13
-img: "dwarfRunner"
-name: "Dwarf Runner"
-skills: "Sure Hands, Thick Skull"
-specialRules: "-"
-stats: "MA 6 ST 3 AG 3+ PA 4+ AV 9+"
-status: "ready"
-team: "Dwarf"
-x: 86
-y: 100
-*/
-  // this changes a player of database to working Player in game
-  /*
-  const makePlayer = (player) => {
-    console.log('player: ', player);
-  }
-*/
+
   const startGame = () => {
     if (roster1.length < 1 || roster2.length < 1) {
       return null;
     }
-    console.log('start game');
-    setMsg('dice roll off:');
-    let playerDice = callDice(6);
-    let aiDice = callDice(6);
-    let logging = [`player rolled: ${playerDice}, ai rolled: ${aiDice}`];
 
-    setLog(logging);
-    if (playerDice === aiDice) {
-      console.log('draw, rerolling');
+    setMsg('dice roll off:');
+    let playerDice = 0;
+    let aiDice = 0;
+    let logging;
+
+    do {
       playerDice = callDice(6);
       aiDice = callDice(6);
-      logging.push(<br key= {playerDice+logging}/>);
-      logging.push(`player rolled: ${playerDice}, ai rolled: ${aiDice}`) ;
-      setLog(logging);
-    }
+      logging = [`player rolled: ${playerDice}, ai rolled: ${aiDice}`];
+    } while (playerDice === aiDice);
+
+    setLog(logging);
 
     logging.push(<br key= {playerDice+logging+aiDice}/>);
     if (playerDice > aiDice) {
       logging.push('player receives the kick!');
       setMsg('set your offensive formation:');
+      setActiveTeam('Team 2');
     } else {
       logging.push('ai receives the kick!');
       setMsg('set your defensive formation');
+      setActiveTeam('Team 1');
     }
+
     // make players as Players
+    const convertedRoster1 = [];
+    const convertedRoster2 = [];
+
+    roster1.forEach((item, i) => {
+      const createdPlayer = makePlayer(item, i, gameObject.team1.team);
+      convertedRoster1.push(createdPlayer);
+    });
+    roster2.forEach((item, i) => {
+      const createdPlayer = makePlayer(item, i, gameObject.team2.team);
+      convertedRoster2.push(createdPlayer);
+    });
+
+    setRoster1(convertedRoster1);
+    setRoster2(convertedRoster2);
   }
 
   return(

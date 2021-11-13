@@ -20,7 +20,10 @@
 }
 
 #console {
-  color: red;
+  color: crimson;
+  font-weight: bold;
+  background: yellow;
+  margin: 4px;
 }
 
 #log {
