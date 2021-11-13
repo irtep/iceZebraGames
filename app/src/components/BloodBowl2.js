@@ -356,7 +356,9 @@ const BloodBowl2 = ({game}) => {
 
     } else {
       const updatedRoster2 = setDefence(JSON.parse(JSON.stringify(roster2)));
-      setRoster2(updatedRoster2);
+      console.log('updr2 ', updatedRoster2);
+      // tonne menee nyt jostain syystä vanhaa kamaa... tutkippas se...
+      //setRoster2(updatedRoster2);
     }
   }
 
