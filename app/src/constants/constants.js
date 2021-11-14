@@ -8,6 +8,7 @@ export const gameOptions = [
 ];
 
 export const initialBloodBowlObject = {
+  phase: 'Select teams',
   team1: {
     rerolls: 0,
     team: 'Select team',

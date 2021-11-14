@@ -207,6 +207,69 @@ export const makePlayer = (player, index, team) => {
   }
   return newPlayer;
 }
+
+export const checkLineUp = (lineUp, offence) => {
+  console.log('line up to check: ', lineUp);
+  const wideZone1 = [];
+  const wideZone2 = [];
+  const scrimmage = [];
+  const illegals = [];
+  let dublicated = false;
+  let reserves = 0;
+  let results = true;
+
+  lineUp.forEach((item, i) => {
+    // check if dublicated positions
+    lineUp.forEach((item2, i2) => {
+      if (i !== i2 && item.gridX === item2.gridX && item.gridY === item2.gridY && item.status !== 'reserve') {
+        dublicated = true;
+        console.log('found dublicated positions');
+      }
+    });
+
+    if (offence) {
+
+    } else {
+      if (item.gridX < 14 || item.gridY > 16) {
+        //illegal
+        if (item.status !== 'reserve') {
+          illegals.push(item);
+        }
+      }
+      if (item.gridY < 5) {
+        //widezone 1
+        wideZone1.push(item);
+      }
+      if (item.gridY > 11 && item.gridY < 16) {
+        //widezone 2
+        wideZone2.push(item);
+      }
+      if (item.gridX === 14) {
+        //scrimmage
+        scrimmage.push(item);
+      }
+      if (item.status === 'reserve') {
+        reserves++;
+      }
+    }
+  });
+
+  // check dublicated positions
+  if (dublicated) { results = false; console.log('dublicated positions found');}
+  // check wide zone 1
+  if (wideZone1.length > 2) { results = false; console.log('too many in wz1'); }
+  // check wide zone 2
+  if (wideZone2.length > 2) { results = false; console.log('too many in wz2');  }
+  // check that minimum of 3 are in scrimmage
+  if (scrimmage.length < 3) { results = false; console.log('not enough in scrimmage');  }
+  // check that 11 players
+  if ((lineUp.length - reserves) > 11) { results = false; console.log('too many players');  }
+  // illegals
+  if (illegals.length > 0) { results = false; console.log('illegals');  } /*
+  console.log('results: ', 'w1 ', wideZone1, 'w2 ',  wideZone2, 's ',  scrimmage, 'i ',
+   illegals, 'res ',  reserves, 'resu ',  results);*/
+  return results;
+}
 /*
 d6,
 d6 with reroll,

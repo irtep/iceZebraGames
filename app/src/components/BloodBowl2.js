@@ -33,9 +33,9 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices, makePlayer } from '../functions/bloodBowl';
+import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp } from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
-import { setDefence/*, setOffence*/} from '../functions/ai/ai';
+//import { setDefence/*, setOffence*/} from '../functions/ai/ai';
 import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
 //import { Player } from '../constants/classes';
 import { useEffect, useState } from 'react';
@@ -48,6 +48,7 @@ const BloodBowl2 = ({game}) => {
   // msg console
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState('');
+  const [actionButtons, setActionButtons] = useState('');
   // log
   /*bb1 stuff:*/
   const [players, setPlayers] = useState([]);
@@ -57,7 +58,7 @@ const BloodBowl2 = ({game}) => {
   const [roster2, setRoster2] = useState ([]);
   const [gameObject, setGameObject] = useState (initialBloodBowlObject);
   const [mousePosition, setMp] = useState('');
-  const [action, setAction] = useState('nothing');
+//  const [action, setAction] = useState('nothing');
   const [dices, setDices] = useState('');
   const [details, setDetails] = useState('');
   const [ball, setBall] = useState({x:10, y:10});
@@ -122,7 +123,7 @@ const BloodBowl2 = ({game}) => {
     console.log('roster 2', roster2);
     console.log('gameObject ', gameObject);
     console.log('mouse: ', mousePosition);
-    console.log('action: ', action);
+  //  console.log('action: ', action);
   }
 
   // game control buttons
@@ -189,25 +190,51 @@ const BloodBowl2 = ({game}) => {
     const mpx = Math.trunc(mousePosition.x / 35);
     const mpy = Math.trunc(mousePosition.y / 35);
     console.log('clicked', mpx, mpy);
+    console.log('phase is: ', gameObject.phase);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
-    // check if someone is moving
-    copyOfRoster1.forEach((item, i) => {
-      if (item.status === 'move') {
-        item.status = 'activated';
-        item.x = mousePosition.x;
-        item.y = mousePosition.y;
-        setRoster1(copyOfRoster1);
+    let currentRoster = copyOfRoster1;
+    let team2Turn = false;
+
+    /* new code */
+    // set defence phase
+    if (gameObject.phase === 'set defence') {
+      let actionDone = false;
+      // check if clicked player is player of defence (should be on turn)
+      if (activeTeam === 'Team 2') {
+        //console.log('active === team2');
+        currentRoster = copyOfRoster2;
+        team2Turn = true;
       }
-    });
-    copyOfRoster2.forEach((item, i) => {
-      if (item.status === 'move') {
-        item.status = 'activated';
-        item.x = mousePosition.x;
-        item.y = mousePosition.y;
-        setRoster2(copyOfRoster2);
+      // check if someone is moving
+      currentRoster.forEach((item, i) => {
+        if (item.status === 'move' && !actionDone) {
+          item.setStatus('activated');
+          item.move(mousePosition.x, mousePosition.y);
+          /*
+          item.x = mousePosition.x;
+          item.y = mousePosition.y;
+          */
+          actionDone = true;
+          team2Turn ? setRoster2(currentRoster) : setRoster1(currentRoster);
+        }
+      });
+      if (!actionDone) {
+        currentRoster.forEach((item, i) => {
+          const collision = arcVsArc(mousePosition, item, 10, 15);
+          //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
+          if (collision) {
+            console.log('collision with ', item);
+            item.setStatus('move');
+            team2Turn ? setRoster2(currentRoster) : setRoster1(currentRoster);
+          }
+        });
       }
-    });
+      const activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>
+      setActionButtons(activeButtons);
+    }
+
+/*
     if (action !== 'nothing') {
       // check who and set status
       copyOfRoster1.forEach((item, i) => {
@@ -227,45 +254,45 @@ const BloodBowl2 = ({game}) => {
       const newPosition = {x: mousePosition.x, y: mousePosition.y};
       setBall(newPosition);
     }
+    */
   }
 
   const statuses = (e) => {
     const selectedAction = e.target.id;
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
+    let currentRoster = copyOfRoster1;
+    let team2Turn = false;
 
-    // clear earlier moves to avoid dublicated positions
-    if (selectedAction === 'move') {
-      copyOfRoster1.forEach((item, i) => {
+    console.log('statuses: ', selectedAction);
+    if (activeTeam === 'Team 2') {
+      //console.log('active === team2');
+      currentRoster = copyOfRoster2;
+      team2Turn = true;
+    }
+
+    if (selectedAction === 'reserveThis') {
+      currentRoster.forEach((item, i) => {
         if (item.status === 'move') {
-          item.status = 'ready';
-        }
-      });
-      copyOfRoster2.forEach((item, i) => {
-        if (item.status === 'move') {
-          item.status = 'ready';
+          item.setStatus('reserve');
+          item.move(1900, 1900);
+          /*
+          item.x = mousePosition.x;
+          item.y = mousePosition.y;
+          */
+          team2Turn ? setRoster2(currentRoster) : setRoster1(currentRoster);
         }
       });
     }
 
-    if (selectedAction === 'team1ready') {
-        copyOfRoster1.forEach((item, i) => {
-          if (item.status === 'activated' || item.status === 'lostBlockZone'
-         || item.status === 'move') {
-            item.status = 'ready';
-          }
-        });
-        setRoster1(copyOfRoster1);
-    } else if (selectedAction === 'team2ready') {
-      copyOfRoster2.forEach((item, i) => {
-        if (item.status === 'activated' || item.status === 'lostBlockZone'
-        || item.status === 'move') {
-          item.status = 'ready';
-        }
-      });
-      setRoster2(copyOfRoster2);
-    } else {
-      setAction(selectedAction);
+    if (selectedAction === 'defenceReady') {
+      const checkUp = checkLineUp(currentRoster, false);
+
+      if (checkUp) {
+        setMsg('def formation ok, set now offense');
+      } else {
+        setMsg('illegal formation. check wide zones, total players and scrimmage');
+      }
     }
   }
 
@@ -313,6 +340,7 @@ const BloodBowl2 = ({game}) => {
     }
 
     setMsg('dice roll off:');
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let playerDice = 0;
     let aiDice = 0;
     let logging;
@@ -327,12 +355,12 @@ const BloodBowl2 = ({game}) => {
 
     logging.push(<br key= {playerDice+logging+aiDice}/>);
     if (playerDice > aiDice) {
-      logging.push('player receives the kick!');
-      setMsg('set your offensive formation:');
+      logging.push('team 1 receives the kick!');
+      setMsg('set defence for team 2:');
       setActiveTeam('Team 2');
     } else {
-      logging.push('ai receives the kick!');
-      setMsg('set your defensive formation');
+      logging.push('team 2 receives the kick!');
+      setMsg('set defensive formation for team 1');
       setActiveTeam('Team 1');
     }
 
@@ -353,13 +381,14 @@ const BloodBowl2 = ({game}) => {
     setRoster2(convertedRoster2);
 
     if (activeTeam === 'Team 1') {
-
     } else {
-      const updatedRoster2 = setDefence(JSON.parse(JSON.stringify(roster2)));
-      console.log('updr2 ', updatedRoster2);
+    //  const updatedRoster2 = setDefence(JSON.parse(JSON.stringify(roster2)));
+    //  console.log('updr2 ', updatedRoster2);
       // tonne menee nyt jostain syystä vanhaa kamaa... tutkippas se...
       //setRoster2(updatedRoster2);
     }
+    copyOfgameObject.phase = 'set defence';
+    setGameObject(copyOfgameObject);
   }
 
   return(
@@ -400,8 +429,9 @@ const BloodBowl2 = ({game}) => {
           score-
         </button>
         <br/>
+        phase: {gameObject.phase}
         </div>
-        <div id= "rightSide">
+        <div id= "rightSide"> {/*
           <button id= "move" onClick= {statuses}>move</button>
           <button id= "prone" onClick= {statuses}>prone</button>
           <button id= "stunned" onClick= {statuses}>stunned</button>
@@ -414,7 +444,7 @@ const BloodBowl2 = ({game}) => {
 
           <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
           <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
-          <br/>
+          <br/>*/}
           <button id= "d6" onClick= {diceThrow}>d6</button>
           <button id= "2d6" onClick= {diceThrow}>2d6</button>
           <button id= "1block" onClick= {diceThrow}>1 x block</button>
@@ -423,11 +453,14 @@ const BloodBowl2 = ({game}) => {
           <button id= "d3" onClick= {diceThrow}>d3</button>
           <button id= "d8" onClick= {diceThrow}>d8</button>
           <button id= "d16" onClick= {diceThrow}>d16</button>
-          <br/>
-          <button id= "moveBall" onClick= {statuses}>move ball</button>
+          <br/>{/*
+          <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
           {dices}
           <div className= "consoles" id= "log">
             {log}
+          </div>
+          <div>
+            {actionButtons}
           </div>
         </div>
         <div id= "infos">
