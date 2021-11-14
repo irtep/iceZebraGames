@@ -33,10 +33,10 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp } from '../functions/bloodBowl';
+import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviateAndBounce } from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
 //import { setDefence/*, setOffence*/} from '../functions/ai/ai';
-import { initialBloodBowlObject, rerollPrices } from '../constants/constants';
+import { initialBloodBowlObject, /*rerollPrices*/ } from '../constants/constants';
 //import { Player } from '../constants/classes';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
@@ -98,7 +98,7 @@ const BloodBowl2 = ({game}) => {
         (ST ${item.st})
         (AG ${item.ag}+)
         (PA ${item.pa}+)
-        (AV${item.av}+)
+        (AV ${item.av}+)
         (${item.skills})
         (${item.specialRules})`;
         setDetails(presenting);
@@ -109,6 +109,7 @@ const BloodBowl2 = ({game}) => {
   }
 
   // sets team 1 or 2 to as active team, for player adding
+
   const activateTeam = (e) => {
     if (e.target.id === 'activateTeam1') {
       setActiveTeam('Team 1');
@@ -123,10 +124,12 @@ const BloodBowl2 = ({game}) => {
     console.log('roster 2', roster2);
     console.log('gameObject ', gameObject);
     console.log('mouse: ', mousePosition);
+    console.log('ball: ', ball);
   //  console.log('action: ', action);
   }
 
   // game control buttons
+  /*
   const turnToggle = (e) => {
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let toggling = 'team1';
@@ -185,7 +188,7 @@ const BloodBowl2 = ({game}) => {
 
     setGameObject(copyOfgameObject);
   }
-
+*/
   const clicked = () => {
     const mpx = Math.trunc(mousePosition.x / 35);
     const mpy = Math.trunc(mousePosition.y / 35);
@@ -195,11 +198,13 @@ const BloodBowl2 = ({game}) => {
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
     let team2Turn = false;
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
     /* new code */
     // set defence phase
-    if (gameObject.phase === 'set defence') {
+    if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
+      let activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
       // check if clicked player is player of defence (should be on turn)
       if (activeTeam === 'Team 2') {
         //console.log('active === team2');
@@ -211,10 +216,6 @@ const BloodBowl2 = ({game}) => {
         if (item.status === 'move' && !actionDone) {
           item.setStatus('activated');
           item.move(mousePosition.x, mousePosition.y);
-          /*
-          item.x = mousePosition.x;
-          item.y = mousePosition.y;
-          */
           actionDone = true;
           team2Turn ? setRoster2(currentRoster) : setRoster1(currentRoster);
         }
@@ -224,14 +225,38 @@ const BloodBowl2 = ({game}) => {
           const collision = arcVsArc(mousePosition, item, 10, 15);
           //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
           if (collision) {
-            console.log('collision with ', item);
             item.setStatus('move');
             team2Turn ? setRoster2(currentRoster) : setRoster1(currentRoster);
           }
         });
       }
-      const activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>
+      if (gameObject.phase === 'set offence') {
+        activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "offenceReady" onClick = {statuses}>offence formation is ready</button></>
+      }
       setActionButtons(activeButtons);
+    }
+
+    if (gameObject.phase === 'kick off') {
+      let activeAgent;
+      team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
+      copyOfgameObject[activeAgent].turn = 1;
+      copyOfgameObject.phase = 'gamePlay';
+      const deviationRoll = callDice(8);
+      const deviationDistance = callDice(6);
+      const bounceRoll = callDice(8);
+      const placeOfBall = deviateAndBounce(deviationRoll, deviationDistance, bounceRoll, {x: mousePosition.x, y: mousePosition.y});
+      setBall(placeOfBall);
+      let forLog = `deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}. bounce direction: ${bounceRoll}`;
+      // touch backs
+      if ((deviationRoll === 4 || deviationRoll === 1 || deviationRoll === 6) &&
+      deviationDistance === 6 && bounceRoll === 4) {
+        forLog += 'it is a touch back!'
+      }
+      if ((deviationRoll === 5 || deviationRoll === 3 || deviationRoll === 8) &&
+        deviationDistance === 6 && bounceRoll === 5) {
+        forLog += 'it is a touch back!'
+      }
+      setLog(forLog);
     }
 
 /*
@@ -255,10 +280,12 @@ const BloodBowl2 = ({game}) => {
       setBall(newPosition);
     }
     */
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
   }
 
   const statuses = (e) => {
     const selectedAction = e.target.id;
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
@@ -290,6 +317,20 @@ const BloodBowl2 = ({game}) => {
 
       if (checkUp) {
         setMsg('def formation ok, set now offense');
+        copyOfgameObject.phase = 'set offence';
+        setGameObject(copyOfgameObject);
+        team2Turn ? setActiveTeam('Team 1') : setActiveTeam('Team 2');
+      } else {
+        setMsg('illegal formation. check wide zones, total players and scrimmage');
+      }
+    }
+    if (selectedAction === 'offenceReady') {
+      const checkUp = checkLineUp(currentRoster, true);
+
+      if (checkUp) {
+        setMsg('off formation ok, Kick Off now. Select place for a ball');
+        copyOfgameObject.phase = 'kick off';
+        setGameObject(copyOfgameObject);
       } else {
         setMsg('illegal formation. check wide zones, total players and scrimmage');
       }
@@ -360,7 +401,7 @@ const BloodBowl2 = ({game}) => {
       setActiveTeam('Team 2');
     } else {
       logging.push('team 2 receives the kick!');
-      setMsg('set defensive formation for team 1');
+      setMsg('set defensive formation for team 1 (to right side!)');
       setActiveTeam('Team 1');
     }
 
@@ -409,7 +450,7 @@ const BloodBowl2 = ({game}) => {
         <button id= "start" onClick= {startGame}>
           START GAME
         </button>
-        <br/>
+        <br/>{/*
         <button id= "turnPlus" onClick= {turnToggle}>
           turn+
         </button>
@@ -427,7 +468,7 @@ const BloodBowl2 = ({game}) => {
         </button>
         <button id= "scoreMinus" onClick= {scoreToggle}>
           score-
-        </button>
+        </button>*/}
         <br/>
         phase: {gameObject.phase}
         </div>

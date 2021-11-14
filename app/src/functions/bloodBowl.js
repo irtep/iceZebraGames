@@ -221,35 +221,46 @@ export const checkLineUp = (lineUp, offence) => {
   lineUp.forEach((item, i) => {
     // check if dublicated positions
     lineUp.forEach((item2, i2) => {
+      // check if dublicated positions
       if (i !== i2 && item.gridX === item2.gridX && item.gridY === item2.gridY && item.status !== 'reserve') {
         dublicated = true;
         console.log('found dublicated positions');
       }
     });
 
-    if (offence) {
+    if (item.status === 'reserve') {
+      reserves++;
+    }
+    if (item.gridY < 5) {
+      //widezone 1
+      wideZone1.push(item);
+    }
+    if (item.gridY > 11 && item.gridY < 16) {
+      //widezone 2
+      wideZone2.push(item);
+    }
 
-    } else {
-      if (item.gridX < 14 || item.gridY > 16) {
+    if (offence) {
+      if (item.gridX > 13 || item.gridY > 16 || item.gridX < 1 || item.gridY < 1) {
         //illegal
         if (item.status !== 'reserve') {
           illegals.push(item);
         }
       }
-      if (item.gridY < 5) {
-        //widezone 1
-        wideZone1.push(item);
+      if (item.gridX === 13) {
+        //scrimmage
+        scrimmage.push(item);
       }
-      if (item.gridY > 11 && item.gridY < 16) {
-        //widezone 2
-        wideZone2.push(item);
+    } else {
+      if (item.gridX < 14 || item.gridY > 16 || item.gridX > 26 || item.gridY < 1) {
+        //illegal
+        if (item.status !== 'reserve') {
+          illegals.push(item);
+        }
       }
       if (item.gridX === 14) {
         //scrimmage
         scrimmage.push(item);
-      }
-      if (item.status === 'reserve') {
-        reserves++;
       }
     }
   });
@@ -269,6 +280,81 @@ export const checkLineUp = (lineUp, offence) => {
   console.log('results: ', 'w1 ', wideZone1, 'w2 ',  wideZone2, 's ',  scrimmage, 'i ',
    illegals, 'res ',  reserves, 'resu ',  results);*/
   return results;
+}
+
+export const deviateAndBounce = (deviateDir, deviateDis, bounceDir, currentPlace) => {
+  /*
+  123
+  4 5
+  678
+  */
+  const square = 35;
+  // deviate
+  switch (deviateDir) {
+    case 1:
+      currentPlace.x -= square * deviateDis;
+      currentPlace.y -= square * deviateDis;
+    break;
+    case 2:
+      currentPlace.x -= square * deviateDis;
+    break;
+    case 3:
+      currentPlace.x += square * deviateDis;
+      currentPlace.y += square * deviateDis;
+    break;
+    case 4:
+      currentPlace.x -= square * deviateDis;
+    break;
+    case 5:
+      currentPlace.x += square * deviateDis;
+    break;
+    case 6:
+      currentPlace.x -= square * deviateDis;
+      currentPlace.y += square * deviateDis;
+    break;
+    case 7:
+      currentPlace.y += square * deviateDis;
+    break;
+    case 8:
+      currentPlace.x += square * deviateDis;
+      currentPlace.y += square * deviateDis;
+    break;
+    default: console.log('not found direction at swich of deviation');
+  }
+  // bounce
+  switch (bounceDir) {
+    case 1:
+      currentPlace.x -= square;
+      currentPlace.y -= square;
+    break;
+    case 2:
+      currentPlace.x -= square;
+    break;
+    case 3:
+      currentPlace.x += square;
+      currentPlace.y += square;
+    break;
+    case 4:
+      currentPlace.x -= square;
+    break;
+    case 5:
+      currentPlace.x += square;
+    break;
+    case 6:
+      currentPlace.x -= square;
+      currentPlace.y += square;
+    break;
+    case 7:
+      currentPlace.y += square;
+    break;
+    case 8:
+      currentPlace.x += square;
+      currentPlace.y += square;
+    break;
+    default: console.log('not found direction at swich of bounce');
+  }
+  console.log('returning: ', currentPlace);
+  return currentPlace;
 }
 /*
 d6,
