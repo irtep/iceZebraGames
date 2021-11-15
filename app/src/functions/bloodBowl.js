@@ -282,7 +282,44 @@ export const checkLineUp = (lineUp, offence) => {
   return results;
 }
 
-export const deviateAndBounce = (deviateDir, deviateDis, bounceDir, currentPlace) => {
+export const bounce = (bounceDir, currentPlace) => {
+  const square = 35;
+  // bounce
+  switch (bounceDir) {
+    case 1:
+      currentPlace.x -= square;
+      currentPlace.y -= square;
+    break;
+    case 2:
+      currentPlace.x -= square;
+    break;
+    case 3:
+      currentPlace.x += square;
+      currentPlace.y += square;
+    break;
+    case 4:
+      currentPlace.x -= square;
+    break;
+    case 5:
+      currentPlace.x += square;
+    break;
+    case 6:
+      currentPlace.x -= square;
+      currentPlace.y += square;
+    break;
+    case 7:
+      currentPlace.y += square;
+    break;
+    case 8:
+      currentPlace.x += square;
+      currentPlace.y += square;
+    break;
+    default: console.log('not found direction at swich of bounce');
+  }
+  return currentPlace;
+}
+
+export const deviate = (deviateDir, deviateDis, currentPlace) => {
   /*
   123
   4 5
@@ -321,38 +358,7 @@ export const deviateAndBounce = (deviateDir, deviateDis, bounceDir, currentPlace
     break;
     default: console.log('not found direction at swich of deviation');
   }
-  // bounce
-  switch (bounceDir) {
-    case 1:
-      currentPlace.x -= square;
-      currentPlace.y -= square;
-    break;
-    case 2:
-      currentPlace.x -= square;
-    break;
-    case 3:
-      currentPlace.x += square;
-      currentPlace.y += square;
-    break;
-    case 4:
-      currentPlace.x -= square;
-    break;
-    case 5:
-      currentPlace.x += square;
-    break;
-    case 6:
-      currentPlace.x -= square;
-      currentPlace.y += square;
-    break;
-    case 7:
-      currentPlace.y += square;
-    break;
-    case 8:
-      currentPlace.x += square;
-      currentPlace.y += square;
-    break;
-    default: console.log('not found direction at swich of bounce');
-  }
+
   console.log('returning: ', currentPlace);
   return currentPlace;
 }

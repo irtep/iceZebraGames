@@ -33,7 +33,8 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviateAndBounce } from '../functions/bloodBowl';
+import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce }
+from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
 //import { setDefence/*, setOffence*/} from '../functions/ai/ai';
 import { initialBloodBowlObject, /*rerollPrices*/ } from '../constants/constants';
@@ -49,6 +50,9 @@ const BloodBowl2 = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState('');
   const [actionButtons, setActionButtons] = useState('');
+  const [lastPlayer, setLastPlayer] = useState('');
+  const [lastAction, setLastAction] = useState('');
+  const [firstKicker, setFirstKicker] = useState('');
   // log
   /*bb1 stuff:*/
   const [players, setPlayers] = useState([]);
@@ -62,6 +66,7 @@ const BloodBowl2 = ({game}) => {
   const [dices, setDices] = useState('');
   const [details, setDetails] = useState('');
   const [ball, setBall] = useState({x:10, y:10});
+  const squareSize = 35;
 
   // when this app is loaded
   useEffect( () => {
@@ -189,6 +194,12 @@ const BloodBowl2 = ({game}) => {
     setGameObject(copyOfgameObject);
   }
 */
+
+  const rerolls = (event) => {
+    const yesOrNo = event.target.id;
+    console.log('event: ', yesOrNo, lastPlayer, lastAction);
+  }
+
   const clicked = () => {
     const mpx = Math.trunc(mousePosition.x / 35);
     const mpy = Math.trunc(mousePosition.y / 35);
@@ -197,11 +208,12 @@ const BloodBowl2 = ({game}) => {
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
+    let opponentRoster = copyOfRoster2;
     let team2Turn = false;
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
     /* new code */
-    // set defence phase
+    // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
       let activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
@@ -209,6 +221,7 @@ const BloodBowl2 = ({game}) => {
       if (activeTeam === 'Team 2') {
         //console.log('active === team2');
         currentRoster = copyOfRoster2;
+        opponentRoster = copyOfRoster1;
         team2Turn = true;
       }
       // check if someone is moving
@@ -237,6 +250,7 @@ const BloodBowl2 = ({game}) => {
     }
 
     if (gameObject.phase === 'kick off') {
+      let touchBack = false;
       let activeAgent;
       team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
       copyOfgameObject[activeAgent].turn = 1;
@@ -244,43 +258,231 @@ const BloodBowl2 = ({game}) => {
       const deviationRoll = callDice(8);
       const deviationDistance = callDice(6);
       const bounceRoll = callDice(8);
-      const placeOfBall = deviateAndBounce(deviationRoll, deviationDistance, bounceRoll, {x: mousePosition.x, y: mousePosition.y});
+      let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
       setBall(placeOfBall);
-      let forLog = `deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}. bounce direction: ${bounceRoll}`;
+      let forLog = [`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`];
+      if (activeTeam === 'Team 1') {
+        //console.log('active === team2');
+        currentRoster = copyOfRoster2;
+        team2Turn = true;
+        setFirstKicker('Team 1');
+      }
+      // check if someone is there to catch i
+      let atLocation = [];
+      currentRoster.forEach((item, i) => {
+        const inLocation = item.isInLocation(placeOfBall, squareSize);
+        console.log('t/f ', inLocation);
+        if (inLocation) {atLocation.push(item)}
+      });
+      // if someone there, he tries to catch the ball
+      if (atLocation.length === 1) {
+        let rerollsLeft = 0;
+        let catchSuccess = true;
+        let negativeModifier = 0;
+        const playerInAction = atLocation[0];
+        let comparingToRoster = copyOfRoster1;
+        if (activeTeam === 'Team 2') {
+          comparingToRoster = copyOfRoster2;
+          rerollsLeft = copyOfgameObject.team2.rerolls;
+        } else {
+          rerollsLeft = copyOfgameObject.team1.rerolls;
+        }
+        forLog.push(<br key= {callDice(9999)}/>);
+        forLog.push(`${playerInAction.number} tries to catch...`);
+        forLog.push(<br key= {callDice(9999)}/>);
+        // check tacklezones
+        const tacklers = playerInAction.markedBy(comparingToRoster);
+        negativeModifier -= tacklers.length;
+        const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+        if (skillCheck) {
+          forLog.push(`Catch ok!`);
+        } else {
+          forLog.push(`He fails to catch. Ball bounces to: ${bounceRoll}`);
+          catchSuccess = false;
+          // check if he has "Catch skill"
+          const catchCheck = playerInAction.skills.filter( skill => skill === 'Catch');
+          if (catchCheck.length === 1) {
+            // rerolling for catch
+            forLog.push(`... but the player re-tries as he has Catch skill...`);
+            const skillCheck2 = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+            if (skillCheck2) {
+              forLog.push(`Catch ok!`);
+              catchSuccess = true;
+            }
+          }
+          // ask if wants to re-roll if rerolls left?
+          if (rerollsLeft > 0) {
+            setMsg('want to try re-roll this?');
+            setLastPlayer(playerInAction);
+            setLastAction('catch');
+            const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
+            setActionButtons(activeButtons);
+          }
+        }
+        if (!catchSuccess) {
+          placeOfBall = bounce(bounceRoll, placeOfBall);
+          setBall(placeOfBall);
+        }
+      } else {
+        // nobody catching so bounces
+        placeOfBall = bounce(bounceRoll, placeOfBall);
+        setBall(placeOfBall);
+      }
+
       // touch backs
       if ((deviationRoll === 4 || deviationRoll === 1 || deviationRoll === 6) &&
       deviationDistance === 6 && bounceRoll === 4) {
         forLog += 'it is a touch back!'
+        setMsg('select a player who you want to have it');
+        touchBack = true;
+        copyOfgameObject.phase = 'touchBack';
       }
       if ((deviationRoll === 5 || deviationRoll === 3 || deviationRoll === 8) &&
         deviationDistance === 6 && bounceRoll === 5) {
         forLog += 'it is a touch back!'
+        setMsg('select a player who you want to have it');
+        touchBack = true;
+        copyOfgameObject.phase = 'touchBack';
       }
       setLog(forLog);
+      // switch to attacking team
+      if (activeTeam === 'Team 1') {
+        setActiveTeam('Team 2');
+      } else {
+        setActiveTeam('Team 1');
+      }
+
+      // set phase and thats it
+      if (!touchBack) {
+        copyOfgameObject.phase = 'gameplay';
+        setMsg('click player to activate it');
+      }
+      setGameObject(copyOfgameObject);
     }
 
-/*
-    if (action !== 'nothing') {
-      // check who and set status
-      copyOfRoster1.forEach((item, i) => {
-        const collision = arcVsArc(mousePosition, item, 10, 15);
-        if (collision) {item.status = action; setRoster1(copyOfRoster1);}
-        setAction('nothing');
-      });
-      // check who and set status
-      copyOfRoster2.forEach((item, i) => {
-        const collision = arcVsArc(mousePosition, item, 10, 15);
-        if (collision) {item.status = action; setRoster2(copyOfRoster2);}
-        setAction('nothing');
-      });
+    // touch back phase
+    if (gameObject.phase === 'touchBack') {
+      console.log('touch back not coded yet');
     }
-    // move ball
-    if (action === 'moveBall') {
-      const newPosition = {x: mousePosition.x, y: mousePosition.y};
-      setBall(newPosition);
+
+    // gameplay phase
+    if (gameObject.phase === 'gameplay') {
+      let newButtons = [];
+      let activeTeamIndex = 'team1';
+      // setup
+      if (activeTeam === 'Team 2') {
+        //console.log('active === team2');
+        currentRoster = copyOfRoster2;
+        opponentRoster = copyOfRoster1;
+        team2Turn = true;
+        activeTeamIndex = "team2";
+        copyOfgameObject.team2.turn++;
+      } else {
+        copyOfgameObject.team1.turn++;
+      }
+
+      currentRoster.forEach((item, i) => {
+        // set all activated as "ready"
+        if (item.status === 'activated') {
+          item.setStatus('ready');
+        }
+        // set all fallen to prone
+        if (item.status === 'fallen') {
+          item.setStatus('prone');
+        }
+        // set all stunned to fallen
+        if (item.status === 'stunned') {
+          item.setStatus('fallen');
+        }
+      });
+
+      // terminate half if 9th turn and first half
+      if (copyOfgameObject.half === 1 && copyOfgameObject[activeTeamIndex].turn === 9) {
+        copyOfgameObject.half = 2;
+        copyOfgameObject.team1.turn = 0;
+        copyOfgameObject.team2.turn = 0;
+        copyOfgameObject.phase = 'set defence';
+        if (firstKicker === 'Team 1') {
+          setActiveTeam('Team 2');
+        } else {
+          setActiveTeam('Team 1');
+        }
+        console.log('should be now set defence phase');
+        copyOfgameObject.team1.blitz = true;
+        copyOfgameObject.team1.foul = true;
+        copyOfgameObject.team1.pass = true;
+        copyOfgameObject.team1.handOff = true;
+        copyOfgameObject.team2.blitz = true;
+        copyOfgameObject.team2.foul = true;
+        copyOfgameObject.team2.pass = true;
+        copyOfgameObject.team2.handOff = true;
+        setGameObject(copyOfgameObject);
+      }
+      // terminate game if last turn passed
+      if (copyOfgameObject.half === 2 && copyOfgameObject[activeTeamIndex].turn === 9) {
+        console.log('game over!');
+        setMsg('GAME OVER!');
+        copyOfgameObject.phase = 'GAME OVER';
+        console.log(copyOfgameObject);
+        setGameObject(copyOfgameObject);
+      }
+
+      // check if action is selected
+      // CONTINUE FROM HERE
+      
+      // activate the selected player
+      currentRoster.forEach((item, i) => {
+        const collision = arcVsArc(mousePosition, item, 10, 15);
+        //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
+        if (collision) {
+          const checkIfMarked = item.markedBy(opponentRoster);
+          item.setStatus('ACTIVE');
+          item.setActivated();
+          setMsg('choose action for this player.');
+          // create buttons:
+          newButtons.push(<button id= 'move' onClick= {actions} key = {callDice(9999)}>Move</button>);
+          if (copyOfgameObject[activeTeamIndex].blitz) {
+            newButtons.push(<button id= 'blitz' onClick= {actions}  key = {callDice(9999)}>Blitz</button>);
+          }
+          if (checkIfMarked.length > 0) {
+            newButtons.push(<button id= 'block' onClick= {actions}  key = {callDice(9999)}>Block</button>);
+          }
+          if (copyOfgameObject[activeTeamIndex].pass) {
+            newButtons.push(<button id= 'pass' onClick= {actions}  key = {callDice(9999)}>Pass</button>);
+          }
+          if (copyOfgameObject[activeTeamIndex].handOff) {
+            newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
+          }
+          setActionButtons(newButtons);
+        }
+      });
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
     }
-    */
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+  }
+
+  const actions = (event) => {
+    const idOfAction = event.target.id;
+  //  const bothRosters = roster1.concat(roster2);
+    const copyOfRoster1 = roster1.concat([]);
+    const copyOfRoster2 = roster2.concat([]);
+    let currentRoster = copyOfRoster1;
+    let team2Turn = false;
+    if (activeTeam === 'Team 2') {
+      //console.log('active === team2');
+      currentRoster = copyOfRoster2;
+      team2Turn = true;
+    }
+    const playerWithAction = currentRoster.filter( player => player.status === 'ACTIVE');
+
+    playerWithAction[0].setStatus(idOfAction);
+    // move
+    if (idOfAction === 'move') {
+
+    }
+    setRoster1(copyOfRoster1);
+    setRoster2(copyOfRoster2);
   }
 
   const statuses = (e) => {
@@ -324,6 +526,7 @@ const BloodBowl2 = ({game}) => {
         setMsg('illegal formation. check wide zones, total players and scrimmage');
       }
     }
+
     if (selectedAction === 'offenceReady') {
       const checkUp = checkLineUp(currentRoster, true);
 
@@ -331,10 +534,13 @@ const BloodBowl2 = ({game}) => {
         setMsg('off formation ok, Kick Off now. Select place for a ball');
         copyOfgameObject.phase = 'kick off';
         setGameObject(copyOfgameObject);
+        team2Turn ? setActiveTeam('Team 1') : setActiveTeam('Team 2');
       } else {
         setMsg('illegal formation. check wide zones, total players and scrimmage');
       }
     }
+    setRoster1(copyOfRoster1);
+    setRoster2(copyOfRoster2);
   }
 
   const addTeam =  (e) => {

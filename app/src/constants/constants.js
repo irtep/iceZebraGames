@@ -9,19 +9,30 @@ export const gameOptions = [
 
 export const initialBloodBowlObject = {
   phase: 'Select teams',
+  half: 1,
   team1: {
     rerolls: 0,
     team: 'Select team',
     value: 0,
     score: 0,
-    turn: 0
+    turn: 0,
+    blitz: true,
+    foul: true,
+    argue: true,
+    pass: true,
+    handOff: true
   },
   team2: {
     rerolls: 0,
     team: 'Select team',
     value: 0,
     score: 0,
-    turn: 0
+    turn: 0,
+    blitz: true,
+    foul: true,
+    argue: true,
+    pass: true,
+    handOff: true
   },
 };
 
