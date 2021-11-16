@@ -515,14 +515,16 @@ const BloodBowl2 = ({game}) => {
         }
       });
 
-      // CONTINUE FROM HERE
-
       // activate the selected player
       currentRoster.forEach((item, i) => {
         const collision = arcVsArc(mousePosition, item, 10, 15);
         //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
         if (collision) {
           const checkIfMarked = item.markedBy(opponentRoster);
+          if (item.status === 'fallen') {
+            item.movementLeft -= 3;
+          }
+          
           item.setStatus('ACTIVE');
           item.setActivated();
 
