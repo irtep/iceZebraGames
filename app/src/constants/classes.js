@@ -17,7 +17,14 @@ export class Player {
   this.activated = false;
   this.targeted = false;
   this.movementLeft = ma;
+  this.rushes = 2;
   };
+
+  refresh() {
+    this.rushes = 2;
+    this.movementLeft = this.ma;
+    this.status = 'ready';
+  }
 
   move(newX, newY) {
     this.x = newX;
@@ -48,10 +55,10 @@ export class Player {
     console.log('skillTest: ', skill, diceValue, modifier);
     const totalValue = diceValue + modifier;
     if (this[skill] <= totalValue) {
-      console.log('pass');
+      console.log('pass, dice, modifier ', diceValue, modifier);
       return true;
     } else {
-      console.log('failed');
+      console.log('failed, dice, modifier', diceValue, modifier);
       return false;
     }
   }
@@ -131,7 +138,7 @@ export class Player {
         freeSquares.push(item);
       }
     });
-    return freeSquares;  
+    return freeSquares;
   }
 }
 /*

@@ -200,6 +200,27 @@ const BloodBowl2 = ({game}) => {
     console.log('event: ', yesOrNo, lastPlayer, lastAction);
   }
 
+  const rushes = (event) => {
+    const yesOrNo = event.target.id;
+    const copyOfRoster1 = JSON.parse(JSON.stringify(roster1));
+    const copyOfRoster2 = JSON.parse(JSON.stringify(roster2));
+    let currentRoster = copyOfRoster1;
+    const playerRushing = currentRoster.filter( player => player === lastPlayer);
+
+    if (activeTeam === 'Team 2') {
+      currentRoster = copyOfRoster2;
+    }
+    if (yesOrNo === 'rushYes') {
+      const playerRushing = currentRoster.filter( player => player === lastPlayer);
+      setMsg('select square to rush to');
+      playerRushing[0].setStatus('rush');
+    } else {
+      setMsg('activate next player if you still have or end turn');
+      playerRushing[0].setStatus('activated');
+    }
+  }
+
+
   const clicked = () => {
     const mpx = Math.trunc(mousePosition.x / 35);
     const mpy = Math.trunc(mousePosition.y / 35);
@@ -444,15 +465,53 @@ const BloodBowl2 = ({game}) => {
       // move
       currentRoster.forEach((item, i) => {
         // move
-        if (item.status === 'move') {
+        if (item.status === 'move' || item.status === 'rush') {
           const checkIfMarked = item.markedBy(opponentRoster);
           const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
           const convertedPosition = convertPosition(mousePosition, squareSize);
           const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+          let logging = [`${item.number} is moving...`];
           console.log('marked: ', checkIfMarked);
-          console.log('freeSquares', checkLegalSquares);
-          console.log('convertedPosition ', convertedPosition);
-          console.log('moveCheck: ', moveChecking.length);
+          //console.log('freeSquares', checkLegalSquares);
+          //console.log('convertedPosition ', convertedPosition);
+          //console.log('moveCheck: ', moveChecking.length);
+          if (moveChecking.length === 1) {
+            const moving = item.move(mousePosition.x, mousePosition.y);
+            logging.push(`${item.number} moves. Movement left: ${moving}`);
+          }
+          if (checkIfMarked > 0) {
+            // moving from marked place
+            const newMarkCheck = item.markedBy(opponentRoster);
+            let modifier = 0 - newMarkCheck;
+            console.log('new mark check: ', newMarkCheck);
+            logging.push('... he is marked');
+            // check if stunty
+            const stunty = item.skills.filter( skill => skill === 'Stunty');
+            if (stunty.length > 0) {
+              modifier = 0;
+            }
+            const dexCheck = item.skillTest('ag', callDice(6), modifier)
+            if (dexCheck) {
+              item.move(mousePosition.x, mousePosition.y);
+              logging.push('...passes agility check!');
+            } else {
+              // turn over!
+              logging.push('... he falls! Turn over!');
+              // armour check
+              const armourCheck = item.skillTest('av', callDice(12), 0);
+              console.log('armour test: ', armourCheck);
+              // CONTINUE FROM HERE
+            }
+            // check if stunty that would help a bit
+          }
+          if (item.movementLeft < 1 && item.rushes > 0) {
+            item.setStatus('rushQuery');
+            setLog(`${item.number} reached his max movement. Want to rush? (rushes left: ${item.rushes})`)
+            const activeButtons = <><button id= "rushYes" onClick = {rushes}>Yes, rush</button><button id= "rushNo" onClick = {rushes}>no</button></>
+            setActionButtons(activeButtons);
+            setLastPlayer(item);
+            setLastAction('rush');
+          }
         }
       });
 
