@@ -355,6 +355,34 @@ const BloodBowl2 = ({game}) => {
       // set phase and thats it
       if (!touchBack) {
         copyOfgameObject.phase = 'gameplay';
+        roster1.forEach((item, i) => {
+          // set all activated as "ready"
+          if (item.status === 'activated') {
+            item.setStatus('ready');
+          }
+          // set all fallen to prone
+          if (item.status === 'fallen') {
+            item.setStatus('prone');
+          }
+          // set all stunned to fallen
+          if (item.status === 'stunned') {
+            item.setStatus('fallen');
+          }
+        });
+        roster2.forEach((item, i) => {
+          // set all activated as "ready"
+          if (item.status === 'activated') {
+            item.setStatus('ready');
+          }
+          // set all fallen to prone
+          if (item.status === 'fallen') {
+            item.setStatus('prone');
+          }
+          // set all stunned to fallen
+          if (item.status === 'stunned') {
+            item.setStatus('fallen');
+          }
+        });
         setMsg('click player to activate it');
       }
       setGameObject(copyOfgameObject);
@@ -380,21 +408,6 @@ const BloodBowl2 = ({game}) => {
       } else {
         copyOfgameObject.team1.turn++;
       }
-
-      currentRoster.forEach((item, i) => {
-        // set all activated as "ready"
-        if (item.status === 'activated') {
-          item.setStatus('ready');
-        }
-        // set all fallen to prone
-        if (item.status === 'fallen') {
-          item.setStatus('prone');
-        }
-        // set all stunned to fallen
-        if (item.status === 'stunned') {
-          item.setStatus('fallen');
-        }
-      });
 
       // terminate half if 9th turn and first half
       if (copyOfgameObject.half === 1 && copyOfgameObject[activeTeamIndex].turn === 9) {
@@ -428,8 +441,19 @@ const BloodBowl2 = ({game}) => {
       }
 
       // check if action is selected
+      // move
+      currentRoster.forEach((item, i) => {
+        // move
+        if (item.status === 'move') {
+          const checkIfMarked = item.markedBy(opponentRoster);
+          const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+          console.log('marked: ', checkIfMarked);
+          console.log('freeSquares', checkLegalSquares);
+        }
+      });
+
       // CONTINUE FROM HERE
-      
+
       // activate the selected player
       currentRoster.forEach((item, i) => {
         const collision = arcVsArc(mousePosition, item, 10, 15);
@@ -438,7 +462,32 @@ const BloodBowl2 = ({game}) => {
           const checkIfMarked = item.markedBy(opponentRoster);
           item.setStatus('ACTIVE');
           item.setActivated();
+
+          // desactivate formerly activated player
+          currentRoster.forEach((item2, i2) => {
+            if ((item2.status === 'ACTIVE' || item2.status === 'move') &&
+            i !== i2) {
+              item2.setStatus('activated');
+            }
+          });
+
           setMsg('choose action for this player.');
+
+          // check if this has Bone Head, Very Stupid or Animaly Savagery
+          const boneHead = item.skills.filter( skill => skill === 'Bone Head');
+          const reallyStupid = item.skills.filter( skill => skill === 'Really Stupid');
+          const animalSavagery = item.skills.filter( skill => skill === 'Animal Savagery');
+
+          if (boneHead.length > 0) {
+            console.log('bone head detected');
+          }
+          if (reallyStupid.length > 0) {
+            console.log('really stupid detected');
+          }
+          if (animalSavagery.length > 0) {
+            console.log('animal savagery detected');
+          }
+
           // create buttons:
           newButtons.push(<button id= 'move' onClick= {actions} key = {callDice(9999)}>Move</button>);
           if (copyOfgameObject[activeTeamIndex].blitz) {
@@ -453,6 +502,7 @@ const BloodBowl2 = ({game}) => {
           if (copyOfgameObject[activeTeamIndex].handOff) {
             newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
           }
+          newButtons.push(<button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>);
           setActionButtons(newButtons);
         }
       });
@@ -468,18 +518,18 @@ const BloodBowl2 = ({game}) => {
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
-    let team2Turn = false;
+  //  let team2Turn = false;
     if (activeTeam === 'Team 2') {
       //console.log('active === team2');
       currentRoster = copyOfRoster2;
-      team2Turn = true;
+    //  team2Turn = true;
     }
     const playerWithAction = currentRoster.filter( player => player.status === 'ACTIVE');
 
     playerWithAction[0].setStatus(idOfAction);
     // move
     if (idOfAction === 'move') {
-
+      setMsg(`select next square to move for ${playerWithAction[0].number}. When ready, activate next player or terminate turn.`);
     }
     setRoster1(copyOfRoster1);
     setRoster2(copyOfRoster2);

@@ -56,6 +56,7 @@ export class Player {
     }
   }
 
+  // use this when checking with x and y, example 100 and 100
   isInLocation(location, squareSize) {
     const locaConverted = {x: Math.trunc(location.x / squareSize), y: Math.trunc(location.y / squareSize)};
     const gridLocationOfPlayer = {x: this.gridX, y: this.gridY};
@@ -65,6 +66,11 @@ export class Player {
     } else {
       return false;
     }
+  }
+
+  // use this if using gridX and gridY, for example 1 and 1
+  getLocation() {
+    return {x: this.x, y: this.y, gridX: this.gridX, gridY: this.gridY};
   }
 
   markedBy(listOfOpponents) {
@@ -87,6 +93,45 @@ export class Player {
       });
     });
     return markers;
+  }
+
+  // checks to what squares can move from current location
+  checkForMove(friends, opponents) {
+    let freeSquares = [];
+    const myTacklezone = [
+      {x: this.gridX-1, y: this.gridY-1},
+      {x: this.gridX, y: this.gridY-1},
+      {x: this.gridX+1, y: this.gridY-1},
+      {x: this.gridX-1, y: this.gridY},
+      {x: this.gridX+1, y: this.gridY},
+      {x: this.gridX-1, y: this.gridY+1},
+      {x: this.gridX, y: this.gridY+1},
+      {x: this.gridX+1, y: this.gridY+1}
+    ];
+
+    myTacklezone.forEach((item) => {
+      let found = false;
+      friends.forEach((item2) => {
+        const hisSquare = item2.getLocation();
+        if (item.x === hisSquare.gridX && item.y === hisSquare.gridY) {
+          found = true;
+          return;
+        }
+      });
+      if (!found) {
+        opponents.forEach((item2) => {
+          const hisSquare = item2.getLocation();
+          if (item.x === hisSquare.gridX && item.y === hisSquare.gridY) {
+            found = true;
+            return;
+          }
+        });
+      }
+      if (!found) {
+        freeSquares.push(item);
+      }
+    });
+    return freeSquares;  
   }
 }
 /*
