@@ -33,7 +33,7 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce }
+import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce, convertPosition }
 from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
 //import { setDefence/*, setOffence*/} from '../functions/ai/ai';
@@ -447,8 +447,12 @@ const BloodBowl2 = ({game}) => {
         if (item.status === 'move') {
           const checkIfMarked = item.markedBy(opponentRoster);
           const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+          const convertedPosition = convertPosition(mousePosition, squareSize);
+          const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
           console.log('marked: ', checkIfMarked);
           console.log('freeSquares', checkLegalSquares);
+          console.log('convertedPosition ', convertedPosition);
+          console.log('moveCheck: ', moveChecking.length);
         }
       });
 

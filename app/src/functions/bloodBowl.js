@@ -362,6 +362,12 @@ export const deviate = (deviateDir, deviateDis, currentPlace) => {
   console.log('returning: ', currentPlace);
   return currentPlace;
 }
+
+export const convertPosition = (location, squareSize) => {
+  const x = Math.trunc(location.x / squareSize);
+  const y = Math.trunc(location.y /squareSize);
+  return {x, y};
+}
 /*
 d6,
 d6 with reroll,
