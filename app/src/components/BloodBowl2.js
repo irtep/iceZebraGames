@@ -52,6 +52,8 @@ const BloodBowl2 = ({game}) => {
   const [actionButtons, setActionButtons] = useState('');
   const [lastPlayer, setLastPlayer] = useState('');
   const [lastAction, setLastAction] = useState('');
+  //const [lastQuery, setLastQuery] = useState('');
+  const [lastResponse, setLastResponse] = useState('');
   const [firstKicker, setFirstKicker] = useState('');
   // log
   /*bb1 stuff:*/
@@ -133,105 +135,26 @@ const BloodBowl2 = ({game}) => {
   //  console.log('action: ', action);
   }
 
-  // game control buttons
-  /*
-  const turnToggle = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
-
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-
-    if (e.target.id === 'turnPlus') {
-      copyOfgameObject[toggling].turn++;
-    } else {
-      copyOfgameObject[toggling].turn--;
-    }
-
-    setGameObject(copyOfgameObject);
-  }
-  const rerollToggle = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
-
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-
-    if (e.target.id === 'rerollPlus') {
-      let rerollCost = 0;
-      copyOfgameObject[toggling].rerolls++;
-      // add value of reroll to teams value
-      rerollPrices.forEach((item, i) => {
-        if (item.team === copyOfgameObject[toggling].team) {
-          console.log('found the team ', item.team, item.price);
-          rerollCost = item.price;
-        }
-      });
-      copyOfgameObject[toggling].value += rerollCost;
-    } else {
-      copyOfgameObject[toggling].rerolls--;
-    }
-
-    setGameObject(copyOfgameObject);
-  }
-
-  const scoreToggle = (e) => {
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let toggling = 'team1';
-
-    if (activeTeam === "Team 2") {
-      toggling = 'team2';
-    }
-
-    if (e.target.id === 'scorePlus') {
-      copyOfgameObject[toggling].score++;
-    } else {
-      copyOfgameObject[toggling].score--;
-    }
-
-    setGameObject(copyOfgameObject);
-  }
-*/
-
   const rerolls = (event) => {
     const yesOrNo = event.target.id;
     console.log('event: ', yesOrNo, lastPlayer, lastAction);
+    if (yesOrNo === 'rerollYes') {
+      setLastResponse(true);
+    } else {
+      setLastResponse(false);
+    }
   }
-
+/*
   const rushes = (event) => {
     const yesOrNo = event.target.id;
-    const copyOfRoster1 = JSON.parse(JSON.stringify(roster1));
-    const copyOfRoster2 = JSON.parse(JSON.stringify(roster2));
-    let currentRoster = copyOfRoster1;
-    //const playerRushing = currentRoster.filter( player => player.status === 'rushQuery');
-    //const playerRushing2 = currentRoster.filter( player => player === lastPlayer);
-    //const playerRushing3 = currentRoster.filter( player => player.status === lastPlayer.status);
 
-    if (activeTeam === 'Team 2') {
-      currentRoster = copyOfRoster2;
+    if (yesOrNo === 'rushYes') {
+      setLastResponse(true);
+    } else {
+      setLastResponse(false);
     }
-
-    currentRoster.forEach((item, i) => {
-      if (item.status === 'rushQuery') {
-        if (yesOrNo === 'rushYes') {
-          setMsg('select square to rush to');
-        //  console.log('p, p2, p3 ', playerRushing);
-        //  item.setStatus('rush');
-          item.status = 'rush';
-        } else {
-          setMsg('activate next player if you still have or end turn');
-        //  console.log('p, p2, p3 ', playerRushing);
-        //  item.setStatus('activated');
-          item.status = 'activated';
-        }
-      }
-    });
-    setRoster1(copyOfRoster1);
-    // tän jälkeen bugaa clickissä...
   }
-
+*/
 
   const clicked = () => {
     const mpx = Math.trunc(mousePosition.x / 35);
@@ -244,8 +167,15 @@ const BloodBowl2 = ({game}) => {
     let opponentRoster = copyOfRoster2;
     let team2Turn = false;
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    let activeTeamIndex = 'team1';
 
-    /* new code */
+    if (activeTeam === 'Team 2') {
+      currentRoster = copyOfRoster2;
+      opponentRoster = copyOfRoster1;
+      team2Turn = true;
+      activeTeamIndex = "team2";
+    }
+
     // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
@@ -387,7 +317,7 @@ const BloodBowl2 = ({game}) => {
 
       // set phase and thats it
       if (!touchBack) {
-        copyOfgameObject.phase = 'gameplay';
+        copyOfgameObject.phase = 'startTurn';
         roster1.forEach((item, i) => {
           // set all activated as "ready"
           if (item.status === 'activated') {
@@ -424,11 +354,12 @@ const BloodBowl2 = ({game}) => {
     // touch back phase
     if (gameObject.phase === 'touchBack') {
       console.log('touch back not coded yet');
+      copyOfgameObject.phase = 'startTurn';
+      setGameObject(copyOfgameObject);
     }
 
-    // gameplay phase
-    if (gameObject.phase === 'gameplay') {
-      let newButtons = [];
+    // start of turn
+    if (gameObject.phase === 'startTurn') {
       let activeTeamIndex = 'team1';
       // setup
       if (activeTeam === 'Team 2') {
@@ -441,7 +372,6 @@ const BloodBowl2 = ({game}) => {
       } else {
         copyOfgameObject.team1.turn++;
       }
-
       // terminate half if 9th turn and first half
       if (copyOfgameObject.half === 1 && copyOfgameObject[activeTeamIndex].turn === 9) {
         copyOfgameObject.half = 2;
@@ -462,48 +392,225 @@ const BloodBowl2 = ({game}) => {
         copyOfgameObject.team2.foul = true;
         copyOfgameObject.team2.pass = true;
         copyOfgameObject.team2.handOff = true;
-        setGameObject(copyOfgameObject);
       }
       // terminate game if last turn passed
       if (copyOfgameObject.half === 2 && copyOfgameObject[activeTeamIndex].turn === 9) {
         console.log('game over!');
         setMsg('GAME OVER!');
         copyOfgameObject.phase = 'GAME OVER';
-        console.log(copyOfgameObject);
-        setGameObject(copyOfgameObject);
       }
+      if (copyOfgameObject[activeTeamIndex].turn < 9) {
+        copyOfgameObject.phase = 'gameplay';
+        console.log('not yet 9th turn, setting to gameplay');
+      }
+      setGameObject(copyOfgameObject);
+    }
 
+    // gameplay phase
+    if (gameObject.phase === 'gameplay') {
+      let newButtons = [];
       // check if action is selected
-      // move
+
       currentRoster.forEach((item, i) => {
-        // move
-        if (item.status === 'move' || item.status === 'rush') {
+        // check if stunty and thick skull
+        const stunty = item.skills.filter( skill => skill === 'Stunty');
+        const thickSkull = item.skills.filter( skill => skill === 'Thick Skull');
+
+        // rush query
+        if (item.status === 'rush') {
+
+          const rushDice = callDice(6);
           const checkIfMarked = item.markedBy(opponentRoster);
           const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
           const convertedPosition = convertPosition(mousePosition, squareSize);
           const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
           let logging = [`${item.number} is moving...`];
           console.log('marked: ', checkIfMarked);
-          //console.log('freeSquares', checkLegalSquares);
-          //console.log('convertedPosition ', convertedPosition);
-          //console.log('moveCheck: ', moveChecking.length);
+
           if (moveChecking.length === 1) {
             const moving = item.move(mousePosition.x, mousePosition.y);
             logging.push(`${item.number} moves. Movement left: ${moving}`);
+            item.rushes--;
+            console.log('rush dice: ', rushDice);
           }
+
           if (checkIfMarked > 0) {
             // moving from marked place
             const newMarkCheck = item.markedBy(opponentRoster);
             let modifier = 0 - newMarkCheck;
             console.log('new mark check: ', newMarkCheck);
             logging.push('... he is marked');
-            // check if stunty and thick skull
-            const stunty = item.skills.filter( skill => skill === 'Stunty');
-            const thickSkull = item.skills.filter( skill => skill === 'Thick Skull');
+
             if (stunty.length > 0) {
               modifier = 0;
             }
+
             const dexCheck = item.skillTest('ag', callDice(6), modifier)
+
+            if (dexCheck) {
+              item.move(mousePosition.x, mousePosition.y);
+              logging.push('...passes agility check!');
+            } else {
+              // turn over!
+              logging.push('... he falls! Turn over!');
+              // armour check
+              const armourRoll = callDice(12);
+              const armourCheck = item.skillTest('av', armourRoll, 0);
+              console.log('armour test: ', armourCheck, armourRoll);
+              if (armourCheck) {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+              } else {
+                // check injury
+                logging.push('armour breaks.');
+                const injuryRoll = callDice(12);
+                let injuryMessage = 'stunned';
+                // stunty
+                if (stunty.length > 0) {
+                  if (injuryRoll === 8 || injuryRoll === 7) {
+                    if (thickSkull.length === 1 && injuryRoll !== 7) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                } else {
+                  // normal
+                  if (injuryRoll === 8 || injuryRoll === 9) {
+                    if (thickSkull.length === 1 && injuryRoll !== 8) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                }
+                item.setStatus(injuryMessage);
+                if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
+                  item.move(1900, 1900);
+                }
+                logging.push(`player is: ${injuryMessage}`);
+                item.setStatus(injuryMessage);
+              }
+            }
+            setLog(logging);
+          }  // if marked ends
+          if (item.rushes > 0) {
+            item.setStatus('moved');
+          } else {
+            item.setStatus('activated');
+          }
+
+          if (rushDice === 1) {
+            let logging = ['He trips!'];
+            let rerollsLeft = 0;
+            if (activeTeam === 'Team 2') {
+              rerollsLeft = copyOfgameObject.team2.rerolls;
+            } else {
+              rerollsLeft = copyOfgameObject.team1.rerolls;
+            }
+            // ask if wants to re-roll if rerolls left?
+            if (rerollsLeft > 0) {
+              console.log('check here if wants to reroll');
+            } else {
+              // falls
+              // turn over!
+              logging.push('... he falls! Turn over!');
+              // armour check
+              const armourRoll = callDice(12);
+              const armourCheck = item.skillTest('av', armourRoll, 0);
+              console.log('armour test: ', armourCheck, armourRoll);
+              if (armourCheck) {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+              } else {
+                // check injury
+                logging.push('armour breaks.');
+                const injuryRoll = callDice(12);
+                let injuryMessage = 'stunned';
+                // stunty
+                if (stunty.length > 0) {
+                  if (injuryRoll === 8 || injuryRoll === 7) {
+                    if (thickSkull.length === 1 && injuryRoll !== 7) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                } else {
+                  // normal
+                  if (injuryRoll === 8 || injuryRoll === 9) {
+                    if (thickSkull.length === 1 && injuryRoll !== 8) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                }
+                item.setStatus(injuryMessage);
+                if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
+                  item.move(1900, 1900);
+                }
+                logging.push(`player is: ${injuryMessage}`);
+                item.setStatus(injuryMessage);
+              }
+            }
+          }
+        }
+
+
+        // move
+        if (item.status === 'move') {
+          const checkIfMarked = item.markedBy(opponentRoster);
+          const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+          const convertedPosition = convertPosition(mousePosition, squareSize);
+          const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+          let logging = [`${item.number} is moving...`];
+          console.log('marked: ', checkIfMarked);
+
+          if (moveChecking.length === 1 && item.movementLeft > 0) {
+            const moving = item.move(mousePosition.x, mousePosition.y);
+            logging.push(`${item.number} moves. Movement left: ${moving}`);
+          }
+
+          if (item.movementLeft < 1) {
+            if (item.rushes > 0) {
+              item.setStatus('moved');
+              // remove all others moved to activated
+              currentRoster.forEach((item2, i2) => {
+                if (i !== i2 && item2.status === 'moved') {
+                  item2.setStatus('activated');
+                }
+              });
+            } else {
+              item.setStatus('activated');
+            }
+          }
+
+          if (checkIfMarked.length > 0) {
+            // moving from marked place
+            const newMarkCheck = item.markedBy(opponentRoster);
+            let modifier = 0 - newMarkCheck;
+            console.log('new mark check: ', newMarkCheck);
+            logging.push('... he is marked');
+
+            if (stunty.length > 0) {
+              modifier = 0;
+            }
+
+            const dexCheck = item.skillTest('ag', callDice(6), modifier)
+
             if (dexCheck) {
               item.move(mousePosition.x, mousePosition.y);
               logging.push('...passes agility check!');
@@ -556,77 +663,75 @@ const BloodBowl2 = ({game}) => {
               }
               // CONTINUE FROM HERE
             }
-
             setLog(logging);
-          }
-          if (item.movementLeft < 1 && item.rushes > 0) {
-            item.setStatus('rushQuery');
-            setLog(`${item.number} reached his max movement. Want to rush? (rushes left: ${item.rushes})`)
-            const activeButtons = <><button id= "rushYes" onClick = {rushes}>Yes, rush</button><button id= "rushNo" onClick = {rushes}>no</button></>
-            setActionButtons(activeButtons);
-            setLastPlayer(item);
-            setLastAction('rush');
-          }
-        }
-      });
+          }  // if marked when start to move ends
+        } // move  ends
 
-      // activate the selected player
-      currentRoster.forEach((item, i) => {
-        const collision = arcVsArc(mousePosition, item, 10, 15);
-        //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
-        if (collision && item.status !== 'move' && item.status !== 'rushQuery') {
-          const checkIfMarked = item.markedBy(opponentRoster);
-          if (item.status === 'fallen') {
-            item.movementLeft -= 3;
-          }
+        // the rest
+        else {
+            // activate the selected player
+            // check if this has Bone Head, Very Stupid or Animaly Savagery
+            const boneHead = item.skills.filter( skill => skill === 'Bone Head');
+            const reallyStupid = item.skills.filter( skill => skill === 'Really Stupid');
+            const animalSavagery = item.skills.filter( skill => skill === 'Animal Savagery');
+            const collision = arcVsArc(mousePosition, item, 10, 15);
+            //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
 
-          item.setStatus('ACTIVE');
-          item.setActivated();
+            // for ready guys
+            if (collision && item.status === 'ready') {
+              const checkIfMarked = item.markedBy(opponentRoster);
 
-          // desactivate formerly activated player
-
-          currentRoster.forEach((item2, i2) => {
-            if ((item2.status === 'ACTIVE' || item2.status === 'move') &&
-            i !== i2) {
-              item2.setStatus('activated');
+              // remove old moves
+              currentRoster.forEach((item2, i2) => {
+                if (item2.status === 'move') {
+                  item2.setStatus('activated');
+                }
+              });
+              item.setStatus('ACTIVE');
+              item.setActivated();
+              setMsg('choose action for this player.');
+              if (boneHead.length > 0) {
+                console.log('bone head detected');
+              }
+              if (reallyStupid.length > 0) {
+                console.log('really stupid detected');
+              }
+              if (animalSavagery.length > 0) {
+                console.log('animal savagery detected');
+              }
+              // create buttons:
+              newButtons.push(<button id= 'move' onClick= {actions} key = {callDice(9999)}>Move</button>);
+              if (copyOfgameObject[activeTeamIndex].blitz) {
+                newButtons.push(<button id= 'blitz' onClick= {actions}  key = {callDice(9999)}>Blitz</button>);
+              }
+              if (checkIfMarked.length > 0) {
+                newButtons.push(<button id= 'block' onClick= {actions}  key = {callDice(9999)}>Block</button>);
+              }
+              if (copyOfgameObject[activeTeamIndex].pass) {
+                newButtons.push(<button id= 'pass' onClick= {actions}  key = {callDice(9999)}>Pass</button>);
+              }
+              if (copyOfgameObject[activeTeamIndex].handOff) {
+                newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
+              }
+              newButtons.push(<button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>);
+              setActionButtons(newButtons);
             }
-          });
 
-          setMsg('choose action for this player.');
+            // for moved
+            if (collision && item.status === 'moved') {
 
-          // check if this has Bone Head, Very Stupid or Animaly Savagery
-          const boneHead = item.skills.filter( skill => skill === 'Bone Head');
-          const reallyStupid = item.skills.filter( skill => skill === 'Really Stupid');
-          const animalSavagery = item.skills.filter( skill => skill === 'Animal Savagery');
+              item.setStatus('ACTIVE');
+              item.setActivated();
+              setMsg('choose action for this player.');
 
-          if (boneHead.length > 0) {
-            console.log('bone head detected');
-          }
-          if (reallyStupid.length > 0) {
-            console.log('really stupid detected');
-          }
-          if (animalSavagery.length > 0) {
-            console.log('animal savagery detected');
-          }
+              // create buttons:
+              newButtons.push(<button id= 'rush' onClick= {actions} key = {callDice(9999)}>Rush</button>);
 
-          // create buttons:
-          newButtons.push(<button id= 'move' onClick= {actions} key = {callDice(9999)}>Move</button>);
-          if (copyOfgameObject[activeTeamIndex].blitz) {
-            newButtons.push(<button id= 'blitz' onClick= {actions}  key = {callDice(9999)}>Blitz</button>);
-          }
-          if (checkIfMarked.length > 0) {
-            newButtons.push(<button id= 'block' onClick= {actions}  key = {callDice(9999)}>Block</button>);
-          }
-          if (copyOfgameObject[activeTeamIndex].pass) {
-            newButtons.push(<button id= 'pass' onClick= {actions}  key = {callDice(9999)}>Pass</button>);
-          }
-          if (copyOfgameObject[activeTeamIndex].handOff) {
-            newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
-          }
-          newButtons.push(<button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>);
-          setActionButtons(newButtons);
+              setActionButtons(newButtons);
+            }
         }
-      });
+      });  // forEach ends
+
       setRoster1(copyOfRoster1);
       setRoster2(copyOfRoster2);
     }
@@ -648,13 +753,17 @@ const BloodBowl2 = ({game}) => {
     }
     const playerWithAction = currentRoster.filter( player => player.status === 'ACTIVE');
 
-    playerWithAction[0].setStatus(idOfAction);
-    // move
-    if (idOfAction === 'move') {
-      setMsg(`select next square to move for ${playerWithAction[0].number}. When ready, activate next player or terminate turn.`);
+    // might happen so that set is too slow and this is notnig...
+    if (playerWithAction.length > 0) {
+      playerWithAction[0].setStatus(idOfAction);
+      // move
+      if (idOfAction === 'move') {
+        setMsg(`select next square to move for ${playerWithAction[0].number}. When ready, activate next player or terminate turn.`);
+      }
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
     }
-    setRoster1(copyOfRoster1);
-    setRoster2(copyOfRoster2);
+
   }
 
   const statuses = (e) => {
