@@ -106,6 +106,10 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
         ctx.fillText(item.name, item.x - 30, item.y - 10);
         ctx.fillStyle = 'white';
         ctx.fillText(item.status, item.x - 20, item.y);
+        ctx.fillText(item.number, item.x - 10, item.y + 10);
+        if (item.status === 'move') {
+          ctx.fillText(item.movementLeft, item.x + 5, item.y);
+        }
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
       });
@@ -125,6 +129,10 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
         ctx.fillText(item.name, item.x - 30, item.y - 10);
         ctx.fillStyle = 'white';
         ctx.fillText(item.status, item.x - 20, item.y);
+        ctx.fillText(item.number, item.x - 10, item.y + 10);
+        if (item.status === 'move') {
+          ctx.fillText(item.movementLeft, item.x + 5, item.y);
+        }
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
       });

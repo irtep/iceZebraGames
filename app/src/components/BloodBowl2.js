@@ -205,19 +205,31 @@ const BloodBowl2 = ({game}) => {
     const copyOfRoster1 = JSON.parse(JSON.stringify(roster1));
     const copyOfRoster2 = JSON.parse(JSON.stringify(roster2));
     let currentRoster = copyOfRoster1;
-    const playerRushing = currentRoster.filter( player => player === lastPlayer);
+    //const playerRushing = currentRoster.filter( player => player.status === 'rushQuery');
+    //const playerRushing2 = currentRoster.filter( player => player === lastPlayer);
+    //const playerRushing3 = currentRoster.filter( player => player.status === lastPlayer.status);
 
     if (activeTeam === 'Team 2') {
       currentRoster = copyOfRoster2;
     }
-    if (yesOrNo === 'rushYes') {
-      const playerRushing = currentRoster.filter( player => player === lastPlayer);
-      setMsg('select square to rush to');
-      playerRushing[0].setStatus('rush');
-    } else {
-      setMsg('activate next player if you still have or end turn');
-      playerRushing[0].setStatus('activated');
-    }
+
+    currentRoster.forEach((item, i) => {
+      if (item.status === 'rushQuery') {
+        if (yesOrNo === 'rushYes') {
+          setMsg('select square to rush to');
+        //  console.log('p, p2, p3 ', playerRushing);
+        //  item.setStatus('rush');
+          item.status = 'rush';
+        } else {
+          setMsg('activate next player if you still have or end turn');
+        //  console.log('p, p2, p3 ', playerRushing);
+        //  item.setStatus('activated');
+          item.status = 'activated';
+        }
+      }
+    });
+    setRoster1(copyOfRoster1);
+    // tän jälkeen bugaa clickissä...
   }
 
 
@@ -379,7 +391,7 @@ const BloodBowl2 = ({game}) => {
         roster1.forEach((item, i) => {
           // set all activated as "ready"
           if (item.status === 'activated') {
-            item.setStatus('ready');
+            item.refresh();
           }
           // set all fallen to prone
           if (item.status === 'fallen') {
@@ -393,7 +405,7 @@ const BloodBowl2 = ({game}) => {
         roster2.forEach((item, i) => {
           // set all activated as "ready"
           if (item.status === 'activated') {
-            item.setStatus('ready');
+            item.refresh();
           }
           // set all fallen to prone
           if (item.status === 'fallen') {
@@ -485,8 +497,9 @@ const BloodBowl2 = ({game}) => {
             let modifier = 0 - newMarkCheck;
             console.log('new mark check: ', newMarkCheck);
             logging.push('... he is marked');
-            // check if stunty
+            // check if stunty and thick skull
             const stunty = item.skills.filter( skill => skill === 'Stunty');
+            const thickSkull = item.skills.filter( skill => skill === 'Thick Skull');
             if (stunty.length > 0) {
               modifier = 0;
             }
@@ -498,11 +511,53 @@ const BloodBowl2 = ({game}) => {
               // turn over!
               logging.push('... he falls! Turn over!');
               // armour check
-              const armourCheck = item.skillTest('av', callDice(12), 0);
-              console.log('armour test: ', armourCheck);
+              const armourRoll = callDice(12);
+              const armourCheck = item.skillTest('av', armourRoll, 0);
+              console.log('armour test: ', armourCheck, armourRoll);
+              if (armourCheck) {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+              } else {
+                // check injury
+                logging.push('armour breaks.');
+                const injuryRoll = callDice(12);
+                let injuryMessage = 'stunned';
+                // stunty
+                if (stunty.length > 0) {
+                  if (injuryRoll === 8 || injuryRoll === 7) {
+                    if (thickSkull.length === 1 && injuryRoll !== 7) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                } else {
+                  // normal
+                  if (injuryRoll === 8 || injuryRoll === 9) {
+                    if (thickSkull.length === 1 && injuryRoll !== 8) {
+                      injuryMessage = 'knocked out';
+                    } else {
+                      // not thick skull
+                      injuryMessage = 'knocked out';
+                    }
+                  } else {
+                    injuryMessage = 'dead';
+                  }
+                }
+                item.setStatus(injuryMessage);
+                if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
+                  item.move(1900, 1900);
+                }
+                logging.push(`player is: ${injuryMessage}`);
+                item.setStatus(injuryMessage);
+              }
               // CONTINUE FROM HERE
             }
-            // check if stunty that would help a bit
+
+            setLog(logging);
           }
           if (item.movementLeft < 1 && item.rushes > 0) {
             item.setStatus('rushQuery');
@@ -519,16 +574,17 @@ const BloodBowl2 = ({game}) => {
       currentRoster.forEach((item, i) => {
         const collision = arcVsArc(mousePosition, item, 10, 15);
         //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
-        if (collision) {
+        if (collision && item.status !== 'move' && item.status !== 'rushQuery') {
           const checkIfMarked = item.markedBy(opponentRoster);
           if (item.status === 'fallen') {
             item.movementLeft -= 3;
           }
-          
+
           item.setStatus('ACTIVE');
           item.setActivated();
 
           // desactivate formerly activated player
+
           currentRoster.forEach((item2, i2) => {
             if ((item2.status === 'ACTIVE' || item2.status === 'move') &&
             i !== i2) {
@@ -579,6 +635,7 @@ const BloodBowl2 = ({game}) => {
 
   const actions = (event) => {
     const idOfAction = event.target.id;
+    console.log('idofaction ', idOfAction);
   //  const bothRosters = roster1.concat(roster2);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
@@ -658,7 +715,52 @@ const BloodBowl2 = ({game}) => {
     setRoster2(copyOfRoster2);
   }
 
-  const addTeam =  (e) => {
+  const quickSetup1 = () => {
+    quickAddTeam(7);
+    setActiveTeam('Team 2');
+  }
+  const quickSetup2 = () => {
+    quickAddTeam(8);
+  }
+
+  const quickAddTeam =  (clickedEntry) => {
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    let active = 'team1';
+    let startPoint = {x: 50, y: 100};
+    let activeRoster = [];
+    const selectedTeam = teams.filter( team => team.id === clickedEntry);
+
+    if (activeTeam === 'Team 2') {
+      active = 'team2';
+      activeRoster = activeRoster.concat(roster2);
+      startPoint.y = 450;
+    } else {
+      activeRoster = activeRoster.concat(roster1);
+    }
+
+    copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
+    copyOfgameObject[active].team = selectedTeam[0].teamName;
+
+    selectedTeam[0].roster.forEach((item) => {
+      const selectedPlayer = players.filter( player => item.id === player.id);
+      const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
+      newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
+      newPlayer.y = startPoint.y;
+      newPlayer.status = 'ready';
+      activeRoster.push(newPlayer);
+    });
+
+    if (activeTeam === 'Team 2') {
+      setRoster2(activeRoster);
+    } else {
+      setRoster1(activeRoster);
+    }
+
+    setGameObject(copyOfgameObject);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+  }
+
+  const addTeam =  (e) => { console.log('add team e', e);
     const clickedEntry = Number(e.target.id);
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let active = 'team1';
@@ -770,6 +872,12 @@ const BloodBowl2 = ({game}) => {
         </button>
         <button id= "start" onClick= {startGame}>
           START GAME
+        </button>
+        <button id= "quickSetup1" onClick= {quickSetup1}>
+          quickSetup1
+        </button>
+        <button id= "quickSetup2" onClick= {quickSetup2}>
+          quickSetup2
         </button>
         <br/>{/*
         <button id= "turnPlus" onClick= {turnToggle}>
