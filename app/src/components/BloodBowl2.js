@@ -52,6 +52,7 @@ const BloodBowl2 = ({game}) => {
   const [actionButtons, setActionButtons] = useState('');
   const [lastPlayer, setLastPlayer] = useState('');
   const [lastAction, setLastAction] = useState('');
+  const [oldData, setOldData] = useState('');
   //const [lastQuery, setLastQuery] = useState('');
   const [lastResponse, setLastResponse] = useState('');
   const [firstKicker, setFirstKicker] = useState('');
@@ -139,8 +140,12 @@ const BloodBowl2 = ({game}) => {
     const yesOrNo = event.target.id;
     console.log('event: ', yesOrNo, lastPlayer, lastAction);
     if (yesOrNo === 'rerollYes') {
+      console.log('yes');
+      // should then get oldData and set it as gameObject and rosters
       setLastResponse(true);
     } else {
+      console.log('no');
+      // should then get newData and set it as gameObject and rosters
       setLastResponse(false);
     }
   }
@@ -174,6 +179,26 @@ const BloodBowl2 = ({game}) => {
       opponentRoster = copyOfRoster1;
       team2Turn = true;
       activeTeamIndex = "team2";
+    }
+
+    if (gameObject.phase === 'turnOver') {
+      console.log('turn over phase');
+      if (gameObject[activeTeamIndex].rerolls > 0) {
+        console.log('rerolls left');
+        const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
+        setActionButtons(activeButtons);
+      } else {
+        // start turn over sequince
+        setMsg('TURNOVER!');
+        const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+        copyOfgameObject.phase = 'startTurn';
+        if (activeTeam === 'Team 1') {
+          setActiveTeam('Team 2');
+        } else {
+          setActiveTeam('Team 1');
+        }
+        setGameObject(copyOfgameObject);
+      }
     }
 
     // set defence and offence
@@ -275,11 +300,13 @@ const BloodBowl2 = ({game}) => {
           }
           // ask if wants to re-roll if rerolls left?
           if (rerollsLeft > 0) {
+            /* new system will be done for rerolls
             setMsg('want to try re-roll this?');
             setLastPlayer(playerInAction);
             setLastAction('catch');
             const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
             setActionButtons(activeButtons);
+            */
           }
         }
         if (!catchSuccess) {
@@ -458,12 +485,9 @@ const BloodBowl2 = ({game}) => {
               const armourCheck = item.skillTest('av', armourRoll, 0);
               console.log('armour test: ', armourCheck, armourRoll);
               if (armourCheck) {
-                item.setStatus('fallen');
-                logging.push('armour holds.');
-              } else {
-                // check injury
                 logging.push('armour breaks.');
                 const injuryRoll = callDice(12);
+                console.log('inj roll: ', injuryRoll);
                 let injuryMessage = 'stunned';
                 // stunty
                 if (stunty.length > 0) {
@@ -496,6 +520,20 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
+                // save old data if user selects reroll
+                const preReroll = {
+                  gameObject: copyOfgameObject,
+                  roster1: copyOfRoster1,
+                  roster2: copyOfRoster2
+                }
+                setOldData(preReroll);
+                copyOfgameObject.phase = 'turnOver';
+                setRoster1(copyOfRoster1);
+                setRoster2(copyOfRoster2);
+                setGameObject(copyOfgameObject);
+              } else {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
               }
             }
             setLog(logging);
@@ -526,13 +564,11 @@ const BloodBowl2 = ({game}) => {
               const armourCheck = item.skillTest('av', armourRoll, 0);
               console.log('armour test: ', armourCheck, armourRoll);
               if (armourCheck) {
-                item.setStatus('fallen');
-                logging.push('armour holds.');
-              } else {
                 // check injury
                 logging.push('armour breaks.');
                 const injuryRoll = callDice(12);
                 let injuryMessage = 'stunned';
+                console.log('inj roll ', injuryRoll);
                 // stunty
                 if (stunty.length > 0) {
                   if (injuryRoll === 8 || injuryRoll === 7) {
@@ -564,6 +600,21 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
+                // save old data if user selects reroll
+                const preReroll = {
+                  gameObject: copyOfgameObject,
+                  roster1: copyOfRoster1,
+                  roster2: copyOfRoster2
+                }
+                setOldData(preReroll);
+                copyOfgameObject.phase = 'turnOver';
+                setRoster1(copyOfRoster1);
+                setRoster2(copyOfRoster2);
+                setGameObject(copyOfgameObject);
+              } else {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+
               }
             }
           }
@@ -622,13 +673,11 @@ const BloodBowl2 = ({game}) => {
               const armourCheck = item.skillTest('av', armourRoll, 0);
               console.log('armour test: ', armourCheck, armourRoll);
               if (armourCheck) {
-                item.setStatus('fallen');
-                logging.push('armour holds.');
-              } else {
                 // check injury
                 logging.push('armour breaks.');
                 const injuryRoll = callDice(12);
                 let injuryMessage = 'stunned';
+                console.log('inj roll ', injuryRoll);
                 // stunty
                 if (stunty.length > 0) {
                   if (injuryRoll === 8 || injuryRoll === 7) {
@@ -660,6 +709,21 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
+                // save old data if user selects reroll
+                const preReroll = {
+                  gameObject: copyOfgameObject,
+                  roster1: copyOfRoster1,
+                  roster2: copyOfRoster2
+                }
+                setOldData(preReroll);
+                copyOfgameObject.phase = 'turnOver';
+                setRoster1(copyOfRoster1);
+                setRoster2(copyOfRoster2);
+                setGameObject(copyOfgameObject);
+              } else {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+
               }
               // CONTINUE FROM HERE
             }
