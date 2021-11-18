@@ -20,10 +20,9 @@ export class Player {
   this.rushes = 2;
   };
 
-  refresh() {
+  refreshMovement() {
     this.rushes = 2;
     this.movementLeft = this.ma;
-    this.status = 'ready';
   }
 
   move(newX, newY) {
@@ -95,7 +94,9 @@ export class Player {
     listOfOpponents.forEach((item) => {
       myTacklezone.forEach((item2) => {
         if (item.gridX === item2.x && item.gridY === item2.y) {
-          markers.push(item);
+          if (item.status !== 'fallen' || item.status !== 'prone' || item.status !== 'prone') {
+            markers.push(item);
+          }
         }
       });
     });

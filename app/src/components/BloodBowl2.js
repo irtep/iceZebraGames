@@ -140,27 +140,189 @@ const BloodBowl2 = ({game}) => {
     const yesOrNo = event.target.id;
     console.log('event: ', yesOrNo, lastPlayer, lastAction);
     if (yesOrNo === 'rerollYes') {
-      console.log('yes');
+      console.log('yes', oldData);
       // should then get oldData and set it as gameObject and rosters
       setLastResponse(true);
     } else {
       console.log('no');
-      // should then get newData and set it as gameObject and rosters
-      setLastResponse(false);
+      console.log('turn over phase ');
+      setMsg('TURNOVER!');
+      const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+      copyOfgameObject.phase = 'startTurn';
+      if (activeTeam === 'Team 1') {
+        setActiveTeam('Team 2');
+      } else {
+        setActiveTeam('Team 1');
+      }
+      setGameObject(copyOfgameObject);
     }
   }
-/*
-  const rushes = (event) => {
-    const yesOrNo = event.target.id;
 
-    if (yesOrNo === 'rushYes') {
-      setLastResponse(true);
+  // PHASES
+  const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2) => {
+      console.log('turn over phase');
+      if (gameObject[activeTeamIndex].rerolls > 0) {
+        console.log('rerolls left');
+        const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
+        setActionButtons(activeButtons);
+      } else {
+        // start turn over sequince
+        console.log('turn over phase ');
+        setMsg('TURNOVER!');
+        const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+        copyOfgameObject.phase = 'startTurn';
+        if (activeTeam === 'Team 1') {
+          setActiveTeam('Team 2');
+        } else {
+          setActiveTeam('Team 1');
+        }
+        setGameObject(copyOfgameObject);
+      }
+  }
+
+  const kickOff = (copyOfgameObject, currentRoster, copyOfRoster1, copyOfRoster2, team2Turn) => {
+    let touchBack = false;
+//    let activeAgent;
+//    team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
+    copyOfgameObject.phase = 'gamePlay';
+    const deviationRoll = callDice(8);
+    const deviationDistance = callDice(6);
+    const bounceRoll = callDice(8);
+    let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
+    setBall(placeOfBall);
+    let forLog = [`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`];
+    if (activeTeam === 'Team 1') {
+      //console.log('active === team2');
+      currentRoster = copyOfRoster2;
+      team2Turn = true;
+      setFirstKicker('Team 1');
+    }
+    // check if someone is there to catch i
+    let atLocation = [];
+    currentRoster.forEach((item, i) => {
+      const inLocation = item.isInLocation(placeOfBall, squareSize);
+      console.log('t/f ', inLocation);
+      if (inLocation) {atLocation.push(item)}
+    });
+    // if someone there, he tries to catch the ball
+    if (atLocation.length === 1) {
+      let rerollsLeft = 0;
+      let catchSuccess = true;
+      let negativeModifier = 0;
+      const playerInAction = atLocation[0];
+      let comparingToRoster = copyOfRoster1;
+      if (activeTeam === 'Team 2') {
+        comparingToRoster = copyOfRoster2;
+        rerollsLeft = copyOfgameObject.team2.rerolls;
+      } else {
+        rerollsLeft = copyOfgameObject.team1.rerolls;
+      }
+      forLog.push(<br key= {callDice(9999)}/>);
+      forLog.push(`${playerInAction.number} tries to catch...`);
+      forLog.push(<br key= {callDice(9999)}/>);
+      // check tacklezones
+      const tacklers = playerInAction.markedBy(comparingToRoster);
+      negativeModifier -= tacklers.length;
+      const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+      if (skillCheck) {
+        forLog.push(`Catch ok!`);
+      } else {
+        forLog.push(`He fails to catch. Ball bounces to: ${bounceRoll}`);
+        catchSuccess = false;
+        // check if he has "Catch skill"
+        const catchCheck = playerInAction.skills.filter( skill => skill === 'Catch');
+        if (catchCheck.length === 1) {
+          // rerolling for catch
+          forLog.push(`... but the player re-tries as he has Catch skill...`);
+          const skillCheck2 = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+          if (skillCheck2) {
+            forLog.push(`Catch ok!`);
+            catchSuccess = true;
+          }
+        }
+        // ask if wants to re-roll if rerolls left?
+        if (rerollsLeft > 0) {
+          /* new system will be done for rerolls
+          setMsg('want to try re-roll this?');
+          setLastPlayer(playerInAction);
+          setLastAction('catch');
+          const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
+          setActionButtons(activeButtons);
+          */
+        }
+      }
+      if (!catchSuccess) {
+        placeOfBall = bounce(bounceRoll, placeOfBall);
+        setBall(placeOfBall);
+      }
     } else {
-      setLastResponse(false);
+      // nobody catching so bounces
+      placeOfBall = bounce(bounceRoll, placeOfBall);
+      setBall(placeOfBall);
     }
-  }
-*/
 
+    // touch backs
+    if ((deviationRoll === 4 || deviationRoll === 1 || deviationRoll === 6) &&
+    deviationDistance === 6 && bounceRoll === 4) {
+      forLog += 'it is a touch back!'
+      setMsg('select a player who you want to have it');
+      touchBack = true;
+      copyOfgameObject.phase = 'touchBack';
+    }
+    if ((deviationRoll === 5 || deviationRoll === 3 || deviationRoll === 8) &&
+      deviationDistance === 6 && bounceRoll === 5) {
+      forLog += 'it is a touch back!'
+      setMsg('select a player who you want to have it');
+      touchBack = true;
+      copyOfgameObject.phase = 'touchBack';
+    }
+    setLog(forLog);
+    // switch to attacking team
+    if (activeTeam === 'Team 1') {
+      setActiveTeam('Team 2');
+    } else {
+      setActiveTeam('Team 1');
+    }
+
+    // set phase and thats it
+    if (!touchBack) {
+      copyOfgameObject.phase = 'startTurn';
+      roster1.forEach((item, i) => {
+        // set all activated as "ready"
+        if (item.status === 'activated') {
+          item.setStatus('ready');
+          item.refreshMovement();
+        }
+        // set all fallen to prone
+        if (item.status === 'fallen') {
+          item.setStatus('prone');
+        }
+        // set all stunned to fallen
+        if (item.status === 'stunned') {
+          item.setStatus('fallen');
+        }
+      });
+      roster2.forEach((item, i) => {
+        // set all activated as "ready"
+        if (item.status === 'activated') {
+          item.setStatus('ready');
+          item.refreshMovement();
+        }
+        // set all fallen to prone
+        if (item.status === 'fallen') {
+          item.setStatus('prone');
+        }
+        // set all stunned to fallen
+        if (item.status === 'stunned') {
+          item.setStatus('fallen');
+        }
+      });
+      setMsg('click player to activate it');
+    }
+    setGameObject(copyOfgameObject);
+  }
+
+  // CLICKED
   const clicked = () => {
     const mpx = Math.trunc(mousePosition.x / 35);
     const mpy = Math.trunc(mousePosition.y / 35);
@@ -180,7 +342,7 @@ const BloodBowl2 = ({game}) => {
       team2Turn = true;
       activeTeamIndex = "team2";
     }
-
+/* moved to its own phase
     if (gameObject.phase === 'turnOver') {
       console.log('turn over phase');
       if (gameObject[activeTeamIndex].rerolls > 0) {
@@ -189,6 +351,7 @@ const BloodBowl2 = ({game}) => {
         setActionButtons(activeButtons);
       } else {
         // start turn over sequince
+        console.log('turn over phase ');
         setMsg('TURNOVER!');
         const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
         copyOfgameObject.phase = 'startTurn';
@@ -200,7 +363,7 @@ const BloodBowl2 = ({game}) => {
         setGameObject(copyOfgameObject);
       }
     }
-
+*/
     // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
@@ -238,144 +401,7 @@ const BloodBowl2 = ({game}) => {
     }
 
     if (gameObject.phase === 'kick off') {
-      let touchBack = false;
-      let activeAgent;
-      team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
-      copyOfgameObject[activeAgent].turn = 1;
-      copyOfgameObject.phase = 'gamePlay';
-      const deviationRoll = callDice(8);
-      const deviationDistance = callDice(6);
-      const bounceRoll = callDice(8);
-      let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
-      setBall(placeOfBall);
-      let forLog = [`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`];
-      if (activeTeam === 'Team 1') {
-        //console.log('active === team2');
-        currentRoster = copyOfRoster2;
-        team2Turn = true;
-        setFirstKicker('Team 1');
-      }
-      // check if someone is there to catch i
-      let atLocation = [];
-      currentRoster.forEach((item, i) => {
-        const inLocation = item.isInLocation(placeOfBall, squareSize);
-        console.log('t/f ', inLocation);
-        if (inLocation) {atLocation.push(item)}
-      });
-      // if someone there, he tries to catch the ball
-      if (atLocation.length === 1) {
-        let rerollsLeft = 0;
-        let catchSuccess = true;
-        let negativeModifier = 0;
-        const playerInAction = atLocation[0];
-        let comparingToRoster = copyOfRoster1;
-        if (activeTeam === 'Team 2') {
-          comparingToRoster = copyOfRoster2;
-          rerollsLeft = copyOfgameObject.team2.rerolls;
-        } else {
-          rerollsLeft = copyOfgameObject.team1.rerolls;
-        }
-        forLog.push(<br key= {callDice(9999)}/>);
-        forLog.push(`${playerInAction.number} tries to catch...`);
-        forLog.push(<br key= {callDice(9999)}/>);
-        // check tacklezones
-        const tacklers = playerInAction.markedBy(comparingToRoster);
-        negativeModifier -= tacklers.length;
-        const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
-        if (skillCheck) {
-          forLog.push(`Catch ok!`);
-        } else {
-          forLog.push(`He fails to catch. Ball bounces to: ${bounceRoll}`);
-          catchSuccess = false;
-          // check if he has "Catch skill"
-          const catchCheck = playerInAction.skills.filter( skill => skill === 'Catch');
-          if (catchCheck.length === 1) {
-            // rerolling for catch
-            forLog.push(`... but the player re-tries as he has Catch skill...`);
-            const skillCheck2 = playerInAction.skillTest('ag', callDice(6), negativeModifier);
-            if (skillCheck2) {
-              forLog.push(`Catch ok!`);
-              catchSuccess = true;
-            }
-          }
-          // ask if wants to re-roll if rerolls left?
-          if (rerollsLeft > 0) {
-            /* new system will be done for rerolls
-            setMsg('want to try re-roll this?');
-            setLastPlayer(playerInAction);
-            setLastAction('catch');
-            const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
-            setActionButtons(activeButtons);
-            */
-          }
-        }
-        if (!catchSuccess) {
-          placeOfBall = bounce(bounceRoll, placeOfBall);
-          setBall(placeOfBall);
-        }
-      } else {
-        // nobody catching so bounces
-        placeOfBall = bounce(bounceRoll, placeOfBall);
-        setBall(placeOfBall);
-      }
-
-      // touch backs
-      if ((deviationRoll === 4 || deviationRoll === 1 || deviationRoll === 6) &&
-      deviationDistance === 6 && bounceRoll === 4) {
-        forLog += 'it is a touch back!'
-        setMsg('select a player who you want to have it');
-        touchBack = true;
-        copyOfgameObject.phase = 'touchBack';
-      }
-      if ((deviationRoll === 5 || deviationRoll === 3 || deviationRoll === 8) &&
-        deviationDistance === 6 && bounceRoll === 5) {
-        forLog += 'it is a touch back!'
-        setMsg('select a player who you want to have it');
-        touchBack = true;
-        copyOfgameObject.phase = 'touchBack';
-      }
-      setLog(forLog);
-      // switch to attacking team
-      if (activeTeam === 'Team 1') {
-        setActiveTeam('Team 2');
-      } else {
-        setActiveTeam('Team 1');
-      }
-
-      // set phase and thats it
-      if (!touchBack) {
-        copyOfgameObject.phase = 'startTurn';
-        roster1.forEach((item, i) => {
-          // set all activated as "ready"
-          if (item.status === 'activated') {
-            item.refresh();
-          }
-          // set all fallen to prone
-          if (item.status === 'fallen') {
-            item.setStatus('prone');
-          }
-          // set all stunned to fallen
-          if (item.status === 'stunned') {
-            item.setStatus('fallen');
-          }
-        });
-        roster2.forEach((item, i) => {
-          // set all activated as "ready"
-          if (item.status === 'activated') {
-            item.refresh();
-          }
-          // set all fallen to prone
-          if (item.status === 'fallen') {
-            item.setStatus('prone');
-          }
-          // set all stunned to fallen
-          if (item.status === 'stunned') {
-            item.setStatus('fallen');
-          }
-        });
-        setMsg('click player to activate it');
-      }
-      setGameObject(copyOfgameObject);
+      kickOff(copyOfgameObject, currentRoster, copyOfRoster1, copyOfRoster2, team2Turn);
     }
 
     // touch back phase
@@ -385,11 +411,13 @@ const BloodBowl2 = ({game}) => {
       setGameObject(copyOfgameObject);
     }
 
-    // start of turn
-    if (gameObject.phase === 'startTurn') {
+    // start of turn Continue here!
+    if (gameObject.phase === 'startTurn') { //move to own function and after that activate gamePlay
+      console.log('sT');
       let activeTeamIndex = 'team1';
       // setup
       if (activeTeam === 'Team 2') {
+        console.log('team 2 starts');
         //console.log('active === team2');
         currentRoster = copyOfRoster2;
         opponentRoster = copyOfRoster1;
@@ -397,6 +425,7 @@ const BloodBowl2 = ({game}) => {
         activeTeamIndex = "team2";
         copyOfgameObject.team2.turn++;
       } else {
+        console.log('team 1 starts');
         copyOfgameObject.team1.turn++;
       }
       // terminate half if 9th turn and first half
@@ -410,15 +439,6 @@ const BloodBowl2 = ({game}) => {
         } else {
           setActiveTeam('Team 1');
         }
-        console.log('should be now set defence phase');
-        copyOfgameObject.team1.blitz = true;
-        copyOfgameObject.team1.foul = true;
-        copyOfgameObject.team1.pass = true;
-        copyOfgameObject.team1.handOff = true;
-        copyOfgameObject.team2.blitz = true;
-        copyOfgameObject.team2.foul = true;
-        copyOfgameObject.team2.pass = true;
-        copyOfgameObject.team2.handOff = true;
       }
       // terminate game if last turn passed
       if (copyOfgameObject.half === 2 && copyOfgameObject[activeTeamIndex].turn === 9) {
@@ -429,6 +449,29 @@ const BloodBowl2 = ({game}) => {
       if (copyOfgameObject[activeTeamIndex].turn < 9) {
         copyOfgameObject.phase = 'gameplay';
         console.log('not yet 9th turn, setting to gameplay');
+        console.log('should be now set defence phase');
+        copyOfgameObject.team1.blitz = true;
+        copyOfgameObject.team1.foul = true;
+        copyOfgameObject.team1.pass = true;
+        copyOfgameObject.team1.handOff = true;
+        copyOfgameObject.team2.blitz = true;
+        copyOfgameObject.team2.foul = true;
+        copyOfgameObject.team2.pass = true;
+        copyOfgameObject.team2.handOff = true;
+        // refresh players
+        console.log('refreshing players');
+        currentRoster.forEach((item, i) => {
+          if (item.status === 'activated' || item.status === 'moved') {
+            item.setStatus('ready');
+            item.refreshMovement();
+          }
+          if (item.status === 'fallen') {
+            item.setStatus('prone');
+          }
+          if (item.status === 'stunned') {
+            item.setStatus('fallen');
+          }
+        });
       }
       setGameObject(copyOfgameObject);
     }
@@ -445,7 +488,6 @@ const BloodBowl2 = ({game}) => {
 
         // rush query
         if (item.status === 'rush') {
-
           const rushDice = callDice(6);
           const checkIfMarked = item.markedBy(opponentRoster);
           const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
@@ -461,7 +503,7 @@ const BloodBowl2 = ({game}) => {
             console.log('rush dice: ', rushDice);
           }
 
-          if (checkIfMarked > 0) {
+          if (checkIfMarked.length > 0) {
             // moving from marked place
             const newMarkCheck = item.markedBy(opponentRoster);
             let modifier = 0 - newMarkCheck;
@@ -520,21 +562,23 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
-                // save old data if user selects reroll
-                const preReroll = {
-                  gameObject: copyOfgameObject,
-                  roster1: copyOfRoster1,
-                  roster2: copyOfRoster2
-                }
-                setOldData(preReroll);
-                copyOfgameObject.phase = 'turnOver';
-                setRoster1(copyOfRoster1);
-                setRoster2(copyOfRoster2);
-                setGameObject(copyOfgameObject);
+
               } else {
                 item.setStatus('fallen');
                 logging.push('armour holds.');
               }
+              // save old data if user selects reroll
+              const preReroll = {
+                gameObject: copyOfgameObject,
+                roster1: copyOfRoster1,
+                roster2: copyOfRoster2,
+                reasonWas: 'escapedBlock'
+              }
+              setOldData(preReroll);
+              copyOfgameObject.phase = 'turnOver';
+              setRoster1(copyOfRoster1);
+              setRoster2(copyOfRoster2);
+              setGameObject(copyOfgameObject);
             }
             setLog(logging);
           }  // if marked ends
@@ -545,6 +589,7 @@ const BloodBowl2 = ({game}) => {
           }
 
           if (rushDice === 1) {
+            console.log('rushRoll 1');
             let logging = ['He trips!'];
             let rerollsLeft = 0;
             if (activeTeam === 'Team 2') {
@@ -600,23 +645,30 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
-                // save old data if user selects reroll
-                const preReroll = {
-                  gameObject: copyOfgameObject,
-                  roster1: copyOfRoster1,
-                  roster2: copyOfRoster2
-                }
-                setOldData(preReroll);
-                copyOfgameObject.phase = 'turnOver';
-                setRoster1(copyOfRoster1);
-                setRoster2(copyOfRoster2);
-                setGameObject(copyOfgameObject);
               } else {
                 item.setStatus('fallen');
                 logging.push('armour holds.');
-
               }
+              // save old data if user selects reroll
+              console.log('saving for possible reroll');
+              const preReroll = {
+                gameObject: copyOfgameObject,
+                roster1: copyOfRoster1,
+                roster2: copyOfRoster2,
+                reasonWas: 'rush'
+              }
+              setOldData(preReroll);
+              copyOfgameObject.phase = 'turnOver';
+              setRoster1(copyOfRoster1);
+              setRoster2(copyOfRoster2);
+              setGameObject(copyOfgameObject);
             }
+          }
+          console.log('phase is: ', copyOfgameObject.phase);
+          if (copyOfgameObject.phase === 'turnOver') {
+            console.log('phase is turn over');
+            // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
+            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2);
           }
         }
 
@@ -709,26 +761,31 @@ const BloodBowl2 = ({game}) => {
                 }
                 logging.push(`player is: ${injuryMessage}`);
                 item.setStatus(injuryMessage);
-                // save old data if user selects reroll
-                const preReroll = {
-                  gameObject: copyOfgameObject,
-                  roster1: copyOfRoster1,
-                  roster2: copyOfRoster2
-                }
-                setOldData(preReroll);
-                copyOfgameObject.phase = 'turnOver';
-                setRoster1(copyOfRoster1);
-                setRoster2(copyOfRoster2);
-                setGameObject(copyOfgameObject);
               } else {
                 item.setStatus('fallen');
                 logging.push('armour holds.');
-
               }
-              // CONTINUE FROM HERE
+              // save old data if user selects reroll
+              const preReroll = {
+                gameObject: copyOfgameObject,
+                roster1: copyOfRoster1,
+                roster2: copyOfRoster2,
+                reasonWas: 'escapedBlock'
+              }
+              setOldData(preReroll);
+              copyOfgameObject.phase = 'turnOver';
+              setRoster1(copyOfRoster1);
+              setRoster2(copyOfRoster2);
+              setGameObject(copyOfgameObject);
             }
             setLog(logging);
           }  // if marked when start to move ends
+          console.log('phase is: ', copyOfgameObject.phase);
+          if (copyOfgameObject.phase === 'turnOver') {
+            console.log('phase is turn over');
+            // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
+            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2);
+          }
         } // move  ends
 
         // the rest
@@ -742,8 +799,13 @@ const BloodBowl2 = ({game}) => {
             //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
 
             // for ready guys
-            if (collision && item.status === 'ready') {
+            if (collision && (item.status === 'ready' || item.status === 'prone')) {
               const checkIfMarked = item.markedBy(opponentRoster);
+
+              // if prone
+              if (item.status === 'prone') {
+                item.movementLeft -= 3;
+              }
 
               // remove old moves
               currentRoster.forEach((item2, i2) => {
