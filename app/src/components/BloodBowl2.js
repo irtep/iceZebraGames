@@ -158,6 +158,7 @@ const BloodBowl2 = ({game}) => {
   // PHASES
   const gamePlay = () => {
     console.log('gamePlay called');
+    let preReroll = {};
 //    const mpx = Math.trunc(mousePosition.x / 35);
 //    const mpy = Math.trunc(mousePosition.y / 35);
     const copyOfRoster1 = roster1.concat([]);
@@ -202,7 +203,10 @@ const BloodBowl2 = ({game}) => {
         if (checkIfMarked.length > 0) {
           // moving from marked place
           const newMarkCheck = item.markedBy(opponentRoster);
-          let modifier = 0 - newMarkCheck.length;
+          let modifier = 0;
+          if (newMarkCheck.length > 0) {
+            modifier = -1;
+          }
           console.log('new mark check: ', newMarkCheck);
           logging.push('... he is marked');
 
@@ -216,6 +220,15 @@ const BloodBowl2 = ({game}) => {
             item.move(mousePosition.x, mousePosition.y);
             logging.push('...passes agility check!');
           } else {
+            // save old data if user selects reroll
+            preReroll = {
+              gameObject: copyOfgameObject,
+              roster1: copyOfRoster1,
+              roster2: copyOfRoster2,
+              reasonWas: 'escapedBlock',
+              skillWas: 'ag',
+              modifierWas: modifier
+            }
             // turn over!
             logging.push('... he falls! Turn over!');
             // armour check
@@ -263,13 +276,7 @@ const BloodBowl2 = ({game}) => {
               item.setStatus('fallen');
               logging.push('armour holds.');
             }
-            // save old data if user selects reroll
-            const preReroll = {
-              gameObject: copyOfgameObject,
-              roster1: copyOfRoster1,
-              roster2: copyOfRoster2,
-              reasonWas: 'escapedBlock'
-            }
+
             setOldData(preReroll);
             copyOfgameObject.phase = 'turnOver';
             setRoster1(copyOfRoster1);
@@ -285,6 +292,13 @@ const BloodBowl2 = ({game}) => {
         }
 
         if (rushDice === 1) {
+          console.log('saving for possible reroll');
+          preReroll = {
+            gameObject: copyOfgameObject,
+            roster1: copyOfRoster1,
+            roster2: copyOfRoster2,
+            reasonWas: 'rush'
+          }
           console.log('rushRoll 1');
           let logging = ['He trips!'];
           // falls
@@ -336,13 +350,6 @@ const BloodBowl2 = ({game}) => {
             logging.push('armour holds.');
           }
           // save old data if user selects reroll
-          console.log('saving for possible reroll');
-          const preReroll = {
-            gameObject: copyOfgameObject,
-            roster1: copyOfRoster1,
-            roster2: copyOfRoster2,
-            reasonWas: 'rush'
-          }
           setOldData(preReroll);
           copyOfgameObject.phase = 'turnOver';
           setRoster1(copyOfRoster1);
@@ -385,8 +392,11 @@ const BloodBowl2 = ({game}) => {
         if (checkIfMarked.length > 0) {
           // moving from marked place
           const newMarkCheck = item.markedBy(opponentRoster);
-          let modifier = 0 - newMarkCheck.length;
+          let modifier = 0;
           console.log('new mark check: ', newMarkCheck);
+          if (newMarkCheck.length > 0) {
+            modifier = -1;
+          }
           logging.push('... he is marked');
 
           if (stunty.length > 0) {
@@ -400,6 +410,15 @@ const BloodBowl2 = ({game}) => {
             logging.push('...passes agility check!');
           } else {
             // turn over!
+            // save old data if user selects reroll
+            const preReroll = {
+              gameObject: copyOfgameObject,
+              roster1: copyOfRoster1,
+              roster2: copyOfRoster2,
+              reasonWas: 'escapedBlock',
+              skillWas: 'ag',
+              modifierWas: modifier
+            }
             logging.push('... he falls! Turn over!');
             // armour check
             const armourRoll = callDice(12);
@@ -446,13 +465,7 @@ const BloodBowl2 = ({game}) => {
               item.setStatus('fallen');
               logging.push('armour holds.');
             }
-            // save old data if user selects reroll
-            const preReroll = {
-              gameObject: copyOfgameObject,
-              roster1: copyOfRoster1,
-              roster2: copyOfRoster2,
-              reasonWas: 'escapedBlock'
-            }
+
             setOldData(preReroll);
             copyOfgameObject.phase = 'turnOver';
             setRoster1(copyOfRoster1);
