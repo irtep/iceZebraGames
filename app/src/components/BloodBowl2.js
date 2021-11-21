@@ -116,13 +116,22 @@ const BloodBowl2 = ({game}) => {
 
   const rerolls = (event) => {
     const yesOrNo = event.target.id;
+    const name = JSON.parse(event.target.name);
+    console.log('name: ', name);
     let currentRoster = roster1;
     console.log('rerolls called: ', yesOrNo, lastPlayer, lastAction);
 
     if (yesOrNo === 'rerollYes') {
-      console.log('yes', oldData);
+      const rerollDice = callDice(6);
+      console.log('rerollDice: ', rerollDice);
       if (activeTeam === 'Team 2') {
         currentRoster = roster2;
+      }
+      if (oldData.reasonWas === 'dodge') {
+        console.log('dodge');
+      }
+      if (oldData.reasonWas === 'rush') {
+        console.log('rush');
       }
       // should then get oldData and set it as gameObject and rosters
       //const findFallenGuy = oldData.map( )
@@ -144,16 +153,6 @@ const BloodBowl2 = ({game}) => {
       startTurn(roster1, roster2, copyOfgameObject);
     }
   }
-
-  // dodge failed
-  const dodgeFailed = () => {
-
-  }
-  // rush failed
-  const rushFailed = () => {
-
-  }
-
 
   // PHASES
   const gamePlay = () => {
@@ -223,11 +222,12 @@ const BloodBowl2 = ({game}) => {
             // save old data if user selects reroll
             preReroll = {
               gameObject: copyOfgameObject,
-              roster1: copyOfRoster1,
-              roster2: copyOfRoster2,
-              reasonWas: 'escapedBlock',
+              roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+              roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+              reasonWas: 'dodge',
               skillWas: 'ag',
-              modifierWas: modifier
+              modifierWas: modifier,
+              who: item
             }
             // turn over!
             logging.push('... he falls! Turn over!');
@@ -276,8 +276,7 @@ const BloodBowl2 = ({game}) => {
               item.setStatus('fallen');
               logging.push('armour holds.');
             }
-
-            setOldData(preReroll);
+            console.log('setting old data: ', preReroll);
             copyOfgameObject.phase = 'turnOver';
             setRoster1(copyOfRoster1);
             setRoster2(copyOfRoster2);
@@ -295,9 +294,10 @@ const BloodBowl2 = ({game}) => {
           console.log('saving for possible reroll');
           preReroll = {
             gameObject: copyOfgameObject,
-            roster1: copyOfRoster1,
-            roster2: copyOfRoster2,
-            reasonWas: 'rush'
+            roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+            roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+            reasonWas: 'rush',
+            who: item
           }
           console.log('rushRoll 1');
           let logging = ['He trips!'];
@@ -350,13 +350,14 @@ const BloodBowl2 = ({game}) => {
             logging.push('armour holds.');
           }
           // save old data if user selects reroll
+          console.log('setting old data: ', preReroll);
           setOldData(preReroll);
           copyOfgameObject.phase = 'turnOver';
           setRoster1(copyOfRoster1);
           setRoster2(copyOfRoster2);
           setGameObject(copyOfgameObject);
           console.log('calling turnover phase from gamePlay');
-          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2);
+          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
         }
         // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
       }
@@ -413,11 +414,12 @@ const BloodBowl2 = ({game}) => {
             // save old data if user selects reroll
             const preReroll = {
               gameObject: copyOfgameObject,
-              roster1: copyOfRoster1,
-              roster2: copyOfRoster2,
-              reasonWas: 'escapedBlock',
+              roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+              roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+              reasonWas: 'dodge',
               skillWas: 'ag',
-              modifierWas: modifier
+              modifierWas: modifier,
+              who: item
             }
             logging.push('... he falls! Turn over!');
             // armour check
@@ -466,6 +468,8 @@ const BloodBowl2 = ({game}) => {
               logging.push('armour holds.');
             }
 
+            console.log('setting old data: ', preReroll);
+            preReroll.who = item;
             setOldData(preReroll);
             copyOfgameObject.phase = 'turnOver';
             setRoster1(copyOfRoster1);
@@ -479,7 +483,7 @@ const BloodBowl2 = ({game}) => {
           //console.log('phase is turn over');
           // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
           console.log('calling turnOverPhase from gamePlay (movement)');
-          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2);
+          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
         }
       } // move  ends
 
@@ -558,11 +562,12 @@ const BloodBowl2 = ({game}) => {
     setRoster2(copyOfRoster2);
   }
 
-  const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2) => {
+  const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item) => {
     console.log('turn over phase called ');
     if (gameObject[activeTeamIndex].rerolls > 0) {
-      console.log('rerolls left');
-      const activeButtons = <><button id= "rerollYes" onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
+      const makeName = JSON.stringify(item);
+      console.log('rerolls left, who is: ', item);
+      const activeButtons = <><button id= "rerollYes" name = {makeName} onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
       setActionButtons(activeButtons);
     } else {
       // start turn over sequince
