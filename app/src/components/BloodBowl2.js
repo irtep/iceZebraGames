@@ -4,7 +4,7 @@ Bugs:
 - after first rush it stays as activated and seem to give back movements...
 - after prone does not work right, activated ork and it didnt give any movement
 - päällekkäisiä calleja...
-- Continue: Wrong teams gets after kick off refreshes and turn 
+- Continue: Wrong teams gets after kick off refreshes and turn
 
 The GameBrain
 input that is gameObject
@@ -158,20 +158,20 @@ const BloodBowl2 = ({game}) => {
   // PHASES
   const gamePlay = () => {
     console.log('gamePlay called');
-    const mpx = Math.trunc(mousePosition.x / 35);
-    const mpy = Math.trunc(mousePosition.y / 35);
+//    const mpx = Math.trunc(mousePosition.x / 35);
+//    const mpy = Math.trunc(mousePosition.y / 35);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
     let opponentRoster = copyOfRoster2;
-    let team2Turn = false;
+//    let team2Turn = false;
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let activeTeamIndex = 'team1';
 
     if (activeTeam === 'Team 2') {
       currentRoster = copyOfRoster2;
       opponentRoster = copyOfRoster1;
-      team2Turn = true;
+//      team2Turn = true;
       activeTeamIndex = "team2";
     }
     let newButtons = [];
@@ -202,7 +202,7 @@ const BloodBowl2 = ({game}) => {
         if (checkIfMarked.length > 0) {
           // moving from marked place
           const newMarkCheck = item.markedBy(opponentRoster);
-          let modifier = 0 - newMarkCheck;
+          let modifier = 0 - newMarkCheck.length;
           console.log('new mark check: ', newMarkCheck);
           logging.push('... he is marked');
 
@@ -385,7 +385,7 @@ const BloodBowl2 = ({game}) => {
         if (checkIfMarked.length > 0) {
           // moving from marked place
           const newMarkCheck = item.markedBy(opponentRoster);
-          let modifier = 0 - newMarkCheck;
+          let modifier = 0 - newMarkCheck.length;
           console.log('new mark check: ', newMarkCheck);
           logging.push('... he is marked');
 
@@ -680,6 +680,7 @@ const BloodBowl2 = ({game}) => {
 
     // set phase and thats it
     if (!touchBack) {
+      console.log('not touchback, refreshing');
       copyOfgameObject.phase = 'startTurn';
       roster1.forEach((item, i) => {
         // set all activated as "ready"
@@ -768,12 +769,14 @@ const BloodBowl2 = ({game}) => {
       copyOfgameObject.team2.handOff = true;
       // refresh players
       console.log('refreshing players');
-      currentRoster.forEach((item, i) => {
+      opponentRoster.forEach((item, i) => {
         if (item.status === 'activated' || item.status === 'moved') {
+          console.log(item.name, ' set to ready');
           item.setStatus('ready');
           item.refreshMovement();
         }
         if (item.status === 'fallen') {
+          console.log(item.name, ' set to prone');
           item.setStatus('prone');
         }
         if (item.status === 'stunned') {
@@ -782,8 +785,8 @@ const BloodBowl2 = ({game}) => {
       });
     }
     setGameObject(copyOfgameObject);
-    console.log('calling gamePlay from startTurn');
-    gamePlay();
+  //  console.log('calling gamePlay from startTurn');
+  //  gamePlay();
   }
 
   // CLICKED
