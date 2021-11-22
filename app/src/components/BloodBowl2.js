@@ -121,6 +121,7 @@ const BloodBowl2 = ({game}) => {
     let logging = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let currentRoster = roster1.concat([]);
+    let opponentRoster = roster2.concat([]);
     console.log('rerolls called: ', oldData);
 
     if (yesOrNo === 'rerollYes') {
@@ -129,6 +130,7 @@ const BloodBowl2 = ({game}) => {
       const findThePlayer = currentRoster.filter( player => player.number === name.number);
       const foundPlayer = findThePlayer[0];
       const oldLocation = {x: name.x, y: name.y}
+      let team2active = false;
       console.log('name: ', name);
       const rerollDice = callDice(6);
       console.log('rerollDice: ', rerollDice);
@@ -136,13 +138,20 @@ const BloodBowl2 = ({game}) => {
       if (activeTeam === 'Team 2') {
         activeTeamIndex = 'team2';
         currentRoster = roster2.concat([]);
+        opponentRoster = roster1.concat([]);
+        team2active = true;
       }
 
       logging.push('Team reroll burned.');
       copyOfgameObject[activeTeamIndex].rerolls--;
 
       if (oldData.reasonWas === 'dodge') {
-        const rerollTest = foundPlayer.skillTest('ag', rerollDice, oldData.modifierWas);
+        const newMarkCheck = foundPlayer.markedBy(opponentRoster);
+        let modifier = 0;
+        if (newMarkCheck.length > 0) {
+          modifier = -1;
+        }
+        const rerollTest = foundPlayer.skillTest('ag', rerollDice, modifier);
         console.log('rerollTest: ', rerollTest);
         if (rerollTest) {
           logging.push('reroll helped.');
@@ -151,6 +160,11 @@ const BloodBowl2 = ({game}) => {
             foundPlayer.setStatus('moved');
           } else {
             foundPlayer.setStatus('move');
+          }
+          if (team2active) {
+            setRoster2(currentRoster);
+          } else {
+            setRoster1(currentRoster);
           }
         } else {
           logging.push('reroll failed too');
@@ -189,6 +203,11 @@ const BloodBowl2 = ({game}) => {
             foundPlayer.setStatus('activated');
           } else {
             foundPlayer.setStatus('moved');
+          }
+          if (activeTeam === 'Team 1') {
+            setActiveTeam('Team 2');
+          } else {
+            setActiveTeam('Team 1');
           }
         }
         console.log('rush');
