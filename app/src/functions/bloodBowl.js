@@ -141,6 +141,38 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
     }
 }
 
+export const armourBroken = (stunty, thickSkull) => {
+    const injuryRoll = callDice(12);
+    console.log('inj roll: ', injuryRoll);
+    let injuryMessage = 'stunned';
+    // stunty
+    if (stunty) {
+      if (injuryRoll === 8 || injuryRoll === 7) {
+        if (thickSkull && injuryRoll !== 7) {
+          injuryMessage = 'knocked out';
+        } else {
+          // not thick skull
+          injuryMessage = 'knocked out';
+        }
+      } else {
+        injuryMessage = 'dead';
+      }
+    } else {
+      // normal
+      if (injuryRoll === 8 || injuryRoll === 9) {
+        if (thickSkull && injuryRoll !== 8) {
+          injuryMessage = 'knocked out';
+        } else {
+          // not thick skull
+          injuryMessage = 'knocked out';
+        }
+      } else {
+        injuryMessage = 'dead';
+      }
+    }
+    return injuryMessage;
+}
+
 export const bloodBowlDices = (dicesSelect) => {
   let results = null;
 

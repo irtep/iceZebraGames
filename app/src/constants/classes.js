@@ -44,6 +44,9 @@ export class Player {
 
   setStatus(newStatus) {
     this.status = newStatus;
+    if (newStatus === 'knocked out' || newStatus === 'dead') {
+      this.move(1900, 1900);
+    }
   }
 
   getStats() {
@@ -94,7 +97,8 @@ export class Player {
     listOfOpponents.forEach((item) => {
       myTacklezone.forEach((item2) => {
         if (item.gridX === item2.x && item.gridY === item2.y) {
-          if (item.status !== 'fallen' || item.status !== 'prone' || item.status !== 'prone') {
+          if (item.status === 'activated' || item.status === 'ready' || item.status === 'moved') {
+            console.log('marker with status: ', item.status);
             markers.push(item);
           }
         }

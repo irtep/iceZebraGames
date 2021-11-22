@@ -1,10 +1,11 @@
 /*
 
 Bugs:
-- after first rush it stays as activated and seem to give back movements...
+-
 - after prone does not work right, activated ork and it didnt give any movement
-- päällekkäisiä calleja...
-- Continue: Wrong teams gets after kick off refreshes and turn
+-
+- jos dodgettaa niin näyttäs menevän 2 movementtiä, tai se johtu siitä että oli prone
+-
 
 The GameBrain
 input that is gameObject
@@ -12,7 +13,7 @@ input that is gameObject
 export that is action
 
 */
-import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce, convertPosition }
+import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce, convertPosition, armourBroken }
 from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
 //import { setDefence/*, setOffence*/} from '../functions/ai/ai';
@@ -29,11 +30,11 @@ const BloodBowl2 = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState('');
   const [actionButtons, setActionButtons] = useState('');
-  const [lastPlayer, setLastPlayer] = useState('');
-  const [lastAction, setLastAction] = useState('');
+//  const [lastPlayer, setLastPlayer] = useState('');
+//  const [lastAction, setLastAction] = useState('');
   const [oldData, setOldData] = useState('');
   //const [lastQuery, setLastQuery] = useState('');
-  const [lastResponse, setLastResponse] = useState('');
+//  const [lastResponse, setLastResponse] = useState('');
   const [firstKicker, setFirstKicker] = useState('');
   // log
   /*bb1 stuff:*/
@@ -114,23 +115,82 @@ const BloodBowl2 = ({game}) => {
   //  console.log('action: ', action);
   }
 
+  // after choosing yes or no from reroll query button
   const rerolls = (event) => {
     const yesOrNo = event.target.id;
-    const name = JSON.parse(event.target.name);
-    console.log('name: ', name);
-    let currentRoster = roster1;
-    console.log('rerolls called: ', yesOrNo, lastPlayer, lastAction);
+    let logging = [];
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    let currentRoster = roster1.concat([]);
+    console.log('rerolls called: ', oldData);
 
     if (yesOrNo === 'rerollYes') {
+      let activeTeamIndex = 'team1';
+      const name = JSON.parse(event.target.name);
+      const findThePlayer = currentRoster.filter( player => player.number === name.number);
+      const foundPlayer = findThePlayer[0];
+      const oldLocation = {x: name.x, y: name.y}
+      console.log('name: ', name);
       const rerollDice = callDice(6);
       console.log('rerollDice: ', rerollDice);
+
       if (activeTeam === 'Team 2') {
-        currentRoster = roster2;
+        activeTeamIndex = 'team2';
+        currentRoster = roster2.concat([]);
       }
+
+      logging.push('Team reroll burned.');
+      copyOfgameObject[activeTeamIndex].rerolls--;
+
       if (oldData.reasonWas === 'dodge') {
-        console.log('dodge');
+        const rerollTest = foundPlayer.skillTest('ag', rerollDice, oldData.modifierWas);
+        console.log('rerollTest: ', rerollTest);
+        if (rerollTest) {
+          logging.push('reroll helped.');
+          foundPlayer.move(oldLocation);
+          if (foundPlayer.movementLeft < 1) {
+            foundPlayer.setStatus('moved');
+          } else {
+            foundPlayer.setStatus('move');
+          }
+        } else {
+          logging.push('reroll failed too');
+          setMsg('TURNOVER!');
+          copyOfgameObject.phase = 'startTurn';
+          if (activeTeam === 'Team 1') {
+            setActiveTeam('Team 2');
+          } else {
+            setActiveTeam('Team 1');
+          }
+          setGameObject(copyOfgameObject);
+          // should maybe call
+          console.log('calling startTurn from rerolls');
+          startTurn(roster1, roster2, copyOfgameObject);
+        }
       }
       if (oldData.reasonWas === 'rush') {
+        const newRushRoll = callDice(6);
+        if (newRushRoll === 1) {
+          logging.push('reroll failed too');
+          setMsg('TURNOVER!');
+          copyOfgameObject.phase = 'startTurn';
+          if (activeTeam === 'Team 1') {
+            setActiveTeam('Team 2');
+          } else {
+            setActiveTeam('Team 1');
+          }
+          setGameObject(copyOfgameObject);
+          // should maybe call
+          console.log('calling startTurn from rerolls');
+          startTurn(roster1, roster2, copyOfgameObject);
+        } else {
+          logging.push('reroll helped!');
+          foundPlayer.move(oldLocation);
+          if (foundPlayer.rushes < 1) {
+            foundPlayer.setStatus('activated');
+          } else {
+            foundPlayer.setStatus('moved');
+          }
+        }
         console.log('rush');
       }
       // should then get oldData and set it as gameObject and rosters
@@ -140,7 +200,6 @@ const BloodBowl2 = ({game}) => {
       console.log('no');
       console.log('turn over phase ');
       setMsg('TURNOVER!');
-      const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
       copyOfgameObject.phase = 'startTurn';
       if (activeTeam === 'Team 1') {
         setActiveTeam('Team 2');
@@ -152,6 +211,7 @@ const BloodBowl2 = ({game}) => {
       console.log('calling startTurn from rerolls');
       startTurn(roster1, roster2, copyOfgameObject);
     }
+    setLog(logging);
   }
 
   // PHASES
@@ -179,9 +239,12 @@ const BloodBowl2 = ({game}) => {
 
     currentRoster.forEach((item, i) => {
       // check if stunty and thick skull
-      const stunty = item.skills.filter( skill => skill === 'Stunty');
-      const thickSkull = item.skills.filter( skill => skill === 'Thick Skull');
-
+      const stuntyCheck = item.skills.filter( skill => skill === 'Stunty');
+      const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
+      let stunty = false;
+      let thickSkull = false;
+      if (stuntyCheck.length === 1) {stunty = true;}
+      if (thickSkullCheck.length === 1) {thickSkull = true;}
       // rush query
       if (item.status === 'rush') {
         const rushDice = callDice(6);
@@ -236,42 +299,9 @@ const BloodBowl2 = ({game}) => {
             const armourCheck = item.skillTest('av', armourRoll, 0);
             console.log('armour test: ', armourCheck, armourRoll);
             if (armourCheck) {
-              logging.push('armour breaks.');
-              const injuryRoll = callDice(12);
-              console.log('inj roll: ', injuryRoll);
-              let injuryMessage = 'stunned';
-              // stunty
-              if (stunty.length > 0) {
-                if (injuryRoll === 8 || injuryRoll === 7) {
-                  if (thickSkull.length === 1 && injuryRoll !== 7) {
-                    injuryMessage = 'knocked out';
-                  } else {
-                    // not thick skull
-                    injuryMessage = 'knocked out';
-                  }
-                } else {
-                  injuryMessage = 'dead';
-                }
-              } else {
-                // normal
-                if (injuryRoll === 8 || injuryRoll === 9) {
-                  if (thickSkull.length === 1 && injuryRoll !== 8) {
-                    injuryMessage = 'knocked out';
-                  } else {
-                    // not thick skull
-                    injuryMessage = 'knocked out';
-                  }
-                } else {
-                  injuryMessage = 'dead';
-                }
-              }
-              item.setStatus(injuryMessage);
-              if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
-                item.move(1900, 1900);
-              }
-              logging.push(`player is: ${injuryMessage}`);
-              item.setStatus(injuryMessage);
-
+              const getInjuryMessage = armourBroken(stunty, thickSkull);
+              item.setStatus(getInjuryMessage);
+              logging.push(`player is: ${getInjuryMessage}`);
             } else {
               item.setStatus('fallen');
               logging.push('armour holds.');
@@ -309,42 +339,9 @@ const BloodBowl2 = ({game}) => {
           const armourCheck = item.skillTest('av', armourRoll, 0);
           console.log('armour test: ', armourCheck, armourRoll);
           if (armourCheck) {
-            // check injury
-            logging.push('armour breaks.');
-            const injuryRoll = callDice(12);
-            let injuryMessage = 'stunned';
-            console.log('inj roll ', injuryRoll);
-            // stunty
-            if (stunty.length > 0) {
-              if (injuryRoll === 8 || injuryRoll === 7) {
-                if (thickSkull.length === 1 && injuryRoll !== 7) {
-                  injuryMessage = 'knocked out';
-                } else {
-                  // not thick skull
-                  injuryMessage = 'knocked out';
-                }
-              } else {
-                injuryMessage = 'dead';
-              }
-            } else {
-              // normal
-              if (injuryRoll === 8 || injuryRoll === 9) {
-                if (thickSkull.length === 1 && injuryRoll !== 8) {
-                  injuryMessage = 'knocked out';
-                } else {
-                  // not thick skull
-                  injuryMessage = 'knocked out';
-                }
-              } else {
-                injuryMessage = 'dead';
-              }
-            }
-            item.setStatus(injuryMessage);
-            if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
-              item.move(1900, 1900);
-            }
-            logging.push(`player is: ${injuryMessage}`);
-            item.setStatus(injuryMessage);
+            const getInjuryMessage = armourBroken(stunty, thickSkull);
+            item.setStatus(getInjuryMessage);
+            logging.push(`player is: ${getInjuryMessage}`);
           } else {
             item.setStatus('fallen');
             logging.push('armour holds.');
@@ -360,6 +357,12 @@ const BloodBowl2 = ({game}) => {
           turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
         }
         // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
+        if (copyOfgameObject.phase === 'turnOver') {
+          //console.log('phase is turn over');
+          // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
+          console.log('calling turnOverPhase from gamePlay (rush)');
+          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
+        }
       }
 
       // move
@@ -427,42 +430,9 @@ const BloodBowl2 = ({game}) => {
             const armourCheck = item.skillTest('av', armourRoll, 0);
             console.log('armour test: ', armourCheck, armourRoll);
             if (armourCheck) {
-              // check injury
-              logging.push('armour breaks.');
-              const injuryRoll = callDice(12);
-              let injuryMessage = 'stunned';
-              console.log('inj roll ', injuryRoll);
-              // stunty
-              if (stunty.length > 0) {
-                if (injuryRoll === 8 || injuryRoll === 7) {
-                  if (thickSkull.length === 1 && injuryRoll !== 7) {
-                    injuryMessage = 'knocked out';
-                  } else {
-                    // not thick skull
-                    injuryMessage = 'knocked out';
-                  }
-                } else {
-                  injuryMessage = 'dead';
-                }
-              } else {
-                // normal
-                if (injuryRoll === 8 || injuryRoll === 9) {
-                  if (thickSkull.length === 1 && injuryRoll !== 8) {
-                    injuryMessage = 'knocked out';
-                  } else {
-                    // not thick skull
-                    injuryMessage = 'knocked out';
-                  }
-                } else {
-                  injuryMessage = 'dead';
-                }
-              }
-              item.setStatus(injuryMessage);
-              if (injuryMessage === 'dead' || injuryMessage === 'knocked out') {
-                item.move(1900, 1900);
-              }
-              logging.push(`player is: ${injuryMessage}`);
-              item.setStatus(injuryMessage);
+              const getInjuryMessage = armourBroken(stunty, thickSkull);
+              item.setStatus(getInjuryMessage);
+              logging.push(`player is: ${getInjuryMessage}`);
             } else {
               item.setStatus('fallen');
               logging.push('armour holds.');
@@ -503,7 +473,7 @@ const BloodBowl2 = ({game}) => {
 
             // if prone
             if (item.status === 'prone') {
-              item.movementLeft -= 3;
+              item.movementLeft = item.ma - 3;
               console.log('prone, movemenLeft now: ', item.movementLeft);
             }
 
@@ -740,16 +710,16 @@ const BloodBowl2 = ({game}) => {
   const startTurn = (copyOfRoster1, copyOfRoster2, copyOfgameObject) => {
     console.log('start turn called');
     let activeTeamIndex = 'team1';
-    let currentRoster = copyOfRoster1;
+//    let currentRoster = copyOfRoster1;
     let opponentRoster = copyOfRoster2;
-    let team2Turn = false;
+  //  let team2Turn = false;
     // setup
     if (activeTeam === 'Team 2') {
       console.log('team 2 starts');
       //console.log('active === team2');
-      currentRoster = copyOfRoster2;
+  //    currentRoster = copyOfRoster2;
       opponentRoster = copyOfRoster1;
-      team2Turn = true;
+  //    team2Turn = true;
       activeTeamIndex = "team2";
       copyOfgameObject.team2.turn++;
     } else {
@@ -809,21 +779,21 @@ const BloodBowl2 = ({game}) => {
 
   // CLICKED
   const clicked = () => {
-    const mpx = Math.trunc(mousePosition.x / 35);
-    const mpy = Math.trunc(mousePosition.y / 35);
+//    const mpx = Math.trunc(mousePosition.x / 35);
+//    const mpy = Math.trunc(mousePosition.y / 35);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
     let currentRoster = copyOfRoster1;
-    let opponentRoster = copyOfRoster2;
+  //  let opponentRoster = copyOfRoster2;
     let team2Turn = false;
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let activeTeamIndex = 'team1';
+//    let activeTeamIndex = 'team1';
 
     if (activeTeam === 'Team 2') {
       currentRoster = copyOfRoster2;
-      opponentRoster = copyOfRoster1;
+  //    opponentRoster = copyOfRoster1;
       team2Turn = true;
-      activeTeamIndex = "team2";
+  //    activeTeamIndex = "team2";
     }
 
     // set defence and offence
@@ -834,7 +804,7 @@ const BloodBowl2 = ({game}) => {
       if (activeTeam === 'Team 2') {
         //console.log('active === team2');
         currentRoster = copyOfRoster2;
-        opponentRoster = copyOfRoster1;
+    //    opponentRoster = copyOfRoster1;
         team2Turn = true;
       }
       // check if someone is moving
