@@ -2,9 +2,9 @@
 
 Bugs:
 -
-- after prone does not work right, activated ork and it didnt give any movement
 -
-- jos dodgettaa niin näyttäs menevän 2 movementtiä, tai se johtu siitä että oli prone
+-
+-
 -
 
 The GameBrain
@@ -142,7 +142,8 @@ const BloodBowl2 = ({game}) => {
         team2active = true;
       }
 
-      logging.push('Team reroll burned.');
+      logging.push('Team reroll burned, reason: ');
+      console.log('oldData.reasonWas ', oldData.reasonWas);
       copyOfgameObject[activeTeamIndex].rerolls--;
 
       if (oldData.reasonWas === 'dodge') {
@@ -155,17 +156,24 @@ const BloodBowl2 = ({game}) => {
         console.log('rerollTest: ', rerollTest);
         if (rerollTest) {
           logging.push('reroll helped.');
+          console.log();
           foundPlayer.move(oldLocation);
           if (foundPlayer.movementLeft < 1) {
+            console.log('setting to moved');
             foundPlayer.setStatus('moved');
           } else {
+            console.log('settingto move');
             foundPlayer.setStatus('move');
           }
           if (team2active) {
+            console.log('setting2: ', currentRoster);
             setRoster2(currentRoster);
           } else {
+            console.log('setting1: ', currentRoster);
             setRoster1(currentRoster);
           }
+          copyOfgameObject.phase = 'gameplay';
+          setGameObject(copyOfgameObject);
         } else {
           logging.push('reroll failed too');
           setMsg('TURNOVER!');
@@ -182,6 +190,7 @@ const BloodBowl2 = ({game}) => {
         }
       }
       if (oldData.reasonWas === 'rush') {
+        console.log('reason was rush failure');
         const newRushRoll = callDice(6);
         if (newRushRoll === 1) {
           logging.push('reroll failed too');
@@ -209,6 +218,8 @@ const BloodBowl2 = ({game}) => {
           } else {
             setActiveTeam('Team 1');
           }
+          copyOfgameObject.phase = 'gameplay';
+          setGameObject(copyOfgameObject);
         }
         console.log('rush');
       }
@@ -327,6 +338,7 @@ const BloodBowl2 = ({game}) => {
             }
             console.log('setting old data: ', preReroll);
             copyOfgameObject.phase = 'turnOver';
+            setOldData(preReroll);
             setRoster1(copyOfRoster1);
             setRoster2(copyOfRoster2);
             setGameObject(copyOfgameObject);
@@ -385,7 +397,7 @@ const BloodBowl2 = ({game}) => {
       }
 
       // move
-      if (item.status === 'move') {
+      if (item.status === 'move' && copyOfgameObject.phase !== 'turnOver') {
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
@@ -492,7 +504,8 @@ const BloodBowl2 = ({game}) => {
 
             // if prone
             if (item.status === 'prone') {
-              item.movementLeft = item.ma - 3;
+              // modificated to 2 as the move is lost elsewhere too
+              item.movementLeft = item.ma - 2;
               console.log('prone, movemenLeft now: ', item.movementLeft);
             }
 
@@ -552,7 +565,6 @@ const BloodBowl2 = ({game}) => {
   }
 
   const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item) => {
-    console.log('turn over phase called ');
     if (gameObject[activeTeamIndex].rerolls > 0) {
       const makeName = JSON.stringify(item);
       console.log('rerolls left, who is: ', item);
