@@ -120,9 +120,11 @@ const BloodBowl2 = ({game}) => {
     const yesOrNo = event.target.id;
     let logging = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    const copyOfOldData = JSON.parse(JSON.stringify(oldData));
     let currentRoster = roster1.concat([]);
     let opponentRoster = roster2.concat([]);
     console.log('rerolls called: ', oldData);
+    console.log('copy of old data: ', copyOfOldData);
 
     if (yesOrNo === 'rerollYes') {
       let activeTeamIndex = 'team1';
@@ -146,12 +148,16 @@ const BloodBowl2 = ({game}) => {
       console.log('oldData.reasonWas ', oldData.reasonWas);
       copyOfgameObject[activeTeamIndex].rerolls--;
 
-      if (oldData.reasonWas === 'dodge') {
-        const newMarkCheck = foundPlayer.markedBy(opponentRoster);
-        let modifier = 0;
+      console.log('found player: ', foundPlayer);
+      console.log('name: ', name);
+      if (name.preReroll.reasonWas === 'dodge') {
+        //const newMarkCheck = foundPlayer.markedBy(opponentRoster);
+        let modifier = name.preReroll.modifierWas;
+        /*
         if (newMarkCheck.length > 0) {
           modifier = -1;
         }
+        */
         const rerollTest = foundPlayer.skillTest('ag', rerollDice, modifier);
         console.log('rerollTest: ', rerollTest);
         if (rerollTest) {
@@ -189,7 +195,7 @@ const BloodBowl2 = ({game}) => {
           startTurn(roster1, roster2, copyOfgameObject);
         }
       }
-      if (oldData.reasonWas === 'rush') {
+      if (name.preReroll.reasonWas === 'rush') {
         console.log('reason was rush failure');
         const newRushRoll = callDice(6);
         if (newRushRoll === 1) {
@@ -313,14 +319,13 @@ const BloodBowl2 = ({game}) => {
             logging.push('...passes agility check!');
           } else {
             // save old data if user selects reroll
-            preReroll = {
+            item.preReroll = {
               gameObject: copyOfgameObject,
               roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
               roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
               reasonWas: 'dodge',
               skillWas: 'ag',
-              modifierWas: modifier,
-              who: item
+              modifierWas: modifier
             }
             // turn over!
             logging.push('... he falls! Turn over!');
@@ -353,12 +358,11 @@ const BloodBowl2 = ({game}) => {
 
         if (rushDice === 1) {
           console.log('saving for possible reroll');
-          preReroll = {
+          item.preReroll = {
             gameObject: copyOfgameObject,
             roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
             roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
-            reasonWas: 'rush',
-            who: item
+            reasonWas: 'rush'
           }
           console.log('rushRoll 1');
           let logging = ['He trips!'];
@@ -446,14 +450,13 @@ const BloodBowl2 = ({game}) => {
           } else {
             // turn over!
             // save old data if user selects reroll
-            const preReroll = {
+            item.preReroll = {
               gameObject: copyOfgameObject,
               roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
               roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
               reasonWas: 'dodge',
               skillWas: 'ag',
-              modifierWas: modifier,
-              who: item
+              modifierWas: modifier
             }
             logging.push('... he falls! Turn over!');
             // armour check
