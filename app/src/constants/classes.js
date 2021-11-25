@@ -18,6 +18,7 @@ export class Player {
   this.targeted = false;
   this.movementLeft = ma;
   this.rushes = 2;
+  this.withBall = false;
   };
 
   refreshMovement() {
@@ -79,7 +80,7 @@ export class Player {
 
   // use this if using gridX and gridY, for example 1 and 1
   getLocation() {
-    return {x: this.x, y: this.y, gridX: this.gridX, gridY: this.gridY};
+    return {x: this.gridX, y: this.gridY};
   }
 
   markedBy(listOfOpponents) {

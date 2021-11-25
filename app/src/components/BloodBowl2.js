@@ -4,8 +4,6 @@ Bugs:
 -
 -
 -
--
--
 
 The GameBrain
 input that is gameObject
@@ -104,6 +102,21 @@ const BloodBowl2 = ({game}) => {
     }
   }
 
+  const checkIfBallLocation = (loc) => {
+    const gridLocOfBall = {x: Math.trunc( ball.x / 35 ), y: Math.trunc( ball.y / 35 )};
+    if (gridLocOfBall === loc) {
+      return true;
+    } else {
+      console.log("ball not here: ", loc, " vs ", gridLocOfBall);
+      return false;
+    }
+  }
+
+  const bounceBall = () => {
+    console.log("bounce ball");
+
+  }
+
   // check states
   const checki = () => {
     console.log('roster 1', roster1);
@@ -115,6 +128,32 @@ const BloodBowl2 = ({game}) => {
   //  console.log('action: ', action);
   }
 
+  const pickUpAction = (who, opponentRoster) => {
+    console.log("pick up action, by ", who.number);
+    // console.log("opponents: ", opponentRoster);
+    const sureHands = item.skills.filter( skill => skill === 'Sure Hands');
+    const diceValue1 = callDice(6);
+    const diceValue2 = callDice(6);
+    const markers = who.markedBy(opponentRoster);
+    let modifier = 0;
+    if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+    const picking1 = who.skillTest('ag', diceValue1, modifier);
+    if (picking1) {
+      console.log('he has the ball');
+      return true;
+    } else {
+      // with sure hands auto reroll
+      if (sureHands.length > 0) {
+        const picking2 = who.skillTest('ag', diceValue2, modifier);
+        if (picking2) {
+          console.log('after sure hands, ok');
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
   // after choosing yes or no from reroll query button
   const rerolls = (event) => {
     const yesOrNo = event.target.id;
@@ -123,33 +162,34 @@ const BloodBowl2 = ({game}) => {
     const copyOfOldData = JSON.parse(JSON.stringify(oldData));
     let currentRoster = roster1.concat([]);
     let opponentRoster = roster2.concat([]);
+    let activeTeamIndex = 'team1';
+    let team2active = false;
     console.log('rerolls called: ', oldData);
-    console.log('copy of old data: ', copyOfOldData);
+//    console.log('copy of old data: ', copyOfOldData);
+
+    if (activeTeam === 'Team 2') {
+      activeTeamIndex = 'team2';
+      currentRoster = roster2.concat([]);
+      opponentRoster = roster1.concat([]);
+      team2active = true;
+    }
 
     if (yesOrNo === 'rerollYes') {
-      let activeTeamIndex = 'team1';
       const name = JSON.parse(event.target.name);
       const findThePlayer = currentRoster.filter( player => player.number === name.number);
       const foundPlayer = findThePlayer[0];
-      const oldLocation = {x: name.x, y: name.y}
-      let team2active = false;
-      console.log('name: ', name);
+  //    console.log('name: ', name);
       const rerollDice = callDice(6);
-      console.log('rerollDice: ', rerollDice);
+  //    console.log('rerollDice: ', rerollDice);
 
-      if (activeTeam === 'Team 2') {
-        activeTeamIndex = 'team2';
-        currentRoster = roster2.concat([]);
-        opponentRoster = roster1.concat([]);
-        team2active = true;
-      }
 
-      logging.push('Team reroll burned, reason: ');
-      console.log('oldData.reasonWas ', oldData.reasonWas);
+
+    //  logging.push('Team reroll burned, reason: ');
+    //  console.log('oldData.reasonWas ', oldData.reasonWas);
       copyOfgameObject[activeTeamIndex].rerolls--;
 
-      console.log('found player: ', foundPlayer);
-      console.log('name: ', name);
+    //  console.log('found player: ', foundPlayer);
+    //  console.log('name: ', name);
       if (name.preReroll.reasonWas === 'dodge') {
         //const newMarkCheck = foundPlayer.markedBy(opponentRoster);
         let modifier = name.preReroll.modifierWas;
@@ -162,20 +202,27 @@ const BloodBowl2 = ({game}) => {
         console.log('rerollTest: ', rerollTest);
         if (rerollTest) {
           logging.push('reroll helped.');
-          console.log();
-          foundPlayer.move(oldLocation);
+          console.log(`moving to: ${name.x, name.y}`);
+          // this might be wrong location
+          foundPlayer.move(name.x, name.y);
+          const atBall = checkIfBallLocation(foundPlayer.getLocation());
+          if (atBall) {
+            logging.push("he tries to get the ball");
+            const pickUpAttempt = pickUpAction(foundPlayer, opponentRoster);
+            logging.push();
+          }
           if (foundPlayer.movementLeft < 1) {
-            console.log('setting to moved');
+      //      console.log('setting to moved');
             foundPlayer.setStatus('moved');
           } else {
-            console.log('settingto move');
+      //      console.log('settingto move');
             foundPlayer.setStatus('move');
           }
           if (team2active) {
-            console.log('setting2: ', currentRoster);
+      //      console.log('setting2: ', currentRoster);
             setRoster2(currentRoster);
           } else {
-            console.log('setting1: ', currentRoster);
+      //      console.log('setting1: ', currentRoster);
             setRoster1(currentRoster);
           }
           copyOfgameObject.phase = 'gameplay';
@@ -196,7 +243,7 @@ const BloodBowl2 = ({game}) => {
         }
       }
       if (name.preReroll.reasonWas === 'rush') {
-        console.log('reason was rush failure');
+      //  console.log('reason was rush failure');
         const newRushRoll = callDice(6);
         if (newRushRoll === 1) {
           logging.push('reroll failed too');
@@ -213,7 +260,7 @@ const BloodBowl2 = ({game}) => {
           startTurn(roster1, roster2, copyOfgameObject);
         } else {
           logging.push('reroll helped!');
-          foundPlayer.move(oldLocation);
+          foundPlayer.move(name.x, name.y);
           if (foundPlayer.rushes < 1) {
             foundPlayer.setStatus('activated');
           } else {
@@ -227,14 +274,14 @@ const BloodBowl2 = ({game}) => {
           copyOfgameObject.phase = 'gameplay';
           setGameObject(copyOfgameObject);
         }
-        console.log('rush');
+    //    console.log('rush');
       }
       // should then get oldData and set it as gameObject and rosters
       //const findFallenGuy = oldData.map( )
       //setLastResponse(true);
     } else {
-      console.log('no');
-      console.log('turn over phase ');
+//      console.log('no');
+//      console.log('turn over phase ');
       setMsg('TURNOVER!');
       copyOfgameObject.phase = 'startTurn';
       if (activeTeam === 'Team 1') {
@@ -277,6 +324,7 @@ const BloodBowl2 = ({game}) => {
       // check if stunty and thick skull
       const stuntyCheck = item.skills.filter( skill => skill === 'Stunty');
       const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
+      const sureFeetCheck = item.skills.filter( skill => skill === 'Thick Skull');
       let stunty = false;
       let thickSkull = false;
       if (stuntyCheck.length === 1) {stunty = true;}
@@ -284,6 +332,7 @@ const BloodBowl2 = ({game}) => {
       // rush query
       if (item.status === 'rush') {
         const rushDice = callDice(6);
+        const sureFeetDice = callDice(6);
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
@@ -357,46 +406,50 @@ const BloodBowl2 = ({game}) => {
         }
 
         if (rushDice === 1) {
-          console.log('saving for possible reroll');
-          item.preReroll = {
-            gameObject: copyOfgameObject,
-            roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
-            roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
-            reasonWas: 'rush'
-          }
-          console.log('rushRoll 1');
-          let logging = ['He trips!'];
-          // falls
-          // turn over!
-          logging.push('... he falls! Turn over!');
-          // armour check
-          const armourRoll = callDice(12);
-          const armourCheck = item.skillTest('av', armourRoll, 0);
-          console.log('armour test: ', armourCheck, armourRoll);
-          if (armourCheck) {
-            const getInjuryMessage = armourBroken(stunty, thickSkull);
-            item.setStatus(getInjuryMessage);
-            logging.push(`player is: ${getInjuryMessage}`);
+          if (sureFeetCheck.length === 1 && sureFeetDice > 1) {
+            console.log('sure feet saved');
           } else {
-            item.setStatus('fallen');
-            logging.push('armour holds.');
+            console.log('saving for possible reroll');
+            item.preReroll = {
+              gameObject: copyOfgameObject,
+              roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+              roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+              reasonWas: 'rush'
+            }
+            console.log('rushRoll 1');
+            let logging = ['He trips!'];
+            // falls
+            // turn over!
+            logging.push('... he falls! Turn over!');
+            // armour check
+            const armourRoll = callDice(12);
+            const armourCheck = item.skillTest('av', armourRoll, 0);
+            console.log('armour test: ', armourCheck, armourRoll);
+            if (armourCheck) {
+              const getInjuryMessage = armourBroken(stunty, thickSkull);
+              item.setStatus(getInjuryMessage);
+              logging.push(`player is: ${getInjuryMessage}`);
+            } else {
+              item.setStatus('fallen');
+              logging.push('armour holds.');
+            }
+            // save old data if user selects reroll
+            console.log('setting old data: ', preReroll);
+            setOldData(preReroll);
+            copyOfgameObject.phase = 'turnOver';
+            setRoster1(copyOfRoster1);
+            setRoster2(copyOfRoster2);
+            setGameObject(copyOfgameObject);
+            console.log('calling turnover phase from gamePlay, rush ');
+            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, true);
           }
-          // save old data if user selects reroll
-          console.log('setting old data: ', preReroll);
-          setOldData(preReroll);
-          copyOfgameObject.phase = 'turnOver';
-          setRoster1(copyOfRoster1);
-          setRoster2(copyOfRoster2);
-          setGameObject(copyOfgameObject);
-          console.log('calling turnover phase from gamePlay');
-          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
-        }
+        } // rush dice 1 ends
         // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
         if (copyOfgameObject.phase === 'turnOver') {
           //console.log('phase is turn over');
           // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
           console.log('calling turnOverPhase from gamePlay (rush)');
-          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
+          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, true);
         }
       }
 
@@ -487,7 +540,7 @@ const BloodBowl2 = ({game}) => {
           //console.log('phase is turn over');
           // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
           console.log('calling turnOverPhase from gamePlay (movement)');
-          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item);
+          turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
         }
       } // move  ends
 
@@ -512,9 +565,12 @@ const BloodBowl2 = ({game}) => {
               console.log('prone, movemenLeft now: ', item.movementLeft);
             }
 
-            // remove old moves
+            // remove old moves and actives
             currentRoster.forEach((item2, i2) => {
               if (item2.status === 'move') {
+                item2.setStatus('activated');
+              }
+              if (item2.status === 'ACTIVE') {
                 item2.setStatus('activated');
               }
             });
@@ -567,8 +623,8 @@ const BloodBowl2 = ({game}) => {
     setRoster2(copyOfRoster2);
   }
 
-  const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item) => {
-    if (gameObject[activeTeamIndex].rerolls > 0) {
+  const turnOverPhase = (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, noReroll) => {
+    if (gameObject[activeTeamIndex].rerolls > 0 && noReroll === false) {
       const makeName = JSON.stringify(item);
       console.log('rerolls left, who is: ', item);
       const activeButtons = <><button id= "rerollYes" name = {makeName} onClick = {rerolls}>Yes, re-roll</button><button id= "rerollNo" onClick = {rerolls}>no</button></>
@@ -978,7 +1034,7 @@ const BloodBowl2 = ({game}) => {
   }
 
   const quickSetup1 = () => {
-    quickAddTeam(11);
+    quickAddTeam(9);
     setActiveTeam('Team 2');
   }
   const quickSetup2 = () => {
