@@ -112,11 +112,6 @@ const BloodBowl2 = ({game}) => {
     }
   }
 
-  const bounceBall = () => {
-    console.log("bounce ball");
-
-  }
-
   // check states
   const checki = () => {
     console.log('roster 1', roster1);
@@ -131,13 +126,18 @@ const BloodBowl2 = ({game}) => {
   const pickUpAction = (who, opponentRoster) => {
     console.log("pick up action, by ", who.number);
     // console.log("opponents: ", opponentRoster);
-    const sureHands = item.skills.filter( skill => skill === 'Sure Hands');
+    const sureHands = who.skills.filter( skill => skill === 'Sure Hands');
+    const noHands = who.skills.filter( skill => skill === 'No Hands');
     const diceValue1 = callDice(6);
     const diceValue2 = callDice(6);
     const markers = who.markedBy(opponentRoster);
     let modifier = 0;
     if (markers.length > 0) {modifier = -Math.abs(markers.length)}
     const picking1 = who.skillTest('ag', diceValue1, modifier);
+
+    if (noHands.length > 0) {
+      return false;
+    }
     if (picking1) {
       console.log('he has the ball');
       return true;
@@ -159,7 +159,7 @@ const BloodBowl2 = ({game}) => {
     const yesOrNo = event.target.id;
     let logging = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    const copyOfOldData = JSON.parse(JSON.stringify(oldData));
+//    const copyOfOldData = JSON.parse(JSON.stringify(oldData));
     let currentRoster = roster1.concat([]);
     let opponentRoster = roster2.concat([]);
     let activeTeamIndex = 'team1';
@@ -202,13 +202,17 @@ const BloodBowl2 = ({game}) => {
         console.log('rerollTest: ', rerollTest);
         if (rerollTest) {
           logging.push('reroll helped.');
-          console.log(`moving to: ${name.x, name.y}`);
           // this might be wrong location
           foundPlayer.move(name.x, name.y);
           const atBall = checkIfBallLocation(foundPlayer.getLocation());
           if (atBall) {
             logging.push("he tries to get the ball");
             const pickUpAttempt = pickUpAction(foundPlayer, opponentRoster);
+            if (pickUpAttempt) {
+              foundPlayer.withBall = true;
+            } else {
+              setBall(bounce(callDice(8), ball));
+            }
             logging.push();
           }
           if (foundPlayer.movementLeft < 1) {
@@ -329,6 +333,7 @@ const BloodBowl2 = ({game}) => {
       let thickSkull = false;
       if (stuntyCheck.length === 1) {stunty = true;}
       if (thickSkullCheck.length === 1) {thickSkull = true;}
+
       // rush query
       if (item.status === 'rush') {
         const rushDice = callDice(6);
@@ -345,6 +350,7 @@ const BloodBowl2 = ({game}) => {
           logging.push(`${item.number} moves. Movement left: ${moving}`);
           item.rushes--;
           console.log('rush dice: ', rushDice);
+
         }
 
         if (checkIfMarked.length > 0) {
@@ -378,6 +384,7 @@ const BloodBowl2 = ({game}) => {
             }
             // turn over!
             logging.push('... he falls! Turn over!');
+            item.withBall = false;
             // armour check
             const armourRoll = callDice(12);
             const armourCheck = item.skillTest('av', armourRoll, 0);
@@ -418,6 +425,7 @@ const BloodBowl2 = ({game}) => {
             }
             console.log('rushRoll 1');
             let logging = ['He trips!'];
+            item.withBall = false;
             // falls
             // turn over!
             logging.push('... he falls! Turn over!');
@@ -512,6 +520,7 @@ const BloodBowl2 = ({game}) => {
               modifierWas: modifier
             }
             logging.push('... he falls! Turn over!');
+            item.withBall = false;
             // armour check
             const armourRoll = callDice(12);
             const armourCheck = item.skillTest('av', armourRoll, 0);
@@ -632,6 +641,12 @@ const BloodBowl2 = ({game}) => {
     } else {
       // start turn over sequince
       console.log('turn over phase ');
+      // if had the ball, bounce the ball
+      const fallenGuysLocation = {x: item.gridX, y: item.gridY};
+      const checkingIfAtBall = checkIfBallLocation(fallenGuysLocation);
+      if (checkingIfAtBall) {
+        setBall(bounce(callDice(8), ball));
+      }
       setMsg('TURNOVER!');
       const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
       copyOfgameObject.phase = 'startTurn';
@@ -698,6 +713,9 @@ const BloodBowl2 = ({game}) => {
       const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
       if (skillCheck) {
         forLog.push(`Catch ok!`);
+        atLocation[0].withBall = true;
+        setRoster1(copyOfRoster1);
+        setRoster2(copyOfRoster2);
       } else {
         forLog.push(`He fails to catch. Ball bounces to: ${bounceRoll}`);
         catchSuccess = false;
