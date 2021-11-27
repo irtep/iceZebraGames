@@ -154,7 +154,8 @@ export const armourBroken = (stunty, thickSkull) => {
           // not thick skull
           injuryMessage = 'knocked out';
         }
-      } else {
+      }
+      else if (injuryRoll > 8) {
         injuryMessage = 'dead';
       }
     } else {
@@ -166,7 +167,8 @@ export const armourBroken = (stunty, thickSkull) => {
           // not thick skull
           injuryMessage = 'knocked out';
         }
-      } else {
+      }
+      else if (injuryRoll > 9) {
         injuryMessage = 'dead';
       }
     }
