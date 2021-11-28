@@ -2,7 +2,7 @@
 
 Missing:
 - start of second half
-- blitz, block, pass, hand off, end turn 
+- blitz, block, pass, hand off, end turn
 
 Bugs:
 - pick up cant be rerolled atleast at reroll phase... maybe i add this later
@@ -354,10 +354,21 @@ const BloodBowl2 = ({game}) => {
       const stuntyCheck = item.skills.filter( skill => skill === 'Stunty');
       const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
       const sureFeetCheck = item.skills.filter( skill => skill === 'Thick Skull');
+      const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
+      const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
+      const blockCheck = item.skills.filter( skill => skill === 'Block');
       let stunty = false;
       let thickSkull = false;
       if (stuntyCheck.length === 1) {stunty = true;}
       if (thickSkullCheck.length === 1) {thickSkull = true;}
+
+      // block at gameplay
+      if (item.status === 'block') {
+        
+        // select target of block
+        setMsg('select target of block');
+
+      }
 
       // rush query
       if (item.status === 'rush') {
