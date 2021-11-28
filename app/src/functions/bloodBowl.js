@@ -211,6 +211,22 @@ export const bloodBowlDices = (dicesSelect) => {
       const dice8 = callDice(6)-1;
       results = `${blockDices[dice6]} ${blockDices[dice7]} ${blockDices[dice8]}`;
     break;
+    // use these for Blood Bowl 2:
+    case '1bd':
+      const dice9 = callDice(6)-1;
+      results = [blockDices[dice9]];
+    break;
+    case '2bd':
+      const dice10 = callDice(6)-1;
+      const dice11 = callDice(6)-1;
+      results = [blockDices[dice10], blockDices[dice11]];
+    break;
+    case '3bd':
+      const dice12 = callDice(6)-1;
+      const dice13 = callDice(6)-1;
+      const dice14 = callDice(6)-1;
+      results = [blockDices[dice12], blockDices[dice13], blockDices[dice14]];
+    break;
     default: console.log('dice not found!');
   }
   return results;

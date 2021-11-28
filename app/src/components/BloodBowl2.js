@@ -357,21 +357,90 @@ const BloodBowl2 = ({game}) => {
       const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
       const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
       const blockCheck = item.skills.filter( skill => skill === 'Block');
+      const frenzyCheck = item.skills.filter( skill => skill === 'Frenzy');
       let stunty = false;
       let thickSkull = false;
+      let targetClicked = false;
+
       if (stuntyCheck.length === 1) {stunty = true;}
       if (thickSkullCheck.length === 1) {thickSkull = true;}
 
-      // block at gameplay
-      if (item.status === 'block') {
-        
-        // select target of block
-        setMsg('select target of block');
+      // block and blitz
+      if (item.status === 'block'  || item.status === 'blitz') {
+        opponentRoster.forEach((itemx, ix) => {
+          // check from here if it was clicked
+            const collision = arcVsArc(mousePosition, itemx, 10, 15);
 
+            if (collision) {
+              const markers = item.markedBy(opponentRoster);
+              console.log('block targets: ', markers);
+
+              if (markers.length > 0) {
+                markers.forEach((itemm, im) => {
+                  if (itemm.number === itemx.number && itemm.name === itemx.name) {
+                    itemm.setStatus('target');
+                    targetClicked = true;
+
+                    if (targetClicked) {
+                      // get strengths
+                      let blockerSt = item.st;
+                      let targetSt = itemm.st;
+                      let blockerModifier = 0;
+                      let targetModifier = 0;
+                      let dices = [bloodBowlDices('1bd')];
+                      let blockerDecides = true;
+
+                      if (dauntlessCheck.length > 0 && targetSt > blockerSt) {
+                        const dauntlessDice = callDice(6);
+                        console.log('dauntless');
+                        if (dauntlessDice > (targetSt - blockerSt)) {
+                          blockerSt = targetSt
+                          console.log('dauntless evens up');
+                        } else {
+                          console.log('dauntless didnt help, rolled: ', dauntlessDice);
+                        }
+                      }
+
+                      // check helpers
+                      const blockersFriends = itemm.markedBy(currentRoster);
+                      const targetsFriends = item.markedBy(opponentRoster);
+                      blockersFriends.forEach((itemBf) => {
+                        const markingThis = itemBf.markedBy(opponentRoster);
+                        if (markingThis.length === 0) {
+                          blockerModifier++;
+                        }
+                      });
+                      targetsFriends.forEach((itemBf) => {
+                        const markingThis = itemBf.markedBy(currentRoster);
+                        if (markingThis.length === 0) {
+                          targetModifier++;
+                        }
+                      });
+                      // block dices
+                      if ( (blockerSt + blockerModifier) < (targetSt + targetModifier) ) {
+                        blockerDecides = false;
+                      }
+                      // second dice
+                      if ( (blockerSt + blockerModifier) !== (targetSt + targetModifier) ) {
+                        dices.push(bloodBowlDices('1bd'));
+                      }
+                      // third dice
+                      if ( ((blockerSt + blockerModifier) * 2) < (targetSt + targetModifier) ||
+                           (blockerSt + blockerModifier) > ((targetSt + targetModifier) * 2)) {
+                        dices.push(bloodBowlDices('1bd'));
+                      }
+                      console.log('blocker decides, dices: ', blockerDecides, dices);
+                      // need to check that target and block are cleared too and complete this..
+                    } // target clicked ends
+                  }
+                });
+              }
+            }
+        });
       }
 
       // rush query
-      if (item.status === 'rush') {
+      else if (item.status === 'rush') {
         const rushDice = callDice(6);
         const sureFeetDice = callDice(6);
         const checkIfMarked = item.markedBy(opponentRoster);
@@ -500,7 +569,7 @@ const BloodBowl2 = ({game}) => {
       }
 
       // move
-      if (item.status === 'move' && copyOfgameObject.phase !== 'turnOver') {
+      else if (item.status === 'move' && copyOfgameObject.phase !== 'turnOver') {
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
