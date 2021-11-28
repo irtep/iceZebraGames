@@ -145,6 +145,25 @@ const BloodBowl2 = ({game}) => {
     }
   }
 
+/*
+'(player down)',
+'(both down)',
+'(push back)',
+'(push back)',
+'(stumble)',
+'(pow!)'
+*/
+  const block = (event) => {
+    const decision = event.target.id;
+    const blockData = JSON.parse(event.target.value);
+
+    if (decision === '(player down)') {}
+    if (decision === '(both down)') {}
+    if (decision === '(push back)') {}
+    if (decision === '(stumble)') {}
+    if (decision === '(pow!)') {}
+  }
+
   // check states
   const checki = () => {
     console.log('roster 1', roster1);
@@ -367,6 +386,7 @@ const BloodBowl2 = ({game}) => {
 
       // block and blitz
       if (item.status === 'block'  || item.status === 'blitz') {
+        const actionButtons = [];
         opponentRoster.forEach((itemx, ix) => {
           // check from here if it was clicked
             const collision = arcVsArc(mousePosition, itemx, 10, 15);
@@ -430,6 +450,26 @@ const BloodBowl2 = ({game}) => {
                         dices.push(bloodBowlDices('1bd'));
                       }
                       console.log('blocker decides, dices: ', blockerDecides, dices);
+                      copyOfgameObject.phase = 'blockQuery';
+                      const blocker = JSON.parse(JSON.stringify(item));
+                      const target = JSON.parse(JSON.stringify(itemm));
+                      const blockData = {
+                        blocker: blocker,
+                        target: target,
+                        blockerDecides: blockerDecides
+                      };
+                      const envelope = JSON.stringify(blockData);
+                      dices.forEach((itemD) => {
+                        const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
+                        actionButtons.push(dice);
+                      });
+                      if (blockerDecides) {
+                        setMsg('active team, choose the dice!');
+                      } else {
+                        setMsg('non active team, choose the dice!');
+                      }
+                      setActionButtons(actionButtons);
+                      setGameObject(copyOfgameObject);
                       // need to check that target and block are cleared too and complete this..
                     } // target clicked ends
                   }
