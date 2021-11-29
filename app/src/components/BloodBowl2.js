@@ -170,18 +170,25 @@ const BloodBowl2 = ({game}) => {
     const foundBlocker = searchBlocker[0];
     const foundTarget = searchTarget[0];
     const blockerStunty = blocker.skills.filter( skill => skill === 'Stunty');
-    const blockerThickskull = blocker.skills.filter( skill => skill === 'Stunty');
+    const blockerThickskull = blocker.skills.filter( skill => skill === 'Thick Skull');
     const targetStunty = blocker.skills.filter( skill => skill === 'Stunty');
-    const targetThickskull = blocker.skills.filter( skill => skill === 'Stunty');
-    const blockerMightyBlow = blocker.skills.filter( skill => skill === 'Stunty');
-    const blockerClaws = blocker.skills.filter( skill => skill === 'Stunty');
+    const targetThickskull = blocker.skills.filter( skill => skill === 'Thick Skull');
+    const blockerMightyBlow = blocker.skills.filter( skill => skill === 'Mighty Blow');
+    const blockerClaws = blocker.skills.filter( skill => skill === 'Claws');
     let stunty = false;
     let thickSkull = false;
     let mightyBlow = false;
     let claws = false;
+    let logging = [];
     console.log('block data: ', blockData);
 
     if (decision === '(player down)') {
+      if (blockerStunty.length === 1) {
+        stunty = true;
+      }
+      if (blockerThickskull.length === 1) {
+        thickSkull = true;
+      }
       // armour check
       const armourRoll = callDice(12);
       const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
