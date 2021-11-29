@@ -156,12 +156,63 @@ const BloodBowl2 = ({game}) => {
   const block = (event) => {
     const decision = event.target.id;
     const blockData = JSON.parse(event.target.value);
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
+    let currentRoster = roster1.concat([]);
+    let opponentRoster = roster2.concat([]);
 
-    if (decision === '(player down)') {}
-    if (decision === '(both down)') {}
-    if (decision === '(push back)') {}
-    if (decision === '(stumble)') {}
-    if (decision === '(pow!)') {}
+    console.log('blocker decides: ', blockData.blockerDecides);
+    if (activeTeam === 'Team 2') {
+      currentRoster = roster2.concat([]);
+      opponentRoster = roster1.concat([]);
+    }
+    let searchBlocker = currentRoster.filter( player => player.number === blockData.blocker.number);
+    let searchTarget = opponentRoster.filter( player => player.number === blockData.target.number);
+    const foundBlocker = searchBlocker[0];
+    const foundTarget = searchTarget[0];
+    const blockerStunty = blocker.skills.filter( skill => skill === 'Stunty');
+    const blockerThickskull = blocker.skills.filter( skill => skill === 'Stunty');
+    const targetStunty = blocker.skills.filter( skill => skill === 'Stunty');
+    const targetThickskull = blocker.skills.filter( skill => skill === 'Stunty');
+    const blockerMightyBlow = blocker.skills.filter( skill => skill === 'Stunty');
+    const blockerClaws = blocker.skills.filter( skill => skill === 'Stunty');
+    let stunty = false;
+    let thickSkull = false;
+    let mightyBlow = false;
+    let claws = false;
+    console.log('block data: ', blockData);
+
+    if (decision === '(player down)') {
+      // armour check
+      const armourRoll = callDice(12);
+      const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
+      console.log('armour test: ', armourCheck, armourRoll);
+      if (armourCheck) {
+        const getInjuryMessage = armourBroken(stunty, thickSkull);
+        item.setStatus(getInjuryMessage);
+        logging.push(`player is: ${getInjuryMessage}`);
+      } else {
+        item.setStatus('fallen');
+        logging.push('armour holds.');
+      }
+      // player down and turn over
+    }
+    else if (decision === '(both down)') {
+      // depends if get block or wrestle
+    }
+    else if (decision === '(push back)') {
+      // push the target
+
+      // where?
+    }
+    else if (decision === '(stumble)') {
+      // push + kd or just push if has dodge
+    }
+    else if (decision === '(pow!)') {
+      // push + kd
+    }
+    else { console.log('not found the block dice...');}
+    // update rosters to roster1 and roster 2
+    // update phase
   }
 
   // check states
