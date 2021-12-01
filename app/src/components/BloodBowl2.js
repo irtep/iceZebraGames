@@ -3,6 +3,7 @@
 Missing:
 - start of second half
 - blitz, block, pass, hand off, end turn
+- to keep it simple, i dont create reroll for blocks yet.
 
 Bugs:
 - pick up cant be rerolled atleast at reroll phase... maybe i add this later
@@ -157,24 +158,34 @@ const BloodBowl2 = ({game}) => {
     const decision = event.target.id;
     const blockData = JSON.parse(event.target.value);
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
-    let currentRoster = roster1.concat([]);
-    let opponentRoster = roster2.concat([]);
+    let copyOfRoster1 = roster1.concat([]);
+    let copyOfRoster2 = roster2.concat([]);
+    let currentRoster = copyOfRoster1;
+    let opponentRoster = copyOfRoster2;
+    let activeTeamIndex = 'team1';
 
     console.log('blocker decides: ', blockData.blockerDecides);
     if (activeTeam === 'Team 2') {
-      currentRoster = roster2.concat([]);
-      opponentRoster = roster1.concat([]);
+      currentRoster = copyOfRoster2;
+      opponentRoster = copyOfRoster1;
+      activeTeamIndex = 'team2';
     }
     let searchBlocker = currentRoster.filter( player => player.number === blockData.blocker.number);
     let searchTarget = opponentRoster.filter( player => player.number === blockData.target.number);
     const foundBlocker = searchBlocker[0];
     const foundTarget = searchTarget[0];
-    const blockerStunty = blocker.skills.filter( skill => skill === 'Stunty');
-    const blockerThickskull = blocker.skills.filter( skill => skill === 'Thick Skull');
-    const targetStunty = blocker.skills.filter( skill => skill === 'Stunty');
-    const targetThickskull = blocker.skills.filter( skill => skill === 'Thick Skull');
-    const blockerMightyBlow = blocker.skills.filter( skill => skill === 'Mighty Blow');
-    const blockerClaws = blocker.skills.filter( skill => skill === 'Claws');
+    // blockers skills
+    const blockerStunty = foundBlocker.skills.filter( skill => skill === 'Stunty');
+    const blockerThickskull = foundBlocker.skills.filter( skill => skill === 'Thick Skull');
+    const blockerMightyBlow = foundBlocker.skills.filter( skill => skill === 'Mighty Blow');
+    const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
+    const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
+    const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
+    // targets skills
+    const targetStunty = foundTarget.skills.filter( skill => skill === 'Stunty');
+    const targetThickskull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
+    const targetBlock = foundTarget.skills.filter( skill => skill === 'Block');
+    const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
     let stunty = false;
     let thickSkull = false;
     let mightyBlow = false;
@@ -202,6 +213,14 @@ const BloodBowl2 = ({game}) => {
         logging.push('armour holds.');
       }
       // player down and turn over
+      foundBlocker.preReroll.reasonWas = 'block';
+      foundBlocker.preReroll.modifierWas = 0;
+      copyOfgameObject.phase === 'turnOver';
+      setGameObject(copyOfgameObject);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      console.log('calling turn over phase from failed block ');
+      turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, foundBlocker, false);
     }
     else if (decision === '(both down)') {
       // depends if get block or wrestle
