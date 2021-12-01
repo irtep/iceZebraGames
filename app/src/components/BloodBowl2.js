@@ -4,11 +4,15 @@ Missing:
 - start of second half
 - blitz, block, pass, hand off, end turn
 - to keep it simple, i dont create reroll for blocks yet.
+- out of bound not done, atleast not correctly
+- end turn button
+- i think end activation button should be too... atleast if bugging change of guy 
 
 Bugs:
 - pick up cant be rerolled atleast at reroll phase... maybe i add this later
 - rush didnt let opportunity to reroll, with dwarf runner
 - after reroll set to ko, didnt recover its position
+- when movement left and i acticated new one the old one tried to move still...
 
 The GameBrain
 input that is gameObject
@@ -177,19 +181,25 @@ const BloodBowl2 = ({game}) => {
     // blockers skills
     const blockerStunty = foundBlocker.skills.filter( skill => skill === 'Stunty');
     const blockerThickskull = foundBlocker.skills.filter( skill => skill === 'Thick Skull');
-    const blockerMightyBlow = foundBlocker.skills.filter( skill => skill === 'Mighty Blow');
+    const blockerMightyBlow1 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (1+)');
     const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
     const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
     const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
+    const blockerTackle = foundBlocker.skills.filter( skill => skill === 'Tackle');
     // targets skills
     const targetStunty = foundTarget.skills.filter( skill => skill === 'Stunty');
     const targetThickskull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
     const targetBlock = foundTarget.skills.filter( skill => skill === 'Block');
     const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
+    const targetDodge = foundTarget.skills.filter( skill => skill === 'Dodge');
+    const targetFend = foundTarget.skills.filter( skill => skill === 'Fend');
+    const targetStandFirm = foundTarget.skills.filter( skill => skill === 'Stand Firm');
+    const targetSideStep = foundTarget.skills.filter( skill => skill === 'Side Step');
     let stunty = false;
     let thickSkull = false;
     let mightyBlow = false;
     let claws = false;
+    let turnOverComing = false;
     let logging = [];
     console.log('block data: ', blockData);
 
@@ -206,39 +216,136 @@ const BloodBowl2 = ({game}) => {
       console.log('armour test: ', armourCheck, armourRoll);
       if (armourCheck) {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
-        item.setStatus(getInjuryMessage);
+        foundBlocker.setStatus(getInjuryMessage);
         logging.push(`player is: ${getInjuryMessage}`);
       } else {
-        item.setStatus('fallen');
+        foundBlocker.setStatus('fallen');
         logging.push('armour holds.');
       }
       // player down and turn over
       foundBlocker.preReroll.reasonWas = 'block';
       foundBlocker.preReroll.modifierWas = 0;
-      copyOfgameObject.phase === 'turnOver';
+      copyOfgameObject.phase = 'turnOver';
       setGameObject(copyOfgameObject);
       setRoster1(copyOfRoster1);
       setRoster2(copyOfRoster2);
       console.log('calling turn over phase from failed block ');
-      turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, foundBlocker, false);
+      // when reroll for blocks is done, change true to false
+      turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, foundBlocker, true);
     }
     else if (decision === '(both down)') {
       // depends if get block or wrestle
+      if (blockerWrestle.length === 1) {
+        foundBlocker.setStatus('prone');
+        foundTarget.setStatus('prone');
+      }
+      else {
+        if (blockerBlock.length === 0) {
+          // armour check
+          const armourRoll = callDice(12);
+          const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
+          console.log('armour test: ', armourCheck, armourRoll);
+          if (armourCheck) {
+            const getInjuryMessage = armourBroken(stunty, thickSkull);
+            foundBlocker.setStatus(getInjuryMessage);
+            logging.push(`player is: ${getInjuryMessage}`);
+          } else {
+            foundBlocker.setStatus('fallen');
+            logging.push('armour holds.');
+          }
+          turnOverComing = true;
+        }
+        if (targetBlock.length === 0) {
+          // armour check
+          const armourRoll = callDice(12);
+          const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
+          console.log('armour test: ', armourCheck, armourRoll);
+          if (armourCheck) {
+            const getInjuryMessage = armourBroken(stunty, thickSkull);
+            foundTarget.setStatus(getInjuryMessage);
+            logging.push(`player is: ${getInjuryMessage}`);
+          } else {
+            foundTarget.setStatus('fallen');
+            logging.push('armour holds.');
+          }
+        }
+      }
     }
     else if (decision === '(push back)') {
-      // push the target
-
-      // where?
+      if (targetStandFirm.length === 0) {
+        // push the target
+        if (targetSideStep.length === 0) {
+          setMsg('set place for pushed player')
+          foundTarget.setStatus('pushed');
+        } else {
+          foundTarget.setStatus('sideStepping');
+        }
+        // where?
+        if (targetFend.length === 0) {
+          foundBlocker.setStatus('pushing');
+        }
+      }
     }
     else if (decision === '(stumble)') {
-      // push + kd or just push if has dodge
+      // push + kd or just push if has Dodge
+      if (targetDodge.length === 0) {
+        let modifier = 0;
+        if (blockerMightyBlow1.length === 1) {
+          modifier = 1;
+        }
+        // armour check
+        const armourRoll = callDice(12);
+        const armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+        console.log('armour test: ', armourCheck, armourRoll);
+        if (armourCheck) {
+          const getInjuryMessage = armourBroken(stunty, thickSkull);
+          foundTarget.setStatus(getInjuryMessage);
+          logging.push(`player is: ${getInjuryMessage}`);
+        } else {
+          foundTarget.setStatus('fallen');
+          logging.push('armour holds.');
+          // later gotta add so that can be pushed too if didnt ko or die
+        }
+      } else {
+        setMsg('set place for pushed player')
+        foundTarget.setStatus('pushed');
+      }
     }
     else if (decision === '(pow!)') {
       // push + kd
+      let modifier = 0;
+      if (blockerMightyBlow1.length === 1) {
+        modifier = 1;
+      }
+      // armour check
+      const armourRoll = callDice(12);
+      const armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+      console.log('armour test: ', armourCheck, armourRoll);
+      if (armourCheck) {
+        const getInjuryMessage = armourBroken(stunty, thickSkull);
+        foundTarget.setStatus(getInjuryMessage);
+        logging.push(`player is: ${getInjuryMessage}`);
+      } else {
+        foundTarget.setStatus('fallen');
+        logging.push('armour holds.');
+        // later gotta add so that can be pushed too if didnt ko or die
+      }
     }
     else { console.log('not found the block dice...');}
     // update rosters to roster1 and roster 2
     // update phase
+    if (turnOverComing) {
+      copyOfgameObject.phase = 'turnOver';
+      setGameObject(copyOfgameObject);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, foundBlocker, true);
+    } else {
+      copyOfgameObject.phase = 'gameplay';
+      setGameObject(copyOfgameObject);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+    }
   }
 
   // check states
@@ -445,6 +552,42 @@ const BloodBowl2 = ({game}) => {
     let newButtons = [];
     // check if action is selected
 
+    // check if pushed or side stepping
+    opponentRoster.forEach((item, i) => {
+      if (item.status === 'pushed') {
+        // check if next to pushed and if
+        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+        const convertedPosition = convertPosition(mousePosition, squareSize);
+        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+
+        setMsg('choose place to push the pushed guy (multi push not supported atm.)');
+        if (moveChecking.length === 1) {
+          item.move(mousePosition.x, mousePosition.y);
+          setLog(`${item.number} is pushed...`);
+            item.setStatus('ready');
+        } else {
+          item.setStatus('ready');
+        }
+      }
+
+      else if (item.status === 'sideStepping') {
+        // check if next to pushed and if
+        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+        const convertedPosition = convertPosition(mousePosition, squareSize);
+        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+
+        setMsg('choose place to sidestep the stepping guy');
+        if (moveChecking.length === 1) {
+          item.move(mousePosition.x, mousePosition.y);
+          setLog(`${item.number} is sidestepping...`);
+          item.setStatus('ready');
+        } else {
+          item.setStatus('ready');
+        }
+      }
+    });
+
+
     currentRoster.forEach((item, i) => {
       // check if stunty and thick skull
       const stuntyCheck = item.skills.filter( skill => skill === 'Stunty');
@@ -464,6 +607,14 @@ const BloodBowl2 = ({game}) => {
       // block and blitz
       if (item.status === 'block'  || item.status === 'blitz') {
         const actionButtons = [];
+
+        // remove older possible block statuses from friends
+        currentRoster.forEach((itemB, ib) => {
+          if (itemB.status === 'block' && ib !== i) {
+            item.setStatus('activated');
+          }
+        });
+
         opponentRoster.forEach((itemx, ix) => {
           // check from here if it was clicked
             const collision = arcVsArc(mousePosition, itemx, 10, 15);
@@ -555,7 +706,21 @@ const BloodBowl2 = ({game}) => {
             }
         });
       }
+      else if (item.status === 'pushing') {
+        // check if next to pushed and if
+        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+        const convertedPosition = convertPosition(mousePosition, squareSize);
+        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
 
+        setMsg('choose place to follow up (only that place where that guy was)');
+        if (moveChecking.length === 1) {
+          item.move(mousePosition.x, mousePosition.y);
+          setLog(`${item.number} is following up...`);
+            item.setStatus('activated');
+        } else {
+          item.setStatus('activated');
+        }
+      }
       // rush query
       else if (item.status === 'rush') {
         const rushDice = callDice(6);
