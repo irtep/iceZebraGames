@@ -20,7 +20,8 @@ export const initialBloodBowlObject = {
     foul: true,
     argue: true,
     pass: true,
-    handOff: true
+    handOff: true,
+    colors: []
   },
   team2: {
     rerolls: 0,
@@ -32,7 +33,8 @@ export const initialBloodBowlObject = {
     foul: true,
     argue: true,
     pass: true,
-    handOff: true
+    handOff: true,
+    colors: []
   },
 };
 

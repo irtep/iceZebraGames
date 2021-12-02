@@ -2,18 +2,24 @@
 
 Missing:
 - start of second half
-- blitz, block, pass, hand off, end turn
+- pass, hand off, end turn
 - to keep it simple, i dont create reroll for blocks yet.
 - out of bound not done, atleast not correctly
 - end turn button
 - i think end activation button should be too... atleast if bugging change of guy
+-
 
 Bugs:
+- something bugged everything.. got stuck to turnOver phase...
+- add "activated" button to work with prones too, now works only with move guys
+- showing all the buttons of player actions even if should not
 - pick up cant be rerolled atleast at reroll phase... maybe i add this later
 - rush didnt let opportunity to reroll, with dwarf runner
 - after reroll set to ko, didnt recover its position
 - when movement left and i acticated new one the old one tried to move still...
 - if kick off bounces to player he does not try to catch
+- when blocking, cant follow up, something changes pushing status to activated
+- when blitzing, does not save old loc
 
 The GameBrain
 input that is gameObject
@@ -116,7 +122,7 @@ const BloodBowl2 = ({game}) => {
         setDetails(presenting);
       }
     });
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball, gameObject);
     setMp(hoverDetails)
   }
 
@@ -302,7 +308,11 @@ const BloodBowl2 = ({game}) => {
         }
         // armour check
         const armourRoll = callDice(12);
-        const armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+        let armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+        if (blockerClaws.length === 1 && armourRoll > 7) {
+          console.log('claws effective');
+          armourCheck = true;
+        }
         console.log('armour test: ', armourCheck, armourRoll);
         if (armourCheck) {
           const getInjuryMessage = armourBroken(stunty, thickSkull);
@@ -339,7 +349,11 @@ const BloodBowl2 = ({game}) => {
       }
       // armour check
       const armourRoll = callDice(12);
-      const armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+      let armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
+      if (blockerClaws.length === 1 && armourRoll > 7) {
+        console.log('claws effective');
+        armourCheck = true;
+      }
       console.log('armour test: ', armourCheck, armourRoll);
       if (armourCheck) {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
@@ -901,6 +915,7 @@ const BloodBowl2 = ({game}) => {
 
         // move
         if (moveChecking.length === 1) {
+          console.log('blitz: move check is 1: ', moveChecking);
           if (moveChecking.length === 1 && item.movementLeft > 0) {
             const moving = item.move(mousePosition.x, mousePosition.y);
             logging.push(`${item.number} moves. Movement left: ${moving}`);
@@ -1016,6 +1031,8 @@ const BloodBowl2 = ({game}) => {
         } // blitzh move ends
         // block
         else {
+
+          console.log('blitz: move check is not 1: ', moveChecking);
           const actionButtons = [];
           // set status to block
           item.setStatus('block');
@@ -1256,6 +1273,7 @@ const BloodBowl2 = ({game}) => {
           const reallyStupid = item.skills.filter( skill => skill === 'Really Stupid');
           const animalSavagery = item.skills.filter( skill => skill === 'Animal Savagery');
           const collision = arcVsArc(mousePosition, item, 10, 15);
+          const bigGuyRolls = callDice(6);
           //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
 
           // for ready guys
@@ -1284,15 +1302,28 @@ const BloodBowl2 = ({game}) => {
             setMsg('choose action for this player.');
             if (boneHead.length > 0) {
               console.log('bone head detected');
+              if (bigGuyRolls === 1) {
+                item.setStatus('prone');
+                setMsg('big guy roll 1');
+              }
             }
             if (reallyStupid.length > 0) {
               console.log('really stupid detected');
+              if (bigGuyRolls === 1) {
+                item.setStatus('prone');
+                setMsg('big guy roll 1');
+              }
             }
             if (animalSavagery.length > 0) {
               console.log('animal savagery detected');
+              if (bigGuyRolls === 1) {
+                item.setStatus('prone');
+                setMsg('big guy roll 1');
+              }
             }
             // create buttons:
             newButtons.push(<button id= 'move' onClick= {actions} key = {callDice(9999)}>Move</button>);
+            newButtons.push(<button id= 'activated' onClick= {actions} key = {callDice(9999)}>End activation</button>);
             if (copyOfgameObject[activeTeamIndex].blitz) {
               newButtons.push(<button id= 'blitz' onClick= {actions}  key = {callDice(9999)}>Blitz</button>);
             }
@@ -1306,6 +1337,11 @@ const BloodBowl2 = ({game}) => {
               newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
             }
             newButtons.push(<button id= 'endTurn2' onClick= {actions} key = {callDice(9999)}>End turn</button>);
+            if (item.withBall) {
+              console.log('is with ball!');
+              newButtons.push(<button id= 'pass' onClick= {actions}  key = {callDice(9999)}>Pass</button>);
+              newButtons.push(<button id= 'handOff' onClick= {actions}  key = {callDice(9999)}>Hand off</button>);
+            }
             setActionButtons(newButtons);
           }
 
@@ -1657,7 +1693,7 @@ const BloodBowl2 = ({game}) => {
       console.log('calling gameplay from clicked as phase is so ');
       gamePlay();
     }
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball, gameObject);
   }
 
   const actions = (event) => {
@@ -1679,7 +1715,21 @@ const BloodBowl2 = ({game}) => {
       setGameObject(copyOfgameObject);
       console.log('calling startTurn from TurnOverPhase');
       startTurn(copyOfRoster1, copyOfRoster2, copyOfgameObject) ;
-    } else {
+    }
+    else if (idOfAction === 'activated') {
+      let currentRoster = copyOfRoster1;
+    //  let team2Turn = false;
+      if (activeTeam === 'Team 2') {
+        //console.log('active === team2');
+        currentRoster = copyOfRoster2;
+      //  team2Turn = true;
+      }
+      const playerWithAction = currentRoster.filter( player => player.status === 'move');
+      if (playerWithAction.length > 0) {
+        playerWithAction[0].setStatus(idOfAction);
+      }
+    }
+    else {
       //  const bothRosters = roster1.concat(roster2);
 
         let currentRoster = copyOfRoster1;
@@ -1763,11 +1813,15 @@ const BloodBowl2 = ({game}) => {
   }
 
   const quickSetup1 = () => {
-    quickAddTeam(9);
+    const mapList = [8,9,10];
+    const dice = callDice(3)-1;
+    quickAddTeam(mapList[dice]);
     setActiveTeam('Team 2');
   }
   const quickSetup2 = () => {
-    quickAddTeam(8);
+    const mapList = [11,12,13];
+    const dice = callDice(3)-1;
+    quickAddTeam(mapList[dice]);
   }
 
   const quickAddTeam =  (clickedEntry) => {
@@ -1787,6 +1841,8 @@ const BloodBowl2 = ({game}) => {
 
     copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
     copyOfgameObject[active].team = selectedTeam[0].teamName;
+    copyOfgameObject[active].colors = [selectedTeam[0].color1, selectedTeam[0].color2];
+
 
     selectedTeam[0].roster.forEach((item) => {
       const selectedPlayer = players.filter( player => item.id === player.id);
@@ -1804,7 +1860,7 @@ const BloodBowl2 = ({game}) => {
     }
 
     setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball, copyOfgameObject);
   }
 
   const addTeam =  (e) => { console.log('add team e', e);
@@ -1825,6 +1881,7 @@ const BloodBowl2 = ({game}) => {
 
     copyOfgameObject[active].rerolls = selectedTeam[0].reRolls;
     copyOfgameObject[active].team = selectedTeam[0].teamName;
+    copyOfgameObject[active].colors = [selectedTeam[0].color1, selectedTeam[0].color2]
 
     selectedTeam[0].roster.forEach((item) => {
       const selectedPlayer = players.filter( player => item.id === player.id);
@@ -1842,7 +1899,7 @@ const BloodBowl2 = ({game}) => {
     }
 
     setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
+    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball, copyOfgameObject);
   }
 
   const startGame = () => {

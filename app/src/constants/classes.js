@@ -125,18 +125,18 @@ export class Player {
     myTacklezone.forEach((item) => {
       let found = false;
       friends.forEach((item2) => {
+        //console.log('compring to friend', item2.number);
         const hisSquare = item2.getLocation();
-        if (item.x === hisSquare.gridX && item.y === hisSquare.gridY) {
+        //console.log('hisSquare.grixX and gridY ', hisSquare.x, hisSquare.y);
+        if (item.x === hisSquare.x && item.y === hisSquare.y) {
           found = true;
-          return;
         }
       });
       if (!found) {
         opponents.forEach((item2) => {
           const hisSquare = item2.getLocation();
-          if (item.x === hisSquare.gridX && item.y === hisSquare.gridY) {
+          if (item.x === hisSquare.x && item.y === hisSquare.y) {
             found = true;
-            return;
           }
         });
       }
@@ -144,6 +144,7 @@ export class Player {
         freeSquares.push(item);
       }
     });
+    console.log('returning freeSquares: ', freeSquares);
     return freeSquares;
   }
 }

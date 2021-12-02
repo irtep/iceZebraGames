@@ -3,7 +3,7 @@ import { Player } from '../constants/classes';
 import { callDice } from './supportFuncs';
 
 // draw a grid to football field
-export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
+export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball, gameObject) => {
   const baseSize = 15;
   const grid_size = 35;
   const canvas = document.getElementById(kanv);
@@ -12,6 +12,16 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
   const canvas_height = canvas.height;
   const num_lines_x = Math.floor(xLines);
   const num_lines_y = Math.floor(yLines);
+  let color11 = "rgb(190,190,190)";
+  let color12 = "white";
+  let color21 = "rgb(70,70,70)";
+  let color22 = "silver";
+  if (gameObject !== undefined) {
+    color11 = gameObject.team1.colors[0];
+    color12 = gameObject.team1.colors[1];
+    color21 = gameObject.team2.colors[0];
+    color22 = gameObject.team2.colors[1];
+  }
 
   // call clear
   ctx.clearRect(0, 0, canvas_width, canvas_height);
@@ -94,7 +104,7 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
       team1.forEach((item, i) => {
         //console.log('first guy: ', item.x, item.y);
         ctx.beginPath();
-        ctx.fillStyle = "rgb(190,190,190)";
+        ctx.fillStyle = color11;
         ctx.arc(item.x, item.y, baseSize, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -102,9 +112,9 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
         ctx.shadowOffsetY = 1;
         ctx.shadowColor = 'red';
         ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'silver';
+        ctx.fillStyle = color12;
         ctx.fillText(item.name, item.x - 30, item.y - 10);
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = color12;
         ctx.fillText(item.status, item.x - 20, item.y);
         ctx.fillText(item.number, item.x - 10, item.y + 10);
         if (item.status === 'move') {
@@ -117,7 +127,7 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
       team2.forEach((item, i) => {
         //console.log('first guy: ', item.x, item.y);
         ctx.beginPath();
-        ctx.fillStyle = "rgb(70,70,70)";
+        ctx.fillStyle = color21;
         ctx.arc(item.x, item.y, baseSize, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -125,9 +135,9 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball) => {
         ctx.shadowOffsetY = 1;
         ctx.shadowColor = 'blue';
         ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'silver';
+        ctx.fillStyle = color22;
         ctx.fillText(item.name, item.x - 30, item.y - 10);
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = color22;
         ctx.fillText(item.status, item.x - 20, item.y);
         ctx.fillText(item.number, item.x - 10, item.y + 10);
         if (item.status === 'move') {

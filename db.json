@@ -470,6 +470,8 @@
     {
       "teamName": "Pupuhuhta Pirates (1 150k)",
       "reRolls": 2,
+      "color1": "black",
+      "color2": "gold",
       "roster": [
         {
           "name": "Imperial Lineman",
@@ -609,6 +611,8 @@
     {
       "teamName": "Lurin Vikings (1 150k)",
       "reRolls": 4,
+      "color1": "purple",
+      "color2": "gold",
       "roster": [
         {
           "name": "Dwarf Runner",
@@ -748,6 +752,8 @@
     {
       "teamName": "Malta Predators (1 150k)",
       "reRolls": 3,
+      "color1": "forestGreen",
+      "color2": "gold",
       "roster": [
         {
           "name": "Goblin Bruiser Lineman",
@@ -909,6 +915,8 @@
     {
       "teamName": "Cork Dolphins",
       "reRolls": 2,
+      "color1": "aqua",
+      "color2": "crimson",
       "roster": [
         {
           "name": "Zombie Lineman",
@@ -1048,6 +1056,8 @@
     {
       "teamName": "Jyp (1 150k g)",
       "reRolls": 3,
+      "color1": "black",
+      "color2": "red",
       "roster": [
         {
           "name": "Skaven Lineman",
@@ -1198,6 +1208,8 @@
     {
       "teamName": "JYP (not RA 1 150k)",
       "reRolls": 4,
+      "color1": "black",
+      "color2": "red",
       "roster": [
         {
           "name": "Thrower",
@@ -1348,6 +1360,8 @@
     {
       "teamName": "Predators (1M)",
       "reRolls": 2,
+      "color1": "forestGreen",
+      "color2": "gold",
       "roster": [
         {
           "name": "Trained Troll",
@@ -1476,6 +1490,8 @@
     {
       "teamName": "Vikings (1M)",
       "reRolls": 2,
+      "color1": "purple",
+      "color2": "gold",
       "roster": [
         {
           "name": "Dwarf Slayer",
@@ -1604,6 +1620,8 @@
     {
       "teamName": "Pirates (1M)",
       "reRolls": 2,
+      "color1": "black",
+      "color2": "gold",
       "roster": [
         {
           "name": "Bodyguard",
@@ -1730,8 +1748,10 @@
       "id": 9
     },
     {
-      "teamName": "JYP (1M)",
+      "teamName": "Ratpool (1M)",
       "reRolls": 2,
+      "color1": "red",
+      "color2": "gold",
       "roster": [
         {
           "name": "Gutter Runner",
@@ -1871,6 +1891,8 @@
     {
       "teamName": "Dolphins (1M)",
       "reRolls": 0,
+      "color1": "aqua",
+      "color2": "crimson",
       "roster": [
         {
           "name": "Flesh Golem",
@@ -2008,8 +2030,10 @@
       "id": 11
     },
     {
-      "teamName": "Ratpool (1M)",
+      "teamName": "Ratpool (1M)2",
       "reRolls": 2,
+      "color1": "red",
+      "color2": "gold",
       "roster": [
         {
           "name": "Blitzer",
@@ -2138,6 +2162,8 @@
     {
       "teamName": "Ratpool (1M) w/RO/wo/B",
       "reRolls": 2,
+      "color1": "red",
+      "color2": "gold",
       "roster": [
         {
           "name": "Gutter Runner",
@@ -2288,6 +2314,8 @@
     {
       "teamName": "Ratpool (1M) wo/RO",
       "reRolls": 3,
+      "color1": "red",
+      "color2": "gold",
       "roster": [
         {
           "name": "Gutter Runner",
