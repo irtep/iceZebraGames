@@ -6,13 +6,14 @@ Missing:
 - to keep it simple, i dont create reroll for blocks yet.
 - out of bound not done, atleast not correctly
 - end turn button
-- i think end activation button should be too... atleast if bugging change of guy 
+- i think end activation button should be too... atleast if bugging change of guy
 
 Bugs:
 - pick up cant be rerolled atleast at reroll phase... maybe i add this later
 - rush didnt let opportunity to reroll, with dwarf runner
 - after reroll set to ko, didnt recover its position
 - when movement left and i acticated new one the old one tried to move still...
+- if kick off bounces to player he does not try to catch
 
 The GameBrain
 input that is gameObject
@@ -202,6 +203,10 @@ const BloodBowl2 = ({game}) => {
     let turnOverComing = false;
     let logging = [];
     console.log('block data: ', blockData);
+    foundBlocker.preReroll = {
+      reasonWas: '',
+      modifierWas: 0
+    }
 
     if (decision === '(player down)') {
       if (blockerStunty.length === 1) {
@@ -283,6 +288,8 @@ const BloodBowl2 = ({game}) => {
         // where?
         if (targetFend.length === 0) {
           foundBlocker.setStatus('pushing');
+        } else {
+          foundBlocker.setStatus('activated');
         }
       }
     }
@@ -301,14 +308,27 @@ const BloodBowl2 = ({game}) => {
           const getInjuryMessage = armourBroken(stunty, thickSkull);
           foundTarget.setStatus(getInjuryMessage);
           logging.push(`player is: ${getInjuryMessage}`);
+          if (getInjuryMessage === 'stunned') {
+            foundTarget.setStatus('pushedStunned');
+            if (targetFend.length === 0) {
+              foundBlocker.setStatus('pushing');
+            }
+          }
         } else {
-          foundTarget.setStatus('fallen');
+          if (targetFend.length === 0) {
+            console.log('setting to pushing');
+            foundBlocker.setStatus('pushing');
+          }
+          foundTarget.setStatus('pushedFallen');
           logging.push('armour holds.');
           // later gotta add so that can be pushed too if didnt ko or die
         }
       } else {
         setMsg('set place for pushed player')
         foundTarget.setStatus('pushed');
+        if (targetFend.length === 0) {
+          foundBlocker.setStatus('pushing');
+        }
       }
     }
     else if (decision === '(pow!)') {
@@ -325,8 +345,17 @@ const BloodBowl2 = ({game}) => {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
         foundTarget.setStatus(getInjuryMessage);
         logging.push(`player is: ${getInjuryMessage}`);
+        if (getInjuryMessage === 'stunned') {
+          foundTarget.setStatus('pushedStunned');
+          if (targetFend.length === 0) {
+            foundBlocker.setStatus('pushing');
+          }
+        }
       } else {
-        foundTarget.setStatus('fallen');
+        if (targetFend.length === 0) {
+          foundBlocker.setStatus('pushing');
+        }
+        foundTarget.setStatus('pushedFallen');
         logging.push('armour holds.');
         // later gotta add so that can be pushed too if didnt ko or die
       }
@@ -554,19 +583,23 @@ const BloodBowl2 = ({game}) => {
 
     // check if pushed or side stepping
     opponentRoster.forEach((item, i) => {
-      if (item.status === 'pushed') {
+      if (item.status === 'pushed' || item.status === 'pushedStunned' || item.status === 'pushedFallen') {
         // check if next to pushed and if
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
         const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+        let nextStatus = 'activated';
 
-        setMsg('choose place to push the pushed guy (multi push not supported atm.)');
+        if (item.status === 'pushedStunned') { nextStatus = 'stunned'}
+        if (item.status === 'pushedFallen') { nextStatus = 'fallen'}
+
+        setMsg('choose place to push the pushed guy (chain push not supported atm.)');
         if (moveChecking.length === 1) {
           item.move(mousePosition.x, mousePosition.y);
           setLog(`${item.number} is pushed...`);
-            item.setStatus('ready');
+            item.setStatus(nextStatus);
         } else {
-          item.setStatus('ready');
+          item.setStatus(nextStatus);
         }
       }
 
@@ -604,13 +637,19 @@ const BloodBowl2 = ({game}) => {
       if (stuntyCheck.length === 1) {stunty = true;}
       if (thickSkullCheck.length === 1) {thickSkull = true;}
 
-      // block and blitz
-      if (item.status === 'block'  || item.status === 'blitz') {
+      // block
+      if (item.status === 'block') {
         const actionButtons = [];
 
         // remove older possible block statuses from friends
         currentRoster.forEach((itemB, ib) => {
           if (itemB.status === 'block' && ib !== i) {
+            item.setStatus('activated');
+          }
+        });
+        // also for move and blitz
+        currentRoster.forEach((itemB, ib) => {
+          if ((itemB.status === 'move' || item.status === 'blitz') && ib !== i) {
             item.setStatus('activated');
           }
         });
@@ -850,6 +889,242 @@ const BloodBowl2 = ({game}) => {
         }
       }
 
+      // blitz
+      else if (item.status === 'blitz') {
+        const checkIfMarked = item.markedBy(opponentRoster);
+        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+        const convertedPosition = convertPosition(mousePosition, squareSize);
+        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+        let logging = [`${item.number} is blitzing...`];
+        //console.log('marked: ', checkIfMarked);
+        copyOfgameObject[activeTeamIndex].blitz = false;
+
+        // move
+        if (moveChecking.length === 1) {
+          if (moveChecking.length === 1 && item.movementLeft > 0) {
+            const moving = item.move(mousePosition.x, mousePosition.y);
+            logging.push(`${item.number} moves. Movement left: ${moving}`);
+          }
+
+          if (item.movementLeft < 1) {
+            if (item.rushes > 0) {
+              item.setStatus('moved');
+              // remove all others moved to activated
+              currentRoster.forEach((item2, i2) => {
+                if (i !== i2 && item2.status === 'moved') {
+                  item2.setStatus('activated');
+                }
+              });
+            } else {
+              item.setStatus('activated');
+            }
+          }
+
+          if (checkIfMarked.length > 0) {
+            // moving from marked place
+            const newMarkCheck = item.markedBy(opponentRoster);
+            let modifier = 0;
+            console.log('new mark check: ', newMarkCheck);
+            if (newMarkCheck.length > 0) {
+              modifier = -1;
+            }
+            logging.push('... he is marked');
+
+            if (stunty.length > 0) {
+              modifier = 0;
+            }
+
+            const dexCheck = item.skillTest('ag', callDice(6), modifier)
+
+            if (dexCheck) {
+              item.move(mousePosition.x, mousePosition.y);
+              logging.push('...passes agility check!');
+            } else {
+              // turn over!
+              // save old data if user selects reroll
+              item.preReroll = {
+                gameObject: copyOfgameObject,
+                roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+                roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+                reasonWas: 'dodge',
+                skillWas: 'ag',
+                modifierWas: modifier,
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+              }
+              logging.push('... he falls! Turn over!');
+              item.withBall = false;
+              // armour check
+              const armourRoll = callDice(12);
+              const armourCheck = item.skillTest('av', armourRoll, 0);
+              console.log('armour test: ', armourCheck, armourRoll);
+              if (armourCheck) {
+                const getInjuryMessage = armourBroken(stunty, thickSkull);
+                item.setStatus(getInjuryMessage);
+                logging.push(`player is: ${getInjuryMessage}`);
+              } else {
+                item.setStatus('fallen');
+                logging.push('armour holds.');
+              }
+
+              console.log('setting old data: ', preReroll);
+  //            preReroll.who = item;
+    //          setOldData(preReroll);
+              copyOfgameObject.phase = 'turnOver';
+              setRoster1(copyOfRoster1);
+              setRoster2(copyOfRoster2);
+              setGameObject(copyOfgameObject);
+            }
+            setLog(logging);
+          }  // if marked when start to move ends
+          //console.log('phase is: ', copyOfgameObject.phase);
+          if (copyOfgameObject.phase === 'turnOver') {
+            //console.log('phase is turn over');
+            // (copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2)
+            console.log('calling turnOverPhase from gamePlay (movement)');
+            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
+          }
+          // try to pick up the ball if at same place
+          const ifAtBall = checkIfBallLocation(item.getLocation());
+          if (ifAtBall) {
+            const tryingToPick = pickUpAction(item, opponentRoster);
+            if (tryingToPick) {
+              console.log(item.number, ' got the ball');
+              item.withBall = true;
+            } else {
+              // turn over if does not choose to reroll
+              // save old data if user selects reroll
+              // make modifier
+              const markers = item.markedBy(opponentRoster);
+              let modifier = 0;
+              if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+              item.preReroll = {
+      //          gameObject: copyOfgameObject,
+                roster1: JSON.parse(JSON.stringify(copyOfRoster1)),
+                roster2: JSON.parse(JSON.stringify(copyOfRoster2)),
+                reasonWas: 'pickUp',
+                skillWas: 'ag',
+                modifierWas: modifier,
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+              }
+              copyOfgameObject.phase = 'turnOver';
+              setRoster1(copyOfRoster1);
+              setRoster2(copyOfRoster2);
+              setGameObject(copyOfgameObject);
+              turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
+            }
+          }
+        } // blitzh move ends
+        // block
+        else {
+          const actionButtons = [];
+          // set status to block
+          item.setStatus('block');
+          // remove older possible block statuses from friends
+          currentRoster.forEach((itemB, ib) => {
+            if (itemB.status === 'block' && ib !== i) {
+              item.setStatus('activated');
+            }
+          });
+          // also for move and blitz
+          currentRoster.forEach((itemB, ib) => {
+            if ((itemB.status === 'move' || item.status === 'blitz') && ib !== i) {
+              item.setStatus('activated');
+            }
+          });
+
+          opponentRoster.forEach((itemx, ix) => {
+            // check from here if it was clicked
+              const collision = arcVsArc(mousePosition, itemx, 10, 15);
+
+              if (collision) {
+                const markers = item.markedBy(opponentRoster);
+                console.log('block targets: ', markers);
+
+                if (markers.length > 0) {
+                  markers.forEach((itemm, im) => {
+                    if (itemm.number === itemx.number && itemm.name === itemx.name) {
+                      itemm.setStatus('target');
+                      targetClicked = true;
+
+                      if (targetClicked) {
+                        // get strengths
+                        let blockerSt = item.st;
+                        let targetSt = itemm.st;
+                        let blockerModifier = 0;
+                        let targetModifier = 0;
+                        let dices = [bloodBowlDices('1bd')];
+                        let blockerDecides = true;
+
+                        if (dauntlessCheck.length > 0 && targetSt > blockerSt) {
+                          const dauntlessDice = callDice(6);
+                          console.log('dauntless');
+                          if (dauntlessDice > (targetSt - blockerSt)) {
+                            blockerSt = targetSt
+                            console.log('dauntless evens up');
+                          } else {
+                            console.log('dauntless didnt help, rolled: ', dauntlessDice);
+                          }
+                        }
+
+                        // check helpers
+                        const blockersFriends = itemm.markedBy(currentRoster);
+                        const targetsFriends = item.markedBy(opponentRoster);
+                        blockersFriends.forEach((itemBf) => {
+                          const markingThis = itemBf.markedBy(opponentRoster);
+                          if (markingThis.length === 0) {
+                            blockerModifier++;
+                          }
+                        });
+                        targetsFriends.forEach((itemBf) => {
+                          const markingThis = itemBf.markedBy(currentRoster);
+                          if (markingThis.length === 0) {
+                            targetModifier++;
+                          }
+                        });
+                        // block dices
+                        if ( (blockerSt + blockerModifier) < (targetSt + targetModifier) ) {
+                          blockerDecides = false;
+                        }
+                        // second dice
+                        if ( (blockerSt + blockerModifier) !== (targetSt + targetModifier) ) {
+                          dices.push(bloodBowlDices('1bd'));
+                        }
+                        // third dice
+                        if ( ((blockerSt + blockerModifier) * 2) < (targetSt + targetModifier) ||
+                             (blockerSt + blockerModifier) > ((targetSt + targetModifier) * 2)) {
+                          dices.push(bloodBowlDices('1bd'));
+                        }
+                        console.log('blocker decides, dices: ', blockerDecides, dices);
+                        copyOfgameObject.phase = 'blockQuery';
+                        const blocker = JSON.parse(JSON.stringify(item));
+                        const target = JSON.parse(JSON.stringify(itemm));
+                        const blockData = {
+                          blocker: blocker,
+                          target: target,
+                          blockerDecides: blockerDecides
+                        };
+                        const envelope = JSON.stringify(blockData);
+                        dices.forEach((itemD) => {
+                          const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
+                          actionButtons.push(dice);
+                        });
+                        if (blockerDecides) {
+                          setMsg('active team, choose the dice!');
+                        } else {
+                          setMsg('non active team, choose the dice!');
+                        }
+                        setActionButtons(actionButtons);
+                        setGameObject(copyOfgameObject);
+                        // need to check that target and block are cleared too and complete this..
+                      } // target clicked ends
+                    }
+                  });
+                }
+              }
+          });
+        } // blitz block ends
+
+      }
       // move
       else if (item.status === 'move' && copyOfgameObject.phase !== 'turnOver') {
         const checkIfMarked = item.markedBy(opponentRoster);
@@ -971,7 +1246,6 @@ const BloodBowl2 = ({game}) => {
             turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
           }
         }
-        // if fails ask if wants to reroll
       } // move  ends
 
       // the rest
@@ -1031,7 +1305,7 @@ const BloodBowl2 = ({game}) => {
             if (copyOfgameObject[activeTeamIndex].handOff) {
               newButtons.push(<button id= 'handOff' onClick= {actions} key = {callDice(9999)}>HandOff</button>);
             }
-            newButtons.push(<button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>);
+            newButtons.push(<button id= 'endTurn2' onClick= {actions} key = {callDice(9999)}>End turn</button>);
             setActionButtons(newButtons);
           }
 
@@ -1388,30 +1662,46 @@ const BloodBowl2 = ({game}) => {
 
   const actions = (event) => {
     const idOfAction = event.target.id;
-    console.log('idofaction ', idOfAction);
-  //  const bothRosters = roster1.concat(roster2);
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
-    let currentRoster = copyOfRoster1;
-  //  let team2Turn = false;
-    if (activeTeam === 'Team 2') {
-      //console.log('active === team2');
-      currentRoster = copyOfRoster2;
-    //  team2Turn = true;
-    }
-    const playerWithAction = currentRoster.filter( player => player.status === 'ACTIVE');
+    console.log('idofaction ', idOfAction);
+    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
-    // might happen so that set is too slow and this is notnig...
-    if (playerWithAction.length > 0) {
-      playerWithAction[0].setStatus(idOfAction);
-      // move
-      if (idOfAction === 'move') {
-        setMsg(`select next square to move for ${playerWithAction[0].number}. When ready, activate next player or terminate turn.`);
+    if (idOfAction === 'endTurn' || idOfAction === 'endTurn2') {
+      // start turn over sequince
+      setMsg('change of turn!');
+      copyOfgameObject.phase = 'startTurn';
+      if (activeTeam === 'Team 1') {
+        setActiveTeam('Team 2');
+      } else {
+        setActiveTeam('Team 1');
       }
-      setRoster1(copyOfRoster1);
-      setRoster2(copyOfRoster2);
-    }
+      setGameObject(copyOfgameObject);
+      console.log('calling startTurn from TurnOverPhase');
+      startTurn(copyOfRoster1, copyOfRoster2, copyOfgameObject) ;
+    } else {
+      //  const bothRosters = roster1.concat(roster2);
 
+        let currentRoster = copyOfRoster1;
+      //  let team2Turn = false;
+        if (activeTeam === 'Team 2') {
+          //console.log('active === team2');
+          currentRoster = copyOfRoster2;
+        //  team2Turn = true;
+        }
+        const playerWithAction = currentRoster.filter( player => player.status === 'ACTIVE');
+
+        // might happen so that set is too slow and this is notnig...
+        if (playerWithAction.length > 0) {
+          playerWithAction[0].setStatus(idOfAction);
+          // move
+          if (idOfAction === 'move') {
+            setMsg(`select next square to move for ${playerWithAction[0].number}. When ready, activate next player or terminate turn.`);
+          }
+          setRoster1(copyOfRoster1);
+          setRoster2(copyOfRoster2);
+        }
+    }
   }
 
   const statuses = (e) => {
@@ -1680,6 +1970,7 @@ const BloodBowl2 = ({game}) => {
           <button id= "d3" onClick= {diceThrow}>d3</button>
           <button id= "d8" onClick= {diceThrow}>d8</button>
           <button id= "d16" onClick= {diceThrow}>d16</button>
+          <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
           <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
           {dices}
