@@ -10,6 +10,8 @@ Missing:
 -
 
 Bugs:
+- if you dont "end activation" while movement left you get a bug 
+- when blitzed ball carrier it lost the ball, but it seems that it didnt lose the withBall
 - something bugged everything.. got stuck to turnOver phase...
 - add "activated" button to work with prones too, now works only with move guys
 - showing all the buttons of player actions even if should not
@@ -18,7 +20,7 @@ Bugs:
 - after reroll set to ko, didnt recover its position
 - when movement left and i acticated new one the old one tried to move still...
 - if kick off bounces to player he does not try to catch
-- when blocking, cant follow up, something changes pushing status to activated
+- when blocking, cant follow up, something changes pushing status to activated. it changes when moved pushed guy
 - when blitzing, does not save old loc
 
 The GameBrain
@@ -133,20 +135,7 @@ const BloodBowl2 = ({game}) => {
       setActiveTeam('Team 2');
     }
   }
-/*
-  const updateBallLocation = () => {
-    roster1.forEach((item, i) => {
-      if (item.withBall) {
-        setBall({x: item.x, y: item.y})
-      }
-    });
-    roster2.forEach((item, i) => {
-      if (item.withBall) {
-        setBall({x: item.x, y: item.y})
-      }
-    });
-  }
-*/
+
   const checkIfBallLocation = (loc) => {
     const gridLocOfBall = {x: Math.trunc( ball.x / 35 ), y: Math.trunc( ball.y / 35 )};
     if (gridLocOfBall.x === loc.x && gridLocOfBall.y === loc.y) {
@@ -157,14 +146,6 @@ const BloodBowl2 = ({game}) => {
     }
   }
 
-/*
-'(player down)',
-'(both down)',
-'(push back)',
-'(push back)',
-'(stumble)',
-'(pow!)'
-*/
   const block = (event) => {
     const decision = event.target.id;
     const blockData = JSON.parse(event.target.value);
@@ -1021,11 +1002,13 @@ const BloodBowl2 = ({game}) => {
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
               }
+              setBall(bounce(callDice(8), ball));
               copyOfgameObject.phase = 'turnOver';
               setRoster1(copyOfRoster1);
               setRoster2(copyOfRoster2);
               setGameObject(copyOfgameObject);
-              turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
+              // at the moment cant be rerolled as not coded and tested
+              turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, true);
             }
           }
         } // blitzh move ends
@@ -1256,11 +1239,14 @@ const BloodBowl2 = ({game}) => {
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
             }
+            // ball bounces
+            setBall(bounce(callDice(8), ball));
             copyOfgameObject.phase = 'turnOver';
             setRoster1(copyOfRoster1);
             setRoster2(copyOfRoster2);
             setGameObject(copyOfgameObject);
-            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, false);
+            // disabled reroll posibility for now as not yet coded
+            turnOverPhase(copyOfgameObject, activeTeamIndex, copyOfRoster1, copyOfRoster2, item, true);
           }
         }
       } // move  ends
@@ -1597,7 +1583,7 @@ const BloodBowl2 = ({game}) => {
       // refresh players
       console.log('refreshing players');
       opponentRoster.forEach((item, i) => {
-        if (item.status === 'activated' || item.status === 'moved') {
+        if (item.status === 'activated' || item.status === 'target' || item.status === 'moved' || item.status === 'move' || item.status === 'block' || item.status === 'blitz' || item.status === 'pass' || item.status === 'handOff') {
           console.log(item.name, ' set to ready');
           item.setStatus('ready');
           item.refreshMovement();
