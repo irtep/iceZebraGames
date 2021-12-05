@@ -10,7 +10,7 @@ Missing:
 -
 
 Bugs:
-- if you dont "end activation" while movement left you get a bug 
+- if you dont "end activation" while movement left you get a bug
 - when blitzed ball carrier it lost the ball, but it seems that it didnt lose the withBall
 - something bugged everything.. got stuck to turnOver phase...
 - add "activated" button to work with prones too, now works only with move guys
@@ -576,8 +576,28 @@ const BloodBowl2 = ({game}) => {
     let newButtons = [];
     // check if action is selected
 
+    // check if pusher follows
+    currentRoster.forEach((item, i) => {
+      if (item.status === 'pushQuery') {
+        // check if next to pushed and if
+        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
+        const convertedPosition = convertPosition(mousePosition, squareSize);
+        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
+
+        setMsg('choose place to follow up (only that place where that guy was)');
+        if (moveChecking.length === 1) {
+          item.move(mousePosition.x, mousePosition.y);
+          setLog(`${item.number} is following up...`);
+            item.setStatus('activated');
+        } else {
+          item.setStatus('activated');
+        }
+      }
+    });
+
     // check if pushed or side stepping
     opponentRoster.forEach((item, i) => {
+
       if (item.status === 'pushed' || item.status === 'pushedStunned' || item.status === 'pushedFallen') {
         // check if next to pushed and if
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
@@ -613,8 +633,14 @@ const BloodBowl2 = ({game}) => {
           item.setStatus('ready');
         }
       }
-    });
 
+      // check if wants to follow up
+      currentRoster.forEach((itemBB, ibb) => {
+        if (itemBB.status === 'pushing') {
+          itemBB.setStatus('pushQuery');
+        }
+      });
+    });
 
     currentRoster.forEach((item, i) => {
       // check if stunty and thick skull
@@ -740,21 +766,12 @@ const BloodBowl2 = ({game}) => {
             }
         });
       }
-      else if (item.status === 'pushing') {
-        // check if next to pushed and if
-        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
-        const convertedPosition = convertPosition(mousePosition, squareSize);
-        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
 
-        setMsg('choose place to follow up (only that place where that guy was)');
-        if (moveChecking.length === 1) {
-          item.move(mousePosition.x, mousePosition.y);
-          setLog(`${item.number} is following up...`);
-            item.setStatus('activated');
-        } else {
+      // resets pusher
+      else if (item.status === 'pushQuery') {
           item.setStatus('activated');
-        }
       }
+
       // rush query
       else if (item.status === 'rush') {
         const rushDice = callDice(6);
@@ -1391,7 +1408,7 @@ const BloodBowl2 = ({game}) => {
 //    team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
     //copyOfgameObject.phase = 'gamePlay';
     const deviationRoll = callDice(8);
-    const deviationDistance = callDice(6);
+    const deviationDistance = callDice(5); 
     const bounceRoll = callDice(8);
     let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
     setBall(placeOfBall);
