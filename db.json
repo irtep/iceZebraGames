@@ -166,7 +166,7 @@
       "id": 16
     },
     {
-      "name": "Iron Bra",
+      "name": "Iron bra",
       "team": "Wood Elf",
       "game": "blood bowl",
       "stats": "MA 7 ST 2 AG 2+ PA 2+ AV 8+ ",
@@ -464,6 +464,116 @@
       "cost": "150000",
       "img": "ratogre",
       "id": 41
+    },
+    {
+      "name": "Dark Elf",
+      "team": "Dark Elf",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+      "skills": "-",
+      "specialRules": "-",
+      "cost": "70000",
+      "img": "delf",
+      "id": 42
+    },
+    {
+      "name": "Runner",
+      "team": "Dark Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
+      "skills": "Dump-off",
+      "specialRules": "-",
+      "cost": "80000",
+      "img": "delf",
+      "id": 43
+    },
+    {
+      "name": "Blitzer",
+      "team": "Dark Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+      "skills": "Block",
+      "specialRules": "-",
+      "cost": "100000",
+      "img": "delf",
+      "id": 44
+    },
+    {
+      "name": "Assassin",
+      "team": "Dark Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+      "skills": "Shadowing, Stab",
+      "specialRules": "-",
+      "cost": "85000",
+      "img": "delf",
+      "id": 45
+    },
+    {
+      "name": "Witch elf",
+      "team": "Dark Elf",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+      "skills": "Dodge, Frenzy, Jump Up",
+      "specialRules": "-",
+      "cost": "110000",
+      "img": "delf",
+      "id": 46
+    },
+    {
+      "name": "Skeleton",
+      "team": "Undead",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 3 AG 4+ PA 6+ AV 8+",
+      "skills": "Regeneration, Thick Skull",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "skeleton",
+      "id": 47
+    },
+    {
+      "name": "Zombie",
+      "team": "Undead",
+      "game": "blood bowl",
+      "stats": "MA 4 ST 3 AG 4+ PA 6+ AV 9+",
+      "skills": "Regeneration",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "zombie",
+      "id": 48
+    },
+    {
+      "name": "Ghoul",
+      "team": "Undead",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+      "skills": "Dodge",
+      "specialRules": "-",
+      "cost": "75000",
+      "img": "ghoul",
+      "id": 49
+    },
+    {
+      "name": "Wight",
+      "team": "Undead",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+      "skills": "Block, Regeneration",
+      "specialRules": "-",
+      "cost": "90000",
+      "img": "wight",
+      "id": 50
+    },
+    {
+      "name": "Mummy",
+      "team": "Undead",
+      "game": "blood bowl",
+      "stats": "MA 3 ST 5 AG 5+ PA 6+ AV 10+",
+      "skills": "Mighty Blow (+1), Regeneration",
+      "specialRules": "-",
+      "cost": "125000",
+      "img": "mummy",
+      "id": 51
     }
   ],
   "teams": [
@@ -2462,6 +2572,548 @@
         }
       ],
       "id": 14
+    },
+    {
+      "teamName": "Alianza Underdark 1M",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Runner",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
+          "skills": "Dump-off",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "delf",
+          "id": 43
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Runner",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
+          "skills": "Dump-off",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "delf",
+          "id": 43
+        },
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Assassin",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+          "skills": "Shadowing, Stab",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "delf",
+          "id": 45
+        },
+        {
+          "name": "Assassin",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+          "skills": "Shadowing, Stab",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "delf",
+          "id": 45
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        }
+      ],
+      "color1": "black",
+      "color2": "silver",
+      "id": 15
+    },
+    {
+      "teamName": "Pirates w/ogre (1M)",
+      "reRolls": 1,
+      "roster": [
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Ogre",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 5+ AV 10+",
+          "skills": "Bone Head, Loner (4+), Mighty Blow (1+), Thick Skull, Throw Team-mate",
+          "specialRules": "-",
+          "cost": "140000",
+          "img": "imperialLineman",
+          "id": 6
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        }
+      ],
+      "color1": "black",
+      "color2": "gold",
+      "id": 16
+    },
+    {
+      "teamName": "Cowboys from hell (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Skeleton",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA 6+ AV 8+",
+          "skills": "Regeneration, Thick Skull",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "skeleton",
+          "id": 47
+        },
+        {
+          "name": "Skeleton",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA 6+ AV 8+",
+          "skills": "Regeneration, Thick Skull",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "skeleton",
+          "id": 47
+        },
+        {
+          "name": "Zombie",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 6+ AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 48
+        },
+        {
+          "name": "Zombie",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 6+ AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 48
+        },
+        {
+          "name": "Ghoul",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 49
+        },
+        {
+          "name": "Ghoul",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 49
+        },
+        {
+          "name": "Wight",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Block, Regeneration",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "wight",
+          "id": 50
+        },
+        {
+          "name": "Wight",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Block, Regeneration",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "wight",
+          "id": 50
+        },
+        {
+          "name": "Mummy",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 3 ST 5 AG 5+ PA 6+ AV 10+",
+          "skills": "Mighty Blow (+1), Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "mummy",
+          "id": 51
+        },
+        {
+          "name": "Mummy",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 3 ST 5 AG 5+ PA 6+ AV 10+",
+          "skills": "Mighty Blow (+1), Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "mummy",
+          "id": 51
+        },
+        {
+          "name": "Skeleton",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA 6+ AV 8+",
+          "skills": "Regeneration, Thick Skull",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "skeleton",
+          "id": 47
+        },
+        {
+          "name": "Skeleton",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 4+ PA 6+ AV 8+",
+          "skills": "Regeneration, Thick Skull",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "skeleton",
+          "id": 47
+        },
+        {
+          "name": "Zombie",
+          "team": "Undead",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA 6+ AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 48
+        }
+      ],
+      "color1": "orange",
+      "color2": "black",
+      "id": 17
+    },
+    {
+      "teamName": "Dolphins v2 (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Zombie Lineman",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 3 AG 4+ PA - AV 9+",
+          "skills": "Regeneration",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "zombie",
+          "id": 32
+        },
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        },
+        {
+          "name": "Flesh Golem",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA - AV 10+",
+          "skills": "Regeneration, Stand Firm, Thick Skull",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "fleshGolem",
+          "id": 36
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Wraith",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA - AV 9+",
+          "skills": "Block, Foul Appearance, No Hands, Regeneration, Side Step",
+          "specialRules": "-",
+          "cost": "95000",
+          "img": "wraith",
+          "id": 34
+        },
+        {
+          "name": "Werewolf",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 8 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Claws, Frenzy, Regeneration",
+          "specialRules": "-",
+          "cost": "125000",
+          "img": "werewolf",
+          "id": 35
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        },
+        {
+          "name": "Ghoul Runner",
+          "team": "Necromantic Horror",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "ghoul",
+          "id": 33
+        }
+      ],
+      "color1": "aquamarine",
+      "color2": "black",
+      "id": 18
     }
   ],
   "whArmies": [

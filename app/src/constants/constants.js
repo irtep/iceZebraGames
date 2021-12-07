@@ -99,7 +99,9 @@ export const rerollPrices = [
   {team : 'Ogre', price: 70000},
   {team : 'Goblin', price: 60000},
   {team : 'Necromantic Horror', price: 70000},
-  {team : 'Skaven', price: 50000}
+  {team : 'Skaven', price: 50000},
+  {team : 'Dark Elf', price: 50000},
+  {team : 'Undead', price: 70000}
 ];
 
 // warmachine factions

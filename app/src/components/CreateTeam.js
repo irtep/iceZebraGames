@@ -13,6 +13,8 @@ const CreateTeam = () => {
   const [newRoster, setNewRoster] = useState([]);
   const [cost, setCost] = useState(0);
   const [rerolls, setRerolls] = useState(0);
+  const [color1, setColor1] = useState('black');
+  const [color2, setColor2] = useState('silver');
   //const [reRolls, setRerolls] = useState(0);
 
   // when this app is loaded
@@ -86,7 +88,9 @@ const CreateTeam = () => {
     const newTeam = {
       teamName: teamName,
       reRolls: rerolls,
-      roster: newRoster
+      roster: newRoster,
+      color1: color1,
+      color2: color2
     }
     if (teamName !== '' && newRoster.length > 0) {
       saveTeam(newTeam);
@@ -167,6 +171,18 @@ const CreateTeam = () => {
             type="text"
             value={ teamName }
             onChange={({ target }) => setTeamName(target.value)}
+          />
+          <input
+            id= "firstColor"
+            type="text"
+            value={ color1 }
+            onChange={({ target }) => setColor1(target.value)}
+          />
+          <input
+            id= "secondColor"
+            type="text"
+            value={ color2 }
+            onChange={({ target }) => setColor2(target.value)}
           />
         </div>
         <br/>
