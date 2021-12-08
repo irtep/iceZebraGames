@@ -61,7 +61,7 @@ const BloodBowl2 = ({game}) => {
   const [roster2, setRoster2] = useState ([]);
   const [gameObject, setGameObject] = useState (initialBloodBowlObject);
   const [mousePosition, setMp] = useState('');
-//  const [action, setAction] = useState('nothing');
+  const [action, setAction] = useState('nothing');
   const [dices, setDices] = useState('');
   const [details, setDetails] = useState('');
   const [ball, setBall] = useState({x:10, y:10});
@@ -1878,6 +1878,44 @@ const BloodBowl2 = ({game}) => {
   //    activeTeamIndex = "team2";
     }
 
+    if (action === 'moveBall') {
+      console.log('action at set ball');
+      const newPosition = {x: mousePosition.x, y: mousePosition.y};
+      // set withBall to false from old carrier
+      copyOfRoster1.forEach((item, i) => {
+        if (item.withBall) { item.withBall = false; }
+      });
+      copyOfRoster2.forEach((item, i) => {
+        if (item.withBall) { item.withBall = false; }
+      });
+
+      setBall(newPosition);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      setAction('nothing');
+    }
+    if (action === 'setCarrier') {
+      const convertedPosition = convertPosition(mousePosition, squareSize);
+      // set withBall to new carrier if any
+      copyOfRoster1.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to ball carrier');
+          item.withBall = true;
+        }
+      });
+      copyOfRoster2.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to ball carrier');
+          item.withBall = true;
+        }
+      });
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      setAction('nothing');
+    }
+
     // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
@@ -2005,6 +2043,14 @@ const BloodBowl2 = ({game}) => {
     let currentRoster = copyOfRoster1;
     let team2Turn = false;
 
+    // move ball
+    if (selectedAction === 'moveBall') {
+      setAction('moveBall');
+    }
+    // set Carrier
+    if (selectedAction === 'setCarrier') {
+      setAction('setCarrier');
+    }
     console.log('statuses: ', selectedAction);
     if (activeTeam === 'Team 2') {
       //console.log('active === team2');
@@ -2270,6 +2316,8 @@ const BloodBowl2 = ({game}) => {
           <button id= "d3" onClick= {diceThrow}>d3</button>
           <button id= "d8" onClick= {diceThrow}>d8</button>
           <button id= "d16" onClick= {diceThrow}>d16</button>
+          <button id= "moveBall" onClick= {statuses}>move ball</button>
+          <button id= "setCarrier" onClick= {statuses}>set carrier</button>
           <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
           <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
