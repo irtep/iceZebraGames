@@ -767,9 +767,12 @@ const BloodBowl2 = ({game}) => {
         });
       }
 
-      // resets pusher DOES NOT WORK ....
-      else if (item.status === 'pushQuery') {
-          item.setStatus('activated');
+      // pusher ....
+      else if (item.status === 'pushing') {
+        console.log('pushing');
+        item.move(mousePosition.x, mousePosition.y);
+        item.setStatus('activated');
+        setAction('nothing');
       }
 
       // rush query
@@ -1915,7 +1918,28 @@ const BloodBowl2 = ({game}) => {
       setRoster2(copyOfRoster2);
       setAction('nothing');
     }
-
+    // select pusher to move him
+    if (action === 'pushingThis') {
+      const convertedPosition = convertPosition(mousePosition, squareSize);
+      // set withBall to new carrier if any
+      copyOfRoster1.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to pusher');
+          item.setStatus('pushing');
+        }
+      });
+      copyOfRoster2.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to pusher');
+          item.setStatus('pushing');
+        }
+      });
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+      setAction('nothing');
+    }
     // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
@@ -2050,6 +2074,9 @@ const BloodBowl2 = ({game}) => {
     // set Carrier
     if (selectedAction === 'setCarrier') {
       setAction('setCarrier');
+    }
+    if (selectedAction === 'pushingThis') {
+      setAction('pushingThis');
     }
     console.log('statuses: ', selectedAction);
     if (activeTeam === 'Team 2') {
@@ -2319,7 +2346,8 @@ const BloodBowl2 = ({game}) => {
           <button id= "moveBall" onClick= {statuses}>move ball</button>
           <button id= "setCarrier" onClick= {statuses}>set carrier</button>
           <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
-          <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button>
+          <button id= "reserveThis" onClick = {statuses}>move selected to reserves</button>
+          <button id= "pushingThis" onClick = {statuses}>pushing</button>
           <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
           {dices}
