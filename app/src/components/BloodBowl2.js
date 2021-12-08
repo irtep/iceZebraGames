@@ -2319,6 +2319,7 @@ const BloodBowl2 = ({game}) => {
           <button id= "moveBall" onClick= {statuses}>move ball</button>
           <button id= "setCarrier" onClick= {statuses}>set carrier</button>
           <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
+          <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button>
           <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
           {dices}
