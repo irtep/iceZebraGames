@@ -2,7 +2,7 @@ import React from 'react';
 //import Player from './Player';
 import ActionButton from './ActionButton';
 
-const ShowAllTeams = ({showThese, addFunc}) => {
+const SetupAllTeams = ({showThese, addFunc}) => {
   if (showThese === []) {
     return null;
   } else {
@@ -16,7 +16,7 @@ const ShowAllTeams = ({showThese, addFunc}) => {
                 id= {team.id}
                 action= {addFunc}
                 name= {team.teamName}
-                desc= 'add'
+                desc= 'load'
               />
             </div>
            )
@@ -27,4 +27,4 @@ const ShowAllTeams = ({showThese, addFunc}) => {
 
 }
 
-export default ShowAllTeams;
+export default SetupAllTeams;

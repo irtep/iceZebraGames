@@ -1,6 +1,6 @@
 import NewBBcard from './NewBBcard';
 import NewWMcard from './NewWMcard';
-import CreateTeam from './CreateTeam';
+import ManageTeam from './ManageTeam';
 import CreateWmArmy from './CreateWmArmy';
 import '../styles/setups.css';
 
@@ -12,7 +12,7 @@ const Setups = () => {
           <NewBBcard />
         </div>
         <div>
-          <CreateTeam />
+          <ManageTeam />
         </div>
       </div>
 

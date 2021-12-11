@@ -15,3 +15,8 @@
   grid-area: rightSide;
   background: black;
 }
+
+.greybackgroud {
+  background: grey;
+  padding: 10px;
+}

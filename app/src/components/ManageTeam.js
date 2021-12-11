@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getAll, saveTeam } from '../services/dbControl';
+import { getAll, saveTeam, getTeams } from '../services/dbControl';
 import { callDice } from '../functions/supportFuncs';
 import { rerollPrices } from '../constants/constants';
 import ShowAllPlayers from './ShowAllPlayers';
 import Player from './Player';
+import SetupAllTeams from './SetupAllTeams';
 
-
-const CreateTeam = () => {
+const ManageTeam = () => {
   const [players, setPlayers] = useState([]);
   const [teamName, setTeamName] = useState('');
   const [faction, setFaction] = useState('Imperial Nobility');
@@ -15,8 +15,15 @@ const CreateTeam = () => {
   const [rerolls, setRerolls] = useState(0);
   const [color1, setColor1] = useState('black');
   const [color2, setColor2] = useState('silver');
+  const [teams, setTeams] = useState([]);
   //const [reRolls, setRerolls] = useState(0);
-
+/*
+getTeams().then(initialData => {
+   setTeams(initialData);
+ }).catch(err => {
+   console.log('error', err.response);
+ });
+*/
   // when this app is loaded
   useEffect( () => {
     //get players from db
@@ -25,6 +32,11 @@ const CreateTeam = () => {
      }).catch(err => {
        console.log('error', err.response);
      });
+     getTeams().then(initialData => {
+        setTeams(initialData);
+      }).catch(err => {
+        console.log('error', err.response);
+      });
      // create options menu
      rerollPrices.forEach( (item) => {
        const o = document.createElement("option");
@@ -45,40 +57,7 @@ const CreateTeam = () => {
     setNewRoster(activeRoster);
     setCost(newCost);
   }
-  /*
-  const addFunc = (e) => {
-    const clickedEntry = Number(e.target.id);
-    let startPoint = {x: 50, y: 100};
-    let activeRoster = [];
-    const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 
-    if (activeTeam === 'Team 1') {
-      activeRoster = activeRoster.concat(roster1);
-    } else {
-      activeRoster = activeRoster.concat(roster2);
-      startPoint.y = 450;
-    }
-
-    const selectedPlayer = players.filter( player => clickedEntry === player.id);
-    const newPlayer = JSON.parse(JSON.stringify(selectedPlayer[0]));
-    newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
-    newPlayer.y = startPoint.y;
-    newPlayer.status = 'ready';
-
-    activeRoster.push(newPlayer);
-
-    if (activeTeam === 'Team 1') {
-      copyOfgameObject.team1.value += Number(selectedPlayer[0].cost);
-      setRoster1(activeRoster);
-    } else {
-      copyOfgameObject.team2.value += Number(selectedPlayer[0].cost);
-      setRoster2(activeRoster);
-    }
-    //drawPlayers("bloodBowlStadium", roster1, roster2);
-    setGameObject(copyOfgameObject);
-    drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball);
-  }
-*/
   const teamSelected = (e) => {
     setFaction(e.target.value);
   }
@@ -101,7 +80,7 @@ const CreateTeam = () => {
     console.log('submitting: ', teamName, newRoster, rerolls);
   }
 
-  const popPlayer = (e) => {
+  const popPlayer = () => {
     if (newRoster.length > 0) {
       let activeRoster = newRoster.concat([]);
       const costMod = activeRoster[activeRoster.length - 1].cost;
@@ -127,6 +106,13 @@ const CreateTeam = () => {
         setCost(newCost);
       }
     }
+  }
+
+  const loadTeam = () => {
+    console.log('load clicked ');
+    // clear what is selected now...
+
+    // chain that team to
   }
 
   return(
@@ -196,8 +182,15 @@ const CreateTeam = () => {
           showThese = {players}
          addFunc = {addFunc}/>
       </div>
+      <div id= "teams" className = "greybackgroud">
+        select team:<br/>
+        <SetupAllTeams
+         showThese = {teams}
+         addFunc = {loadTeam}
+         />
+      </div>
     </div>
     );
 }
 
-export default CreateTeam;
+export default ManageTeam;

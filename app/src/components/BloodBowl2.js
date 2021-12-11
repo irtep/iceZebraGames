@@ -67,7 +67,7 @@ const BloodBowl2 = ({game}) => {
   const [ball, setBall] = useState({x:10, y:10});
   const squareSize = 35;
 
-  // when this app is loaded
+  // when this component is loaded
   useEffect( () => {
     drawBBfield("bloodBowlStadium", 16, 27);
     getTeams().then(initialData => {
@@ -82,6 +82,7 @@ const BloodBowl2 = ({game}) => {
       });
   }, []);
 
+  // in all state updates 
   useEffect(() => {
     console.log('updating ball loc.');
     roster1.forEach((item, i) => {

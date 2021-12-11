@@ -19,7 +19,7 @@ const BloodBowl = ({game}) => {
   const [details, setDetails] = useState('');
   const [ball, setBall] = useState({x:10, y:10});
 
-  // when this app is loaded
+  // when this component is loaded
   useEffect( () => {
     drawBBfield("bloodBowlStadium", 16, 27);
     getTeams().then(initialData => {

@@ -20,6 +20,7 @@ const ShowAllPlayers = ({showThese, addFunc, selectedTeam}) => {
                 id= {person.id}
                 action= {addFunc}
                 name= {person.name}
+                desc = 'add'
               />
             </div>
            )

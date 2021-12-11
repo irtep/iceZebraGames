@@ -1,13 +1,13 @@
 import React from 'react';
 
-const ActionButton = ({id, action, name}) => {
+const ActionButton = ({id, action, name, desc}) => {
   return(
     <>
       <button
         id= {id}
         onClick= {action}
         name= {name}>
-        add
+        {desc}
       </button>
     </>
   );
