@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAll, saveTeam, getTeams } from '../services/dbControl';
+import { getAll, saveTeam, getTeams, updateBBteam, eraseBBteam } from '../services/dbControl';
 import { callDice } from '../functions/supportFuncs';
 import { rerollPrices } from '../constants/constants';
 import ShowAllPlayers from './ShowAllPlayers';
@@ -16,15 +16,9 @@ const ManageTeam = () => {
   const [color1, setColor1] = useState('black');
   const [color2, setColor2] = useState('silver');
   const [teams, setTeams] = useState([]);
-  //const [reRolls, setRerolls] = useState(0);
-/*
-getTeams().then(initialData => {
-   setTeams(initialData);
- }).catch(err => {
-   console.log('error', err.response);
- });
-*/
-  // when this app is loaded
+  const [idLoaded, setIdLoaded] = useState('');
+
+  // when this component is loaded
   useEffect( () => {
     //get players from db
     getAll().then(initialData => {
@@ -46,6 +40,20 @@ getTeams().then(initialData => {
        document.getElementById("chooseFaction").appendChild(o);
      });
   }, []);
+
+  // make this if state is changed
+  useEffect( () => {
+    console.log('state change');
+    if (idLoaded !== '') {
+      console.log('idLoaded is not empty');
+      document.getElementById('deleteOld').disabled = false;
+      document.getElementById('editOld').disabled = false;
+    } else {
+      document.getElementById('deleteOld').disabled = true;
+      document.getElementById('editOld').disabled = true;
+    }
+    console.log('active id: ', idLoaded);
+  });
 
   const addFunc = (e) => {
     const clickedEntry = Number(e.target.id);
@@ -108,11 +116,60 @@ getTeams().then(initialData => {
     }
   }
 
-  const loadTeam = () => {
-    console.log('load clicked ');
-    // clear what is selected now...
+  const loadTeam = (e) => {
+    console.log('load team: ', e.target.id, e.target.id - 1);
+    const findingTeam = teams.filter( team => team.id === Number(e.target.id));
+    const selectedTeam = findingTeam[0];
+    const getCost = rerollPrices.filter( rr => rr.team === selectedTeam.roster[0].team);
+    console.log('gc ', getCost);
+    let activeRoster = [];
+    let newCost = getCost[0].price * selectedTeam.reRolls; // start with reroll prices
 
-    // chain that team to
+    // set faction, name, rerolls, cost
+    selectedTeam.roster.forEach((item, i) => {
+      activeRoster.push(item);
+      newCost += Number(item.cost);
+    });
+
+    // sets
+    setIdLoaded(Number(e.target.id));
+    setNewRoster(activeRoster);
+    setCost(newCost);
+    setRerolls(selectedTeam.reRolls);
+    setFaction(selectedTeam.roster[0].team);
+    setColor1(selectedTeam.color1);
+    setColor2(selectedTeam.color2);
+    setTeamName(selectedTeam.teamName);
+  }
+
+  const modOrDel = (e) => {
+    if (e.target.id === 'deleteOld') {
+      eraseBBteam(idLoaded)
+      .then(
+        console.log('ok deleted'),
+        getTeams().then(initialData => {
+           setTeams(initialData);
+         }).catch(err => {
+           console.log('error', err.response);
+         })
+      );
+    }
+    else if (e.target.id === 'editOld') {
+      const newTeam = {
+        teamName: teamName,
+        reRolls: rerolls,
+        roster: newRoster,
+        color1: color1,
+        color2: color2
+      }
+      if (teamName !== '' && newRoster.length > 0) {
+        updateBBteam(idLoaded, newTeam);
+        console.log('team edited');
+      } else {
+        console.log('empty fields');
+      }
+      console.log('editing: ', idLoaded, newTeam);
+    }
   }
 
   return(
@@ -174,6 +231,8 @@ getTeams().then(initialData => {
         <br/>
         <button id= "submitNew" type="submit">Save New Team</button>
       </form>
+      <button id= "deleteOld" onClick= {modOrDel}>delete this team</button>
+      <button id= "editOld" onClick= {modOrDel}>update team</button>
       </div>
       <div id= "players">
         players:<br/>

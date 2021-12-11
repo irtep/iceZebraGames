@@ -36,17 +36,19 @@ export const saveWhArmy = newObject => {
   const request = axios.post(whArmiesUrl, newObject);
   return request.then(response => response.data);
 }
-/*
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+
+export const updateBBteam = (id, newObject) => {
+  const request = axios.put(`${teamUrl}/${id}`, newObject)
   return request.then(response => response.data)
 }
 
-const erase = (id, newObject) => {
-  const request = axios.delete(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
+export const eraseBBteam = (id) => {
+  console.log('delete request for: ', id);
+//  console.log('erase param would be: ', `${teamUrl}/${id}`);
+  const request = axios.delete(`${teamUrl}/${id}`);
+  return request.then(response => response.data);
 }
-*/
+
 //const commands = 'ee';
 
 //export default { getAll, create, update, erase };

@@ -3,7 +3,6 @@ import Player from './Player';
 import ActionButton from './ActionButton';
 
 const ShowAllPlayers = ({showThese, addFunc, selectedTeam}) => {
-  console.log('showThese selectedTeam', showThese, selectedTeam);
   if (showThese === []) {
     return null;
   } else {

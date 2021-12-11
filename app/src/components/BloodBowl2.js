@@ -82,7 +82,7 @@ const BloodBowl2 = ({game}) => {
       });
   }, []);
 
-  // in all state updates 
+  // in all state updates
   useEffect(() => {
     console.log('updating ball loc.');
     roster1.forEach((item, i) => {
@@ -174,20 +174,20 @@ const BloodBowl2 = ({game}) => {
     const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
     const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
     const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
-    const blockerTackle = foundBlocker.skills.filter( skill => skill === 'Tackle');
+    //const blockerTackle = foundBlocker.skills.filter( skill => skill === 'Tackle');
     // targets skills
-    const targetStunty = foundTarget.skills.filter( skill => skill === 'Stunty');
-    const targetThickskull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
+    //const targetStunty = foundTarget.skills.filter( skill => skill === 'Stunty');
+    //const targetThickskull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
     const targetBlock = foundTarget.skills.filter( skill => skill === 'Block');
-    const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
+    //const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
     const targetDodge = foundTarget.skills.filter( skill => skill === 'Dodge');
     const targetFend = foundTarget.skills.filter( skill => skill === 'Fend');
     const targetStandFirm = foundTarget.skills.filter( skill => skill === 'Stand Firm');
     const targetSideStep = foundTarget.skills.filter( skill => skill === 'Side Step');
     let stunty = false;
     let thickSkull = false;
-    let mightyBlow = false;
-    let claws = false;
+    //let mightyBlow = false;
+    //let claws = false;
     let turnOverComing = false;
     let logging = [];
     console.log('block data: ', blockData);
@@ -649,9 +649,9 @@ const BloodBowl2 = ({game}) => {
       const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
       const sureFeetCheck = item.skills.filter( skill => skill === 'Thick Skull');
       const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
-      const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
-      const blockCheck = item.skills.filter( skill => skill === 'Block');
-      const frenzyCheck = item.skills.filter( skill => skill === 'Frenzy');
+      //const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
+      //const blockCheck = item.skills.filter( skill => skill === 'Block');
+      //const frenzyCheck = item.skills.filter( skill => skill === 'Frenzy');
       let stunty = false;
       let thickSkull = false;
       let targetClicked = false;
