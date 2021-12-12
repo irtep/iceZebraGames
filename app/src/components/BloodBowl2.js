@@ -581,17 +581,6 @@ const BloodBowl2 = ({game}) => {
     }
     let newButtons = [];
 
-/*
-<button id= "setFallen" onClick= {forceStatusSwitch} className= "yellowButtons">fallen</button>
-<button id= "setStunned" onClick= {forceStatusSwitch} className= "yellowButtons">stunned</button>
-<button id= "setKod" onClick= {forceStatusSwitch} className= "yellowButtons">ko</button>
-<button id= "setCasualty" onClick= {forceStatusSwitch} className= "yellowButtons">casualty</button>
-<button id= "setActivated" onClick= {forceStatusSwitch} className= "yellowButtons">activated</button>
-<button id= "setReady" onClick= {forceStatusSwitch} className= "yellowButtons">ready</button>
-<button id= "setOff" onClick= {forceStatusSwitch} className= "yellowButtons">stop force setting</button>
-
-*/
-
     // check first if user wants to set force status
     if (forceStatus !== 'setOff') {
       const convertedPosition = convertPosition(mousePosition, squareSize);
