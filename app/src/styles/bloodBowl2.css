@@ -31,6 +31,14 @@
   height: 100px;
 }
 
+.yellowButtons {
+  background-color: yellow;
+}
+
+.yellowButtons:hover {
+  background-color: white;
+}
+
 #controls {
   grid-area: ctrl;
   display: grid;

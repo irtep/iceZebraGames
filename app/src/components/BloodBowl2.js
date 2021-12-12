@@ -46,6 +46,7 @@ const BloodBowl2 = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState('');
   const [actionButtons, setActionButtons] = useState('');
+  const [forceStatus, setForceStatus] = useState('setOff');
 //  const [lastPlayer, setLastPlayer] = useState('');
 //  const [lastAction, setLastAction] = useState('');
   const [oldData, setOldData] = useState('');
@@ -101,6 +102,10 @@ const BloodBowl2 = ({game}) => {
 
   const diceThrow = (e) => {
     setDices(bloodBowlDices(e.target.id));
+  }
+
+  const forceStatusSwitch = (e) => {
+    setForceStatus(e.target.id);
   }
 
   const hovering = (e) => {
@@ -575,7 +580,44 @@ const BloodBowl2 = ({game}) => {
       activeTeamIndex = "team2";
     }
     let newButtons = [];
-    // check if action is selected
+
+/*
+<button id= "setFallen" onClick= {forceStatusSwitch} className= "yellowButtons">fallen</button>
+<button id= "setStunned" onClick= {forceStatusSwitch} className= "yellowButtons">stunned</button>
+<button id= "setKod" onClick= {forceStatusSwitch} className= "yellowButtons">ko</button>
+<button id= "setCasualty" onClick= {forceStatusSwitch} className= "yellowButtons">casualty</button>
+<button id= "setActivated" onClick= {forceStatusSwitch} className= "yellowButtons">activated</button>
+<button id= "setReady" onClick= {forceStatusSwitch} className= "yellowButtons">ready</button>
+<button id= "setOff" onClick= {forceStatusSwitch} className= "yellowButtons">stop force setting</button>
+
+*/
+
+    // check first if user wants to set force status
+    if (forceStatus !== 'setOff') {
+      const convertedPosition = convertPosition(mousePosition, squareSize);
+
+      currentRoster.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          item.setStatus(forceStatus);
+          if (forceStatus === 'ko' || forceStatus === 'casualty') {
+            item.move(1900, 1900);
+          }
+        }
+      });
+      opponentRoster.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          item.setStatus(forceStatus);
+          if (forceStatus === 'setKod' || forceStatus === 'setCasualty') {
+            item.move(1900, 1900);
+          }
+        }
+      });
+      // reset forceStatus
+      setForceStatus('setOff');
+      // set both rosters
+      setRoster1(copyOfRoster1);
+      setRoster2(copyOfRoster2);
+    }
 
     // check if pusher follows
     currentRoster.forEach((item, i) => {
@@ -2347,8 +2389,16 @@ const BloodBowl2 = ({game}) => {
           <button id= "moveBall" onClick= {statuses}>move ball</button>
           <button id= "setCarrier" onClick= {statuses}>set carrier</button>
           <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
-          <button id= "reserveThis" onClick = {statuses}>move selected to reserves</button>
-          <button id= "pushingThis" onClick = {statuses}>pushing</button>
+          <button id= "statusChange" onClick = {statuses}>move selected to reserves</button>{/*
+          <button id= "pushingThis" onClick = {statuses}>pushing</button>*/}
+          <br/>
+          <button id= "fallen" onClick= {forceStatusSwitch} className= "yellowButtons">fallen</button>
+          <button id= "stunned" onClick= {forceStatusSwitch} className= "yellowButtons">stunned</button>
+          <button id= "ko" onClick= {forceStatusSwitch} className= "yellowButtons">ko</button>
+          <button id= "casualty" onClick= {forceStatusSwitch} className= "yellowButtons">casualty</button>
+          <button id= "activated" onClick= {forceStatusSwitch} className= "yellowButtons">activated</button>
+          <button id= "ready" onClick= {forceStatusSwitch} className= "yellowButtons">ready</button>
+          <button id= "setOff" onClick= {forceStatusSwitch} className= "yellowButtons">stop force setting</button>
           <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
           {dices}

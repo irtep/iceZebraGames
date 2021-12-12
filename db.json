@@ -574,6 +574,94 @@
       "cost": "125000",
       "img": "mummy",
       "id": 51
+    },
+    {
+      "name": "Bomma",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+      "skills": "Bombardier, Dodge, Stunty, Secret Weapon",
+      "specialRules": "-",
+      "cost": "45000",
+      "img": "goblin",
+      "id": 52
+    },
+    {
+      "name": "Looney",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 6+ AV 8+",
+      "skills": "Chainsaw, Stunty, Secret Weapon",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "goblin",
+      "id": 53
+    },
+    {
+      "name": "Fanatic",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 3 ST 7 AG 3+ PA 6+ AV 8+",
+      "skills": "Ball & Chain, No Hands, Secret Weapon, Stunty",
+      "specialRules": "-",
+      "cost": "70000",
+      "img": "goblin",
+      "id": 54
+    },
+    {
+      "name": "Pogoer",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 2 AG 3+ PA 5+ AV 8+",
+      "skills": "Dodge, Pogo Stick, Stunty",
+      "specialRules": "-",
+      "cost": "75000",
+      "img": "goblin",
+      "id": 55
+    },
+    {
+      "name": "Doom Diver",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 6+ AV 8+",
+      "skills": "Right Stuff, Stunty, Swoop",
+      "specialRules": "-",
+      "cost": "60000",
+      "img": "goblin",
+      "id": 56
+    },
+    {
+      "name": "Ooligan",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 6+ AV 8+",
+      "skills": "Disturbing Presence, Dodge, Right Stuff, Stunty, Dirty Player (+1)",
+      "specialRules": "-",
+      "cost": "65000",
+      "img": "goblin",
+      "id": 57
+    },
+    {
+      "name": "Troll",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
+      "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
+      "specialRules": "-",
+      "cost": "115000",
+      "img": "goblin",
+      "id": 58
+    },
+    {
+      "name": "Varag",
+      "team": "Goblin",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 5 AG 3+ PA 5+ AV 10+",
+      "skills": "Block, Jump Up, Loner (4+), Mighty Blow (+1), Thick Skull",
+      "specialRules": "Crushing Blow: if blocking and kd, can add +1 armour roll after. once per game",
+      "cost": "280000",
+      "img": "goblin",
+      "id": 59
     }
   ],
   "teams": [
@@ -1801,6 +1889,147 @@
       "color1": "aquamarine",
       "color2": "black",
       "id": 18
+    },
+    {
+      "teamName": "Predators B (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Troll",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
+          "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "goblin",
+          "id": 58
+        },
+        {
+          "name": "Troll",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
+          "skills": "Always Hungry, Loner (3+), Mighty Blow (+1), Projectile Vomit, Really Stupid, Regeneration, Throw Team-mate",
+          "specialRules": "-",
+          "cost": "115000",
+          "img": "goblin",
+          "id": 58
+        },
+        {
+          "name": "Varag",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 5 AG 3+ PA 5+ AV 10+",
+          "skills": "Block, Jump Up, Loner (4+), Mighty Blow (+1), Thick Skull",
+          "specialRules": "Crushing Blow: if blocking and kd, can add +1 armour roll after. once per game",
+          "cost": "280000",
+          "img": "goblin",
+          "id": 59
+        },
+        {
+          "name": "Looney",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 6+ AV 8+",
+          "skills": "Chainsaw, Stunty, Secret Weapon",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 53
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        }
+      ],
+      "color1": "darkgreen",
+      "color2": "aquamarine",
+      "id": 19
     }
   ],
   "whArmies": [
