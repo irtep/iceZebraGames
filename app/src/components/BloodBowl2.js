@@ -44,7 +44,7 @@ const BloodBowl2 = ({game}) => {
   /*bb2 stuff*/
   // msg console
   const [msg, setMsg] = useState('select first teams');
-  const [log, setLog] = useState('');
+  const [log, setLog] = useState([]);
   const [actionButtons, setActionButtons] = useState('');
   const [forceStatus, setForceStatus] = useState('setOff');
 //  const [lastPlayer, setLastPlayer] = useState('');
@@ -106,6 +106,13 @@ const BloodBowl2 = ({game}) => {
 
   const forceStatusSwitch = (e) => {
     setForceStatus(e.target.id);
+  }
+
+  const addToLog = (newMessage) => {
+    const copyOfLog = log.concat([]);
+    copyOfLog.push(<br key= {callDice(9999)}/>);
+    copyOfLog.push(newMessage);
+    setLog(copyOfLog);
   }
 
   const hovering = (e) => {
@@ -194,8 +201,7 @@ const BloodBowl2 = ({game}) => {
     //let mightyBlow = false;
     //let claws = false;
     let turnOverComing = false;
-    let logging = [];
-    console.log('block data: ', blockData);
+
     foundBlocker.preReroll = {
       reasonWas: '',
       modifierWas: 0
@@ -208,17 +214,19 @@ const BloodBowl2 = ({game}) => {
       if (blockerThickskull.length === 1) {
         thickSkull = true;
       }
+      addToLog(`is stunty? ${stunty}, has thick skull? ${thickSkull}`);
       // armour check
       const armourRoll = callDice(12);
       const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
       console.log('armour test: ', armourCheck, armourRoll);
+      addToLog(`player down! armour armour roll: ${armourRoll}`);
       if (armourCheck) {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
         foundBlocker.setStatus(getInjuryMessage);
-        logging.push(`player is: ${getInjuryMessage}`);
+        addToLog(`player is: ${getInjuryMessage}`);
       } else {
         foundBlocker.setStatus('fallen');
-        logging.push('armour holds.');
+        addToLog('armour holds.');
       }
       // player down and turn over
       foundBlocker.preReroll.reasonWas = 'block';
@@ -236,22 +244,25 @@ const BloodBowl2 = ({game}) => {
       if (blockerWrestle.length === 1) {
         foundBlocker.setStatus('prone');
         foundTarget.setStatus('prone');
+        addToLog(`blocker wrestles both to prone`);
       }
       else {
         if (blockerBlock.length === 0) {
           // armour check
           const armourRoll = callDice(12);
           const armourCheck = foundBlocker.skillTest('av', armourRoll, 0);
-          console.log('armour test: ', armourCheck, armourRoll);
+          addToLog(`both down! blockers armour roll: ${armourRoll}`);
           if (armourCheck) {
             const getInjuryMessage = armourBroken(stunty, thickSkull);
             foundBlocker.setStatus(getInjuryMessage);
-            logging.push(`player is: ${getInjuryMessage}`);
+            addToLog(`player is: ${getInjuryMessage}`);
           } else {
             foundBlocker.setStatus('fallen');
-            logging.push('armour holds.');
+            addToLog('armour holds.');
           }
           turnOverComing = true;
+        } else {
+          addToLog('blocker has Block skill. Not knocked down');
         }
         if (targetBlock.length === 0) {
           // armour check
@@ -261,15 +272,18 @@ const BloodBowl2 = ({game}) => {
           if (armourCheck) {
             const getInjuryMessage = armourBroken(stunty, thickSkull);
             foundTarget.setStatus(getInjuryMessage);
-            logging.push(`player is: ${getInjuryMessage}`);
+            addToLog(`player is: ${getInjuryMessage}`);
           } else {
             foundTarget.setStatus('fallen');
-            logging.push('armour holds.');
+            addToLog('armour holds.');
           }
+        } else {
+          addToLog('target has Block skill. Not knocked down');
         }
       }
     }
     else if (decision === '(push back)') {
+      addToLog(`it is a push!`);
       if (targetStandFirm.length === 0) {
         // push the target
         if (targetSideStep.length === 0) {
@@ -283,10 +297,12 @@ const BloodBowl2 = ({game}) => {
           foundBlocker.setStatus('pushing');
         } else {
           foundBlocker.setStatus('activated');
+          addToLog(`target is fending. can't follow`);
         }
       }
     }
     else if (decision === '(stumble)') {
+      addToLog('stumble!');
       // push + kd or just push if has Dodge
       if (targetDodge.length === 0) {
         let modifier = 0;
@@ -301,27 +317,32 @@ const BloodBowl2 = ({game}) => {
           armourCheck = true;
         }
         console.log('armour test: ', armourCheck, armourRoll);
+        addToLog(`armour test: ${armourRoll} with modifier: ${modifier}`);
         if (armourCheck) {
           const getInjuryMessage = armourBroken(stunty, thickSkull);
           foundTarget.setStatus(getInjuryMessage);
-          logging.push(`player is: ${getInjuryMessage}`);
+          addToLog(`player is: ${getInjuryMessage}`);
           if (getInjuryMessage === 'stunned') {
             foundTarget.setStatus('pushedStunned');
             if (targetFend.length === 0) {
               foundBlocker.setStatus('pushing');
+            } else {
+              addToLog('fending, can not follow.');
             }
           }
         } else {
           if (targetFend.length === 0) {
-            console.log('setting to pushing');
             foundBlocker.setStatus('pushing');
+          } else {
+            addToLog('fending, can not follow');
           }
           foundTarget.setStatus('pushedFallen');
-          logging.push('armour holds.');
+          addToLog('armour holds.');
           // later gotta add so that can be pushed too if didnt ko or die
         }
       } else {
         setMsg('set place for pushed player')
+        addToLog('target has dodge, so converted to push.');
         foundTarget.setStatus('pushed');
         if (targetFend.length === 0) {
           foundBlocker.setStatus('pushing');
@@ -329,6 +350,7 @@ const BloodBowl2 = ({game}) => {
       }
     }
     else if (decision === '(pow!)') {
+      addToLog(`pow! `);
       // push + kd
       let modifier = 0;
       if (blockerMightyBlow1.length === 1) {
@@ -338,14 +360,14 @@ const BloodBowl2 = ({game}) => {
       const armourRoll = callDice(12);
       let armourCheck = foundBlocker.skillTest('av', armourRoll, modifier);
       if (blockerClaws.length === 1 && armourRoll > 7) {
-        console.log('claws effective');
+        addToLog('claws effective');
         armourCheck = true;
       }
-      console.log('armour test: ', armourCheck, armourRoll);
+      addToLog(`armour roll: ${armourRoll} with modifier: ${modifier}`);
       if (armourCheck) {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
         foundTarget.setStatus(getInjuryMessage);
-        logging.push(`player is: ${getInjuryMessage}`);
+        addToLog(`player is: ${getInjuryMessage}`);
         if (getInjuryMessage === 'stunned') {
           foundTarget.setStatus('pushedStunned');
           if (targetFend.length === 0) {
@@ -357,7 +379,7 @@ const BloodBowl2 = ({game}) => {
           foundBlocker.setStatus('pushing');
         }
         foundTarget.setStatus('pushedFallen');
-        logging.push('armour holds.');
+        addToLog('armour holds.');
         // later gotta add so that can be pushed too if didnt ko or die
       }
     }
@@ -390,8 +412,6 @@ const BloodBowl2 = ({game}) => {
   }
 
   const pickUpAction = (who, opponentRoster) => {
-    console.log("pick up action, by ", who.number);
-    // console.log("opponents: ", opponentRoster);
     const sureHands = who.skills.filter( skill => skill === 'Sure Hands');
     const noHands = who.skills.filter( skill => skill === 'No Hands');
     const diceValue1 = callDice(6);
@@ -401,20 +421,23 @@ const BloodBowl2 = ({game}) => {
     if (markers.length > 0) {modifier = -Math.abs(markers.length)}
     const picking1 = who.skillTest('ag', diceValue1, modifier);
     console.log('pick up dice and modifier: ', diceValue1, modifier);
+    addToLog(`${who.number} tries to pick up. Dice: ${diceValue1}, modifier: ${modifier}`);
 
     if (noHands.length > 0) {
+      addToLog('no hands, so failed.');
       return false;
     }
     if (picking1) {
       console.log('he has the ball');
+      addToLog('... and he has the ball.');
       return true;
     } else {
       // with sure hands auto reroll
       if (sureHands.length > 0) {
-        console.log('sure hands dice and mod: ', diceValue2, modifier);
         const picking2 = who.skillTest('ag', diceValue2, modifier);
+        addToLog(`retry with Sure Hands: ${diceValue2} with modifier ${modifier}`);
         if (picking2) {
-          console.log('after sure hands, ok');
+          addToLog('sure hands ok!')
           return true;
         }
       }
@@ -425,7 +448,6 @@ const BloodBowl2 = ({game}) => {
   // after choosing yes or no from reroll query button
   const rerolls = (event) => {
     const yesOrNo = event.target.id;
-    let logging = [];
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
 //    const copyOfOldData = JSON.parse(JSON.stringify(oldData));
     let currentRoster = roster1.concat([]);
@@ -455,23 +477,26 @@ const BloodBowl2 = ({game}) => {
 
         const rerollTest = foundPlayer.skillTest('ag', rerollDice, modifier);
         console.log('rerollTest: ', rerollTest);
+        addToLog(`reroll test: ${rerollDice} with modifier: ${modifier}`);
         if (rerollTest) {
-          logging.push('reroll helped.');
+          addToLog('reroll helped.');
           // this might be wrong location
           console.log('rr ok, moving to: ', name.oldLoc.x, name.oldLoc.y);
           foundPlayer.move(name.oldLoc.x, name.oldLoc.y);
           const atBall = checkIfBallLocation(foundPlayer.getLocation());
           if (atBall) {
-            logging.push("he tries to get the ball");
+            addToLog("he tries to get the ball");
             const pickUpAttempt = pickUpAction(foundPlayer, opponentRoster);
             if (pickUpAttempt) {
               foundPlayer.withBall = true;
+              addToLog('ball is his/her');
             } else {
               setBall(bounce(callDice(8), ball));
+              addToLog('could not catch, ball bouncing');
               // ask if wants to reroll the pick up
               // i think i leave this for later
             }
-            logging.push();
+            addToLog();
           }
           if (foundPlayer.movementLeft < 1) {
       //      console.log('setting to moved');
@@ -490,7 +515,7 @@ const BloodBowl2 = ({game}) => {
           copyOfgameObject.phase = 'gameplay';
           setGameObject(copyOfgameObject);
         } else {
-          logging.push('reroll failed too');
+          addToLog('reroll failed too');
           setMsg('TURNOVER!');
           copyOfgameObject.phase = 'startTurn';
           if (activeTeam === 'Team 1') {
@@ -508,7 +533,7 @@ const BloodBowl2 = ({game}) => {
       //  console.log('reason was rush failure');
         const newRushRoll = callDice(6);
         if (newRushRoll === 1) {
-          logging.push('reroll failed too');
+          addToLog('reroll failed too');
           setMsg('TURNOVER!');
           copyOfgameObject.phase = 'startTurn';
           if (activeTeam === 'Team 1') {
@@ -521,7 +546,7 @@ const BloodBowl2 = ({game}) => {
           console.log('calling startTurn from rerolls');
           startTurn(roster1, roster2, copyOfgameObject);
         } else {
-          logging.push('reroll helped!');
+          addToLog('reroll helped!');
           foundPlayer.move(name.x, name.y);
           if (foundPlayer.rushes < 1) {
             foundPlayer.setStatus('activated');
@@ -556,7 +581,6 @@ const BloodBowl2 = ({game}) => {
       console.log('calling startTurn from rerolls');
       startTurn(roster1, roster2, copyOfgameObject);
     }
-    setLog(logging);
   }
 
   // PHASES
@@ -619,7 +643,7 @@ const BloodBowl2 = ({game}) => {
         setMsg('choose place to follow up (only that place where that guy was)');
         if (moveChecking.length === 1) {
           item.move(mousePosition.x, mousePosition.y);
-          setLog(`${item.number} is following up...`);
+          addToLog(`${item.number} is following up...`);
             item.setStatus('activated');
         } else {
           item.setStatus('activated');
@@ -643,7 +667,7 @@ const BloodBowl2 = ({game}) => {
         setMsg('choose place to push the pushed guy (chain push not supported atm.)');
         if (moveChecking.length === 1) {
           item.move(mousePosition.x, mousePosition.y);
-          setLog(`${item.number} is pushed...`);
+          addToLog(`${item.number} is pushed...`);
             item.setStatus(nextStatus);
         } else {
           item.setStatus(nextStatus);
@@ -659,7 +683,7 @@ const BloodBowl2 = ({game}) => {
         setMsg('choose place to sidestep the stepping guy');
         if (moveChecking.length === 1) {
           item.move(mousePosition.x, mousePosition.y);
-          setLog(`${item.number} is sidestepping...`);
+          addToLog(`${item.number} is sidestepping...`);
           item.setStatus('ready');
         } else {
           item.setStatus('ready');
@@ -815,12 +839,12 @@ const BloodBowl2 = ({game}) => {
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
         const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
-        let logging = [`${item.number} is rushing...`];
         //console.log('marked: ', checkIfMarked);
 
+        addToLog(`${item.number} is rushing...`);
         if (moveChecking.length === 1) {
           const moving = item.move(mousePosition.x, mousePosition.y);
-          logging.push(`${item.number} moves. Movement left: ${moving}`);
+          addToLog(`${item.number} moves. Movement left: ${moving}`);
           item.rushes--;
           console.log('rush dice: ', rushDice);
 
@@ -834,7 +858,7 @@ const BloodBowl2 = ({game}) => {
             modifier = -1;
           }
           console.log('new mark check: ', newMarkCheck);
-          logging.push('... he is marked');
+          addToLog('... he is marked');
 
           if (stunty.length > 0) {
             modifier = 0;
@@ -844,7 +868,7 @@ const BloodBowl2 = ({game}) => {
 
           if (dexCheck) {
             item.move(mousePosition.x, mousePosition.y);
-            logging.push('...passes agility check!');
+            addToLog('...passes agility check!');
           } else {
             // save old data if user selects reroll
             item.preReroll = {
@@ -857,7 +881,7 @@ const BloodBowl2 = ({game}) => {
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
             }
             // turn over!
-            logging.push('... he falls! Turn over!');
+            addToLog('... he falls! Turn over!');
             item.withBall = false;
             // armour check
             const armourRoll = callDice(12);
@@ -866,10 +890,10 @@ const BloodBowl2 = ({game}) => {
             if (armourCheck) {
               const getInjuryMessage = armourBroken(stunty, thickSkull);
               item.setStatus(getInjuryMessage);
-              logging.push(`player is: ${getInjuryMessage}`);
+              addToLog(`player is: ${getInjuryMessage}`);
             } else {
               item.setStatus('fallen');
-              logging.push('armour holds.');
+              addToLog('armour holds.');
             }
             console.log('setting old data: ', preReroll);
             copyOfgameObject.phase = 'turnOver';
@@ -878,7 +902,6 @@ const BloodBowl2 = ({game}) => {
             setRoster2(copyOfRoster2);
             setGameObject(copyOfgameObject);
           }
-          setLog(logging);
         }  // if marked ends
         if (item.rushes > 0) {
           item.setStatus('moved');
@@ -899,11 +922,11 @@ const BloodBowl2 = ({game}) => {
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
             }
             console.log('rushRoll 1');
-            let logging = ['He trips!'];
+            addToLog('He trips!');
             item.withBall = false;
             // falls
             // turn over!
-            logging.push('... he falls! Turn over!');
+            addToLog('... he falls! Turn over!');
             // armour check
             const armourRoll = callDice(12);
             const armourCheck = item.skillTest('av', armourRoll, 0);
@@ -911,10 +934,10 @@ const BloodBowl2 = ({game}) => {
             if (armourCheck) {
               const getInjuryMessage = armourBroken(stunty, thickSkull);
               item.setStatus(getInjuryMessage);
-              logging.push(`player is: ${getInjuryMessage}`);
+              addToLog(`player is: ${getInjuryMessage}`);
             } else {
               item.setStatus('fallen');
-              logging.push('armour holds.');
+              addToLog('armour holds.');
             }
             // save old data if user selects reroll
             console.log('setting old data: ', preReroll);
@@ -941,16 +964,16 @@ const BloodBowl2 = ({game}) => {
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
         const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
-        let logging = [`${item.number} is fouling...`];
+
         //console.log('marked: ', checkIfMarked);
         copyOfgameObject[activeTeamIndex].blitz = false;
-
+        addToLog(`${item.number} is fouling...`);
         // move
         if (moveChecking.length === 1) {
           console.log('foul: move check is 1: ', moveChecking);
           if (moveChecking.length === 1 && item.movementLeft > 0) {
             const moving = item.move(mousePosition.x, mousePosition.y);
-            logging.push(`${item.number} moves. Movement left: ${moving}`);
+            addToLog(`${item.number} moves. Movement left: ${moving}`);
           }
 
           if (item.movementLeft < 1) {
@@ -975,7 +998,7 @@ const BloodBowl2 = ({game}) => {
             if (newMarkCheck.length > 0) {
               modifier = -1;
             }
-            logging.push('... he is marked');
+            addToLog('... he is marked');
 
             if (stunty.length > 0) {
               modifier = 0;
@@ -985,7 +1008,7 @@ const BloodBowl2 = ({game}) => {
 
             if (dexCheck) {
               item.move(mousePosition.x, mousePosition.y);
-              logging.push('...passes agility check!');
+              addToLog('...passes agility check!');
             } else {
               // turn over!
               // save old data if user selects reroll
@@ -998,7 +1021,7 @@ const BloodBowl2 = ({game}) => {
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
               }
-              logging.push('... he falls! Turn over!');
+              addToLog('... he falls! Turn over!');
               item.withBall = false;
               // armour check
               const armourRoll = callDice(12);
@@ -1007,10 +1030,10 @@ const BloodBowl2 = ({game}) => {
               if (armourCheck) {
                 const getInjuryMessage = armourBroken(stunty, thickSkull);
                 item.setStatus(getInjuryMessage);
-                logging.push(`player is: ${getInjuryMessage}`);
+                addToLog(`player is: ${getInjuryMessage}`);
               } else {
                 item.setStatus('fallen');
-                logging.push('armour holds.');
+                addToLog('armour holds.');
               }
 
               console.log('setting old data: ', preReroll);
@@ -1021,7 +1044,6 @@ const BloodBowl2 = ({game}) => {
               setRoster2(copyOfRoster2);
               setGameObject(copyOfgameObject);
             }
-            setLog(logging);
           }  // if marked when start to move ends
           //console.log('phase is: ', copyOfgameObject.phase);
           if (copyOfgameObject.phase === 'turnOver') {
@@ -1182,16 +1204,16 @@ const BloodBowl2 = ({game}) => {
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
         const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
-        let logging = [`${item.number} is blitzing...`];
+
         //console.log('marked: ', checkIfMarked);
         copyOfgameObject[activeTeamIndex].blitz = false;
-
+        addToLog(`${item.number} is blitzing...`);
         // move
         if (moveChecking.length === 1) {
           console.log('blitz: move check is 1: ', moveChecking);
           if (moveChecking.length === 1 && item.movementLeft > 0) {
             const moving = item.move(mousePosition.x, mousePosition.y);
-            logging.push(`${item.number} moves. Movement left: ${moving}`);
+            addToLog(`${item.number} moves. Movement left: ${moving}`);
           }
 
           if (item.movementLeft < 1) {
@@ -1216,7 +1238,7 @@ const BloodBowl2 = ({game}) => {
             if (newMarkCheck.length > 0) {
               modifier = -1;
             }
-            logging.push('... he is marked');
+            addToLog('... he is marked');
 
             if (stunty.length > 0) {
               modifier = 0;
@@ -1226,7 +1248,7 @@ const BloodBowl2 = ({game}) => {
 
             if (dexCheck) {
               item.move(mousePosition.x, mousePosition.y);
-              logging.push('...passes agility check!');
+              addToLog('...passes agility check!');
             } else {
               // turn over!
               // save old data if user selects reroll
@@ -1239,7 +1261,7 @@ const BloodBowl2 = ({game}) => {
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
               }
-              logging.push('... he falls! Turn over!');
+              addToLog('... he falls! Turn over!');
               item.withBall = false;
               // armour check
               const armourRoll = callDice(12);
@@ -1248,10 +1270,10 @@ const BloodBowl2 = ({game}) => {
               if (armourCheck) {
                 const getInjuryMessage = armourBroken(stunty, thickSkull);
                 item.setStatus(getInjuryMessage);
-                logging.push(`player is: ${getInjuryMessage}`);
+                addToLog(`player is: ${getInjuryMessage}`);
               } else {
                 item.setStatus('fallen');
-                logging.push('armour holds.');
+                addToLog('armour holds.');
               }
 
               console.log('setting old data: ', preReroll);
@@ -1262,7 +1284,6 @@ const BloodBowl2 = ({game}) => {
               setRoster2(copyOfRoster2);
               setGameObject(copyOfgameObject);
             }
-            setLog(logging);
           }  // if marked when start to move ends
           //console.log('phase is: ', copyOfgameObject.phase);
           if (copyOfgameObject.phase === 'turnOver') {
@@ -1423,12 +1444,12 @@ const BloodBowl2 = ({game}) => {
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
         const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
-        let logging = [`${item.number} is moving...`];
-        //console.log('marked: ', checkIfMarked);
 
+        //console.log('marked: ', checkIfMarked);
+        addToLog(`${item.number} is moving...`);
         if (moveChecking.length === 1 && item.movementLeft > 0) {
           const moving = item.move(mousePosition.x, mousePosition.y);
-          logging.push(`${item.number} moves. Movement left: ${moving}`);
+          addToLog(`${item.number} moves. Movement left: ${moving}`);
         }
 
         if (item.movementLeft < 1) {
@@ -1453,7 +1474,7 @@ const BloodBowl2 = ({game}) => {
           if (newMarkCheck.length > 0) {
             modifier = -1;
           }
-          logging.push('... he is marked');
+          addToLog('... he is marked');
 
           if (stunty.length > 0) {
             modifier = 0;
@@ -1463,7 +1484,7 @@ const BloodBowl2 = ({game}) => {
 
           if (dexCheck) {
             item.move(mousePosition.x, mousePosition.y);
-            logging.push('...passes agility check!');
+            addToLog('...passes agility check!');
           } else {
             // turn over!
             // save old data if user selects reroll
@@ -1476,7 +1497,7 @@ const BloodBowl2 = ({game}) => {
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
             }
-            logging.push('... he falls! Turn over!');
+            addToLog('... he falls! Turn over!');
             item.withBall = false;
             // armour check
             const armourRoll = callDice(12);
@@ -1485,10 +1506,10 @@ const BloodBowl2 = ({game}) => {
             if (armourCheck) {
               const getInjuryMessage = armourBroken(stunty, thickSkull);
               item.setStatus(getInjuryMessage);
-              logging.push(`player is: ${getInjuryMessage}`);
+              addToLog(`player is: ${getInjuryMessage}`);
             } else {
               item.setStatus('fallen');
-              logging.push('armour holds.');
+              addToLog('armour holds.');
             }
 
             console.log('setting old data: ', preReroll);
@@ -1499,7 +1520,6 @@ const BloodBowl2 = ({game}) => {
             setRoster2(copyOfRoster2);
             setGameObject(copyOfgameObject);
           }
-          setLog(logging);
         }  // if marked when start to move ends
         //console.log('phase is: ', copyOfgameObject.phase);
         if (copyOfgameObject.phase === 'turnOver') {
@@ -1582,21 +1602,21 @@ const BloodBowl2 = ({game}) => {
               console.log('bone head detected');
               if (bigGuyRolls === 1) {
                 item.setStatus('prone');
-                setMsg('big guy roll 1');
+                addToLog('big guy roll 1');
               }
             }
             if (reallyStupid.length > 0) {
               console.log('really stupid detected');
               if (bigGuyRolls === 1) {
                 item.setStatus('prone');
-                setMsg('big guy roll 1');
+                addToLog('big guy roll 1');
               }
             }
             if (animalSavagery.length > 0) {
               console.log('animal savagery detected');
               if (bigGuyRolls === 1) {
                 item.setStatus('prone');
-                setMsg('big guy roll 1');
+                addToLog('big guy roll 1');
               }
             }
             // create buttons:
@@ -1687,7 +1707,7 @@ const BloodBowl2 = ({game}) => {
     const bounceRoll = callDice(8);
     let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
     setBall(placeOfBall);
-    let forLog = [`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`];
+    addToLog(`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`);
     if (activeTeam === 'Team 1') {
       //console.log('active === team2');
       currentRoster = copyOfRoster2;
@@ -1713,15 +1733,13 @@ const BloodBowl2 = ({game}) => {
       } else {
         rerollsLeft = copyOfgameObject.team1.rerolls;
       }
-      forLog.push(<br key= {callDice(9999)}/>);
-      forLog.push(`${playerInAction.number} tries to catch...`);
-      forLog.push(<br key= {callDice(9999)}/>);
+      addToLog(`${playerInAction.number} tries to catch...`);
       // check tacklezones
       const tacklers = playerInAction.markedBy(comparingToRoster);
       negativeModifier -= tacklers.length;
       const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
       if (skillCheck) {
-        forLog.push(`Catch ok!`);
+        addToLog(`Catch ok!`);
         atLocation[0].withBall = true;
         setRoster1(copyOfRoster1);
         setRoster2(copyOfRoster2);
@@ -1732,10 +1750,10 @@ const BloodBowl2 = ({game}) => {
         const catchCheck = playerInAction.skills.filter( skill => skill === 'Catch');
         if (catchCheck.length === 1) {
           // rerolling for catch
-          forLog.push(`... but the player re-tries as he has Catch skill...`);
+          addToLog(`... but the player re-tries as he has Catch skill...`);
           const skillCheck2 = playerInAction.skillTest('ag', callDice(6), negativeModifier);
           if (skillCheck2) {
-            forLog.push(`Catch ok!`);
+            addToLog(`Catch ok!`);
             catchSuccess = true;
           }
         }
@@ -1763,19 +1781,16 @@ const BloodBowl2 = ({game}) => {
     // touch backs
     if ((deviationRoll === 4 || deviationRoll === 1 || deviationRoll === 6) &&
     deviationDistance === 6 && bounceRoll === 4) {
-      forLog += 'it is a touch back!'
       setMsg('select a player who you want to have it');
       touchBack = true;
       copyOfgameObject.phase = 'touchBack';
     }
     if ((deviationRoll === 5 || deviationRoll === 3 || deviationRoll === 8) &&
       deviationDistance === 6 && bounceRoll === 5) {
-      forLog += 'it is a touch back!'
       setMsg('select a player who you want to have it');
       touchBack = true;
       copyOfgameObject.phase = 'touchBack';
     }
-    setLog(forLog);
     // switch to attacking team
     if (activeTeam === 'Team 1') {
       setActiveTeam('Team 2');
@@ -2264,18 +2279,16 @@ const BloodBowl2 = ({game}) => {
     do {
       playerDice = callDice(6);
       aiDice = callDice(6);
-      logging = [`player rolled: ${playerDice}, ai rolled: ${aiDice}`];
+      addToLog(`player rolled: ${playerDice}, ai rolled: ${aiDice}`);
     } while (playerDice === aiDice);
 
-    setLog(logging);
-
-    logging.push(<br key= {playerDice+logging+aiDice}/>);
+    addToLog(<br key= {playerDice+logging+aiDice}/>);
     if (playerDice > aiDice) {
-      logging.push('team 1 receives the kick!');
+      addToLog('team 1 receives the kick!');
       setMsg('set defence for team 2:');
       setActiveTeam('Team 2');
     } else {
-      logging.push('team 2 receives the kick!');
+      addToLog('team 2 receives the kick!');
       setMsg('set defensive formation for team 1 (to right side!)');
       setActiveTeam('Team 1');
     }
