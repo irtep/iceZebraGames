@@ -57,6 +57,7 @@ export class Player {
   skillTest(skill, diceValue, modifier) {
     console.log('skillTest: ', skill, diceValue, modifier);
     const totalValue = diceValue + modifier;
+    console.log('this[skill]: ', this[skill]);
     if (this[skill] <= totalValue) {
       console.log('pass, dice, modifier ', diceValue, modifier);
       return true;

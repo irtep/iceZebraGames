@@ -182,7 +182,7 @@ export const armourBroken = (stunty, thickSkull) => {
         injuryMessage = 'dead';
       }
     }
-    return injuryMessage;
+    return {msg: injuryMessage, roll: injuryRoll};
 }
 
 export const bloodBowlDices = (dicesSelect) => {
