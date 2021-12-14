@@ -1349,136 +1349,6 @@
       "id": 13
     },
     {
-      "teamName": "Alianza Underdark 1M",
-      "reRolls": 2,
-      "roster": [
-        {
-          "name": "Runner",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
-          "skills": "Dump-off",
-          "specialRules": "-",
-          "cost": "80000",
-          "img": "delf",
-          "id": 43
-        },
-        {
-          "name": "Dark Elf",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "70000",
-          "img": "delf",
-          "id": 42
-        },
-        {
-          "name": "Runner",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
-          "skills": "Dump-off",
-          "specialRules": "-",
-          "cost": "80000",
-          "img": "delf",
-          "id": 43
-        },
-        {
-          "name": "Blitzer",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "Block",
-          "specialRules": "-",
-          "cost": "100000",
-          "img": "delf",
-          "id": 44
-        },
-        {
-          "name": "Blitzer",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "Block",
-          "specialRules": "-",
-          "cost": "100000",
-          "img": "delf",
-          "id": 44
-        },
-        {
-          "name": "Assassin",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
-          "skills": "Shadowing, Stab",
-          "specialRules": "-",
-          "cost": "85000",
-          "img": "delf",
-          "id": 45
-        },
-        {
-          "name": "Assassin",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
-          "skills": "Shadowing, Stab",
-          "specialRules": "-",
-          "cost": "85000",
-          "img": "delf",
-          "id": 45
-        },
-        {
-          "name": "Dark Elf",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "70000",
-          "img": "delf",
-          "id": 42
-        },
-        {
-          "name": "Dark Elf",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "70000",
-          "img": "delf",
-          "id": 42
-        },
-        {
-          "name": "Dark Elf",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "70000",
-          "img": "delf",
-          "id": 42
-        },
-        {
-          "name": "Dark Elf",
-          "team": "Dark Elf",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "70000",
-          "img": "delf",
-          "id": 42
-        }
-      ],
-      "color1": "black",
-      "color2": "silver",
-      "id": 15
-    },
-    {
       "teamName": "Pirates w/ogre (1M)",
       "reRolls": 1,
       "roster": [
@@ -2030,6 +1900,266 @@
       "color1": "darkgreen",
       "color2": "aquamarine",
       "id": 19
+    },
+    {
+      "teamName": "Pirates v2 (1M)",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Ogre",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 5+ AV 10+",
+          "skills": "Bone Head, Loner (4+), Mighty Blow (1+), Thick Skull, Throw Team-mate",
+          "specialRules": "-",
+          "cost": "140000",
+          "img": "imperialLineman",
+          "id": 6
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        },
+        {
+          "name": "Imperial Lineman",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 2
+        }
+      ],
+      "color1": "black",
+      "color2": "gold",
+      "id": 20
+    },
+    {
+      "teamName": "Alianza Underdark 1M v2",
+      "reRolls": 1,
+      "roster": [
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Blitzer",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "100000",
+          "img": "delf",
+          "id": 44
+        },
+        {
+          "name": "Runner",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
+          "skills": "Dump-off",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "delf",
+          "id": 43
+        },
+        {
+          "name": "Runner",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 3+ AV 8+",
+          "skills": "Dump-off",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "delf",
+          "id": 43
+        },
+        {
+          "name": "Assassin",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+          "skills": "Shadowing, Stab",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "delf",
+          "id": 45
+        },
+        {
+          "name": "Assassin",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 5+ AV 8+",
+          "skills": "Shadowing, Stab",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "delf",
+          "id": 45
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        },
+        {
+          "name": "Dark Elf",
+          "team": "Dark Elf",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 2+ PA 4+ AV 9+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "delf",
+          "id": 42
+        }
+      ],
+      "color1": "darkblue",
+      "color2": "cyan",
+      "id": 21
     }
   ],
   "whArmies": [
