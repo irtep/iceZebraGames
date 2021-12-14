@@ -377,11 +377,11 @@ const BloodBowl2 = ({game}) => {
       addToLog(`armour roll: ${armourRoll} with modifier: ${modifier}`);
       if (armourCheck) {
         const getInjuryMessage = armourBroken(stunty, thickSkull);
-        foundTarget.setStatus(getInjuryMessage.msg);
-        addToLog(`inj roll: ${getInjuryMessage.roll}`)
-        addToLog(`player is: ${getInjuryMessage.msg}`);
         addToLog(`roll was: ${armourRoll}`);
+        addToLog(`inj roll: ${getInjuryMessage.roll}`);
+        addToLog(`player is: ${getInjuryMessage.msg}`);
         addToLog(`injury roll was: ${getInjuryMessage.roll}`);
+        foundTarget.setStatus(getInjuryMessage.msg);
         if (getInjuryMessage === 'stunned') {
           foundTarget.setStatus('pushedStunned');
           if (targetFend.length === 0) {
@@ -389,6 +389,7 @@ const BloodBowl2 = ({game}) => {
           }
         }
       } else {
+        addToLog(`armour holds with roll ${armourRoll}`);
         if (targetFend.length === 0) {
           foundBlocker.setStatus('pushing');
         }
