@@ -1,32 +1,7 @@
 /*
 
-Missing:
-- start of second half
-- pass, hand off, end turn
-- to keep it simple, i dont create reroll for blocks yet.
-- out of bound not done, atleast not correctly
-- end turn button
-- i think end activation button should be too... atleast if bugging change of guy
--
-
-Bugs:
-- if you dont "end activation" while movement left you get a bug
-- when blitzed ball carrier it lost the ball, but it seems that it didnt lose the withBall
-- something bugged everything.. got stuck to turnOver phase...
-- add "activated" button to work with prones too, now works only with move guys
-- showing all the buttons of player actions even if should not
-- pick up cant be rerolled atleast at reroll phase... maybe i add this later
-- rush didnt let opportunity to reroll, with dwarf runner
-- after reroll set to ko, didnt recover its position
-- when movement left and i acticated new one the old one tried to move still...
-- if kick off bounces to player he does not try to catch
-- when blocking, cant follow up, something changes pushing status to activated. it changes when moved pushed guy
-- when blitzing, does not save old loc
-
-The GameBrain
-input that is gameObject
-- some kind of machine learning web
-export that is action
+gotta find clear and smooth game flow.....something like where gameObject rolls around etc.
+this state based does not work that well as it comes late when it should not be late 
 
 */
 import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce, convertPosition, armourBroken }
@@ -1867,26 +1842,22 @@ const BloodBowl2 = ({game}) => {
 
   const startTurn = (copyOfRoster1, copyOfRoster2, copyOfgameObject) => {
     console.log('start turn called');
-    // cant really take from activeTeam as it is lagging behind...
     let activeTeamIndex = 'team1';
 //    let currentRoster = copyOfRoster1;
     let opponentRoster = copyOfRoster2;
   //  let team2Turn = false;
     // setup
-    console.log('active team: ', activeTeam);
     if (activeTeam === 'Team 2') {
-      addToLog('team 2 starts');
-      //addToLog('active === team2');
+      console.log('team 2 starts');
+      //console.log('active === team2');
   //    currentRoster = copyOfRoster2;
       opponentRoster = copyOfRoster1;
   //    team2Turn = true;
       activeTeamIndex = "team2";
       copyOfgameObject.team2.turn++;
-      addToLog(`turn now: ${copyOfgameObject.team2.turn}`);
     } else {
-      addToLog('team 1 starts');
+      console.log('team 1 starts');
       copyOfgameObject.team1.turn++;
-      addToLog(`turn now: ${copyOfgameObject.team1.turn}`);
     }
     // terminate half if 9th turn and first half
     if (copyOfgameObject.half === 1 && copyOfgameObject[activeTeamIndex].turn === 9) {
@@ -1921,12 +1892,12 @@ const BloodBowl2 = ({game}) => {
       console.log('refreshing players');
       opponentRoster.forEach((item, i) => {
         if (item.status === 'activated' || item.status === 'target' || item.status === 'moved' || item.status === 'move' || item.status === 'block' || item.status === 'blitz' || item.status === 'pass' || item.status === 'handOff') {
-          //console.log(item.name, ' set to ready');
+          console.log(item.name, ' set to ready');
           item.setStatus('ready');
           item.refreshMovement();
         }
         if (item.status === 'fallen') {
-          //console.log(item.name, ' set to prone');
+          console.log(item.name, ' set to prone');
           item.setStatus('prone');
         }
         if (item.status === 'stunned') {
@@ -2090,10 +2061,8 @@ const BloodBowl2 = ({game}) => {
       setMsg('change of turn!');
       copyOfgameObject.phase = 'startTurn';
       if (activeTeam === 'Team 1') {
-        console.log('setting to team 2');
         setActiveTeam('Team 2');
       } else {
-        console.log('setting to team 1');
         setActiveTeam('Team 1');
       }
       setGameObject(copyOfgameObject);
