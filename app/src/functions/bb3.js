@@ -253,9 +253,52 @@ export const bloodBowlDices = (dicesSelect) => {
   }
   return results;
 }
-
 export const makePlayer = (player, index, team) => {
   let avIndex = 25;
+
+  const creatingPlayer = (number, img, name, skills, specialRules, ma, st, ag, pa, av, status, team, x, y) => {
+    const createdPlayer = {
+      number: number, img: img, name: name, skills: skills, specialRules: specialRules, ma: ma, st: st, ag: ag,
+      pa: pa, av: av, status: status, team: team, x: x, y: y,
+      gridX: Math.trunc( x / 35 ), gridY: Math.trunc( y / 35 ), activated: false, targeted: false,
+      movementLeft: ma, rushes: 2, withBall: false,
+      refreshMovement: () => {
+        this.rushes = 2;
+        this.movementLeft = this.ma;
+      },
+      move: (newX, newY) => {
+        this.x = newX;
+        this.y = newY;
+        this.gridX = Math.trunc( newX / 35 );
+        this.gridY = Math.trunc( newY / 35 );
+        this.movementLeft--;
+        return this.movementLeft;
+      },
+      setStatus: (newStatus) => {
+        this.status = newStatus;
+        if (newStatus === 'knocked out' || newStatus === 'dead') {
+          this.move(1900, 1900);
+        }
+      },
+      getStats: () => {
+        return this;
+      },
+      skillTest: (skill, diceValue, modifier) => {
+        console.log('skillTest: ', skill, diceValue, modifier);
+        const totalValue = diceValue + modifier;
+        console.log('this[skill]: ', this[skill]);
+        if (this[skill] <= totalValue) {
+          console.log('pass, dice, modifier ', diceValue, modifier);
+          return true;
+        } else {
+          console.log('failed, dice, modifier', diceValue, modifier);
+          return false;
+        }
+      }
+    }
+    return createdPlayer;
+  }
+
   // passsing skill - might mess, so need to do this:
   if (player.stats[avIndex] === '+') {
     avIndex--;
@@ -265,7 +308,7 @@ export const makePlayer = (player, index, team) => {
     avIndex--;
   }
 
-  const newPlayer = new Player(
+  const newPlayer = creatingPlayer(
     index, player.img, player.name, player.skills.split(', '), player.specialRules.split(', '),
     Number(player.stats[3]), // ma
     Number(player.stats[8]), // st
