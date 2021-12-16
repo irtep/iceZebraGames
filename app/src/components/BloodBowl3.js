@@ -15,7 +15,7 @@ import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
 import '../styles/bloodBowl2.css';
 
-const BloodBowl2 = ({game}) => {
+const BloodBowl3 = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -23,6 +23,7 @@ const BloodBowl2 = ({game}) => {
   const [mousePosition, setMp] = useState('');
   const [details, setDetails] = useState('');
   const [gameObject, setGameObject] = useState (bb3InitialGameObject);
+  const [actionButtons, setActionButtons] = useState('');
 
   // when this component is loaded
   useEffect( () => {
@@ -114,8 +115,10 @@ const BloodBowl2 = ({game}) => {
 
   const startGame = () => {
     const gO = JSON.parse(JSON.stringify(gameObject));
-    const roster1 = gO.team1.roster;
-    const roster2 = gO.team2.roster;
+    const roster1 = gO.team1.roster.concat([]);
+    const roster2 = gO.team2.roster.concat([]);
+    gO.team1.roster = [];
+    gO.team2.roster = [];
 
     if (roster1.length < 1 || roster2.length < 1) {
       return null;
@@ -136,31 +139,29 @@ const BloodBowl2 = ({game}) => {
     if (playerDice > aiDice) {
       addToLog('team 1 receives the kick!');
       setMsg('set defence for team 2:');
-      gO.team1.active = true;
-      gO.team2.active = false;
+      gO.team2.active = true;
+      gO.team1.active = false;
     } else {
       addToLog('team 2 receives the kick!');
       setMsg('set defensive formation for team 1 (to right side!)');
-      gO.team2.active = true;
-      gO.team1.active = false;
+      gO.team1.active = true;
+      gO.team2.active = false;
     }
-
-    // make players as Players
-    const convertedRoster1 = [];
-    const convertedRoster2 = [];
 
     roster1.forEach((item, i) => {
       const createdPlayer = makePlayer(item, i, gameObject.team1.team);
-      convertedRoster1.push(createdPlayer);
+      gO.team1.roster.push(createdPlayer);
     });
     roster2.forEach((item, i) => {
       const createdPlayer = makePlayer(item, i, gameObject.team2.team);
-      convertedRoster2.push(createdPlayer);
+      gO.team2.roster.push(createdPlayer);
     });
-    gO.team1.roster = convertedRoster1;
-    gO.team2.roster = convertedRoster2;
-
+//    console.log('converted roster 1: ', convertedRoster1);
+//    gO.team1.roster = convertedRoster1;
+//    gO.team2.roster = convertedRoster2;
+    console.log('gO roster: ', gO.team1.roster);
     gO.phase = 'set defence';
+    console.log('go: ', gO);
     setGameObject(gO);
   }
 
@@ -180,7 +181,95 @@ const BloodBowl2 = ({game}) => {
   }
 
   const clicked = () => {
-    console.log('clicked');
+    const gO = JSON.parse(JSON.stringify(gameObject));
+    let currentRoster = gO.team1.roster;
+    if (gO.team2.active) { currentRoster = gO.team2.roster }
+    console.log('currentRoster: ', currentRoster);
+    // set defence and offence
+    // CONTINUE from here.....
+    if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
+      let actionDone = false;
+      let activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
+
+      // check if someone is moving
+      currentRoster.forEach((item, i) => {
+        if (item.status === 'move' && !actionDone) {
+          item.setStatus('activated');
+          item.move(mousePosition.x, mousePosition.y);
+          actionDone = true;
+        }
+      });
+      if (!actionDone) {
+        currentRoster.forEach((item, i) => {
+          const collision = arcVsArc(mousePosition, item, 10, 15);
+          //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
+          if (collision) {
+        //    item.setStatus('move');
+          console.log('collising with: ', item);
+          item.setStatus('move');
+          }
+        });
+      }
+      if (gameObject.phase === 'set offence') {
+        activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "offenceReady" onClick = {statuses}>offence formation is ready</button></>
+      }
+      setActionButtons(activeButtons);
+    }
+    setGameObject(gO);
+  }
+
+  const statuses = (e) => {
+    const gO = JSON.parse(JSON.stringify(gameObject));
+    let activeIndex = 'team1';
+    if (gO.team2.active) { activeIndex = 'team2' }
+    let currentRoster = gO[activeIndex].roster;
+    const selectedAction = e.target.id;
+
+    if (selectedAction === 'reserveThis') {
+      currentRoster.forEach((item, i) => {
+        if (item.status === 'move') {
+          item.setStatus('reserve');
+          item.move(1900, 1900);
+        }
+      });
+    }
+
+    if (selectedAction === 'defenceReady') {
+      const checkUp = checkLineUp(currentRoster, false);
+
+      if (checkUp) {
+        setMsg('def formation ok, set now offense');
+        gO.phase = 'set offence';
+        if (activeIndex === 'team1') {
+          gO.team1.active = false;
+          gO.team2.active = true;
+        } else {
+          gO.team1.active = true;
+          gO.team2.active = false;
+        }
+      } else {
+        setMsg('illegal formation. check wide zones, total players and scrimmage');
+      }
+    }
+
+    if (selectedAction === 'offenceReady') {
+      const checkUp = checkLineUp(currentRoster, true);
+
+      if (checkUp) {
+        setMsg('off formation ok, Kick Off now. Select place for a ball');
+        gO.phase = 'kick off';
+        if (activeIndex === 'team1') {
+          gO.team1.active = false;
+          gO.team2.active = true;
+        } else {
+          gO.team1.active = true;
+          gO.team2.active = false;
+        }
+      } else {
+        setMsg('illegal formation. check wide zones, total players and scrimmage');
+      }
+    }
+    setGameObject(gO);
   }
 
   return(
@@ -255,7 +344,7 @@ const BloodBowl2 = ({game}) => {
     );
 }
 
-export default BloodBowl2;
+export default BloodBowl3;
 
 /*
 the arena should be
