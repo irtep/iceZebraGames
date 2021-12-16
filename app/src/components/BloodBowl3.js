@@ -86,7 +86,6 @@ const BloodBowl3 = ({game}) => {
     const gO = JSON.parse(JSON.stringify(gameObject));
     let active = 'team1';
     let startPoint = {x: 50, y: 100};
-    const tempRoster = [];
     let activeRoster = [];
     const selectedTeam = teams.filter( team => team.id === clickedEntry);
 
@@ -107,27 +106,27 @@ const BloodBowl3 = ({game}) => {
       newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
       newPlayer.y = startPoint.y;
       newPlayer.status = 'ready';
-      tempRoster.push(newPlayer);
+      activeRoster.push(newPlayer);
     });
-
+/*
     tempRoster.forEach((item, i) => {
       const createdPlayer = makePlayer(item, i, gO[active].team);
       gO[active].roster.push(createdPlayer);
     });
-
+*/
     setGameObject(gO);
     drawBBfield("bloodBowlStadium", gO);
   }
 
   const startGame = () => {
     const gO = JSON.parse(JSON.stringify(gameObject));
-    /*
+
     const roster1 = gO.team1.roster.concat([]);
     const roster2 = gO.team2.roster.concat([]);
     gO.team1.roster = [];
     gO.team2.roster = [];
-*/
-    if (gO.team1.roster.length < 1 || gO.team2.roster.length < 1) {
+
+    if (roster1.length < 1 || roster2.length < 1) {
       return null;
     }
 
@@ -154,7 +153,7 @@ const BloodBowl3 = ({game}) => {
       gO.team1.active = true;
       gO.team2.active = false;
     }
-/*
+
     roster1.forEach((item, i) => {
       const createdPlayer = makePlayer(item, i, gameObject.team1.team);
       gO.team1.roster.push(createdPlayer);
@@ -163,7 +162,7 @@ const BloodBowl3 = ({game}) => {
       const createdPlayer = makePlayer(item, i, gameObject.team2.team);
       gO.team2.roster.push(createdPlayer);
     });
-    */
+
 //    console.log('converted roster 1: ', convertedRoster1);
 //    gO.team1.roster = convertedRoster1;
 //    gO.team2.roster = convertedRoster2;
