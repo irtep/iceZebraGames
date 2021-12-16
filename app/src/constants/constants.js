@@ -4,7 +4,8 @@ export const gameOptions = [
   '40k',
   'Warmachine',
   'Blood Bowl2',
-  'Setup'
+  'Setup',
+  'Blood Bowl3'
 ];
 
 export const initialBloodBowlObject = {
@@ -37,6 +38,42 @@ export const initialBloodBowlObject = {
     colors: []
   },
 };
+
+export const bb3InitialGameObject = {
+  phase: 'Select teams',
+  half: 1,
+  team1: {
+    rerolls: 0,
+    team: 'Select team',
+    value: 0,
+    score: 0,
+    turn: 0,
+    blitz: true,
+    foul: true,
+    argue: true,
+    pass: true,
+    handOff: true,
+    colors: [],
+    roster: [],
+    active: false
+  },
+  team2: {
+    rerolls: 0,
+    team: 'Select team',
+    value: 0,
+    score: 0,
+    turn: 0,
+    blitz: true,
+    foul: true,
+    argue: true,
+    pass: true,
+    handOff: true,
+    colors: [],
+    roster: [],
+    active: false
+  },
+  ball: {x: 100, y: 100}
+}
 
 export const initialWarmachineObject = {
   team1: {

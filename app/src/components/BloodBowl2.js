@@ -2258,7 +2258,7 @@ const BloodBowl2 = ({game}) => {
     drawBBfield("bloodBowlStadium", 16, 27, roster1, roster2, ball, copyOfgameObject);
   }
 
-  const addTeam =  (e) => { console.log('add team e', e);
+  const addTeam =  (e) => {
     const clickedEntry = Number(e.target.id);
     const copyOfgameObject = JSON.parse(JSON.stringify(gameObject));
     let active = 'team1';

@@ -1,6 +1,7 @@
 import BloodBowl from './BloodBowl';
 import Warmachine from './Warmachine';
 import BloodBowl2 from './BloodBowl2';
+import BloodBowl3 from './BloodBowl3';
 import Setups from './Setups';
 
 const Field = ({game}) => {
@@ -26,6 +27,12 @@ const Field = ({game}) => {
     return(
       <>
       <BloodBowl2 />
+      </>
+    );
+  } else if (game === 'Blood Bowl3') {
+    return(
+      <>
+      <BloodBowl3 />
       </>
     );
   }
