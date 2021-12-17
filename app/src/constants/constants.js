@@ -72,7 +72,8 @@ export const bb3InitialGameObject = {
     roster: [],
     active: false
   },
-  ball: {x: 100, y: 100}
+  ball: {x: 100, y: 100},
+  firstKicker: ''
 }
 
 export const initialWarmachineObject = {

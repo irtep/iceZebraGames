@@ -24,6 +24,7 @@ const BloodBowl3 = ({game}) => {
   const [details, setDetails] = useState('');
   const [gameObject, setGameObject] = useState (bb3InitialGameObject);
   const [actionButtons, setActionButtons] = useState('');
+  const squareSize = 35;
 
   // when this component is loaded
   useEffect( () => {
@@ -222,6 +223,94 @@ const BloodBowl3 = ({game}) => {
     setGameObject(gO);
   }
 
+  const kickOff = (gO) => {
+    console.log('kickOff called ');
+//    let touchBack = false;
+//    let activeAgent;
+//    team2Turn ? activeAgent = 'team2' : activeAgent = 'team1';
+    //copyOfgameObject.phase = 'gamePlay';
+    let currentRoster = [];
+    let opponentRoster = [];
+    const deviationRoll = callDice(8);
+    const deviationDistance = callDice(5);
+    const bounceRoll = callDice(8);
+    let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
+    gO.ball = placeOfBall;
+    addToLog(`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`);
+    if (gO.team1.active) {
+      //console.log('active === team2');
+      currentRoster = gO.team1.roster;
+      gO.firstKicker = 'Team 1';
+    } else {
+      currentRoster = gO.team2.roster;
+      gO.firstKicker = 'Team 2';
+    }
+    // check if someone is there to catch i
+    let atLocation = [];
+    currentRoster.forEach((item, i) => {
+      const inLocation = item.isInLocation(placeOfBall, squareSize);
+      if (inLocation) {atLocation.push(item)}
+    });
+    // if someone there, he tries to catch the ball
+    if (atLocation.length === 1) {
+      let rerollsLeft = 0;
+      let catchSuccess = true;
+      let negativeModifier = 0;
+      const playerInAction = atLocation[0];
+
+      gO.team1.active ?
+      opponentRoster = gO.team2.roster :
+      opponentRoster = gO.team1.roster;
+
+      addToLog(`${playerInAction.number} tries to catch...`);
+      // check tacklezones
+      const tacklers = playerInAction.markedBy(opponentRoster);
+      negativeModifier -= tacklers.length;
+      const skillCheck = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+      if (skillCheck) {
+        addToLog(`Catch ok!`);
+        atLocation[0].withBall = true;
+      } else {
+        addToLog(`He fails to catch. Ball bounces to: ${bounceRoll}`);
+        catchSuccess = false;
+        // check if he has "Catch skill"
+        const catchCheck = playerInAction.skills.filter( skill => skill === 'Catch');
+        if (catchCheck.length === 1) {
+          // rerolling for catch
+          addToLog(`... but the player re-tries as he has Catch skill...`);
+          const skillCheck2 = playerInAction.skillTest('ag', callDice(6), negativeModifier);
+          if (skillCheck2) {
+            addToLog(`Catch ok!`);
+            catchSuccess = true;
+          }
+        }
+      }
+      if (!catchSuccess) {
+        placeOfBall = bounce(bounceRoll, placeOfBall);
+        gO.ball = placeOfBall;
+      }
+    } else {
+      // nobody catching so bounces
+      placeOfBall = bounce(bounceRoll, placeOfBall);
+      gO.ball = placeOfBall;
+    }
+
+    gO.phase = 'startTurn';
+    currentRoster.forEach((item, i) => {
+      item.setStatus('ready');
+      item.refreshMovement();
+    });
+    opponentRoster.forEach((item, i) => {
+      item.setStatus('ready');
+      item.refreshMovement();
+    });
+  setMsg('kick off ready');
+  setGameObject(gO); // remove this when startTurn(gO) is done
+  console.log('calling startTurn from kickOff');
+  // fire start turn after that, gO in it
+  // CONTINUE FROM HERE BUG: got set defence for team 2 and was able to move team 1
+  }
+
   const statuses = (e) => {
     const gO = {...gameObject};
     let activeIndex = 'team1';
@@ -236,9 +325,10 @@ const BloodBowl3 = ({game}) => {
           item.move(1900, 1900);
         }
       });
+      setGameObject(gO);
     }
 
-    if (selectedAction === 'defenceReady') {
+    else if (selectedAction === 'defenceReady') {
       const checkUp = checkLineUp(currentRoster, false);
 
       if (checkUp) {
@@ -254,9 +344,10 @@ const BloodBowl3 = ({game}) => {
       } else {
         setMsg('illegal formation. check wide zones, total players and scrimmage');
       }
+      setGameObject(gO);
     }
 
-    if (selectedAction === 'offenceReady') {
+    else if (selectedAction === 'offenceReady') {
       const checkUp = checkLineUp(currentRoster, true);
 
       if (checkUp) {
@@ -269,11 +360,11 @@ const BloodBowl3 = ({game}) => {
           gO.team1.active = true;
           gO.team2.active = false;
         }
+        kickOff(gO);
       } else {
         setMsg('illegal formation. check wide zones, total players and scrimmage');
       }
     }
-    setGameObject(gO);
   }
 
   return(
