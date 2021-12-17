@@ -69,7 +69,7 @@ const BloodBowl3 = ({game}) => {
 /////// PRE GAME  ////////////////
 
   const activateTeam = (e) => {
-    const gO = JSON.parse(JSON.stringify(gameObject));
+    const gO = {...gameObject};
     let index = 'team1';
     let index2 = 'team2';
     if (e.target.id === 'activateTeam2') {
@@ -108,12 +108,7 @@ const BloodBowl3 = ({game}) => {
       newPlayer.status = 'ready';
       activeRoster.push(newPlayer);
     });
-/*
-    tempRoster.forEach((item, i) => {
-      const createdPlayer = makePlayer(item, i, gO[active].team);
-      gO[active].roster.push(createdPlayer);
-    });
-*/
+
     setGameObject(gO);
     drawBBfield("bloodBowlStadium", gO);
   }
@@ -169,6 +164,7 @@ const BloodBowl3 = ({game}) => {
     //console.log('gO roster: ', gO.team1.roster);
     gO.phase = 'set defence';
     console.log('go: ', gO);
+    console.log('go after stringify: ', JSON.parse(JSON.stringify(gO)));
     setGameObject(gO);
   }
 
@@ -188,15 +184,15 @@ const BloodBowl3 = ({game}) => {
   }
 
   const clicked = () => {
-    const gO = JSON.parse(JSON.stringify(gameObject));
+    const gO = { ...gameObject};
     let currentRoster = gO.team1.roster;
     if (gO.team2.active) { currentRoster = gO.team2.roster }
-    console.log('gO: ', gO);
+    let activeButtons = '';
+
     // set defence and offence
-    // CONTINUE from here.....
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
       let actionDone = false;
-      let activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
+      activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
 
       // check if someone is moving
       currentRoster.forEach((item, i) => {
@@ -222,11 +218,12 @@ const BloodBowl3 = ({game}) => {
       }
       setActionButtons(activeButtons);
     }
+    setActionButtons(activeButtons);
     setGameObject(gO);
   }
 
   const statuses = (e) => {
-    const gO = JSON.parse(JSON.stringify(gameObject));
+    const gO = {...gameObject};
     let activeIndex = 'team1';
     if (gO.team2.active) { activeIndex = 'team2' }
     let currentRoster = gO[activeIndex].roster;
@@ -314,7 +311,7 @@ const BloodBowl3 = ({game}) => {
           <br/>*/}
 <br/>{/*
           <button id= "moveBall" onClick= {statuses}>move ball</button>*/}
-
+          {actionButtons}
         </div>
         <div id= "infos">
           {gameObject.team1.team}. score: {gameObject.team1.score} turn: {gameObject.team1.turn} rerolls: {gameObject.team1.rerolls} value: {gameObject.team1.value}<br/>

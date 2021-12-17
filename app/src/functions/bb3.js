@@ -253,6 +253,41 @@ export const bloodBowlDices = (dicesSelect) => {
   }
   return results;
 }
+
+export const makePlayer = (player, index, team) => {
+  let avIndex = 25;
+  // passsing skill - might mess, so need to do this:
+  if (player.stats[avIndex] === '+') {
+    avIndex--;
+  }
+  if (player.stats[avIndex] === '0') {
+    console.log('is + with: ', player.name);
+    avIndex--;
+  }
+
+  const newPlayer = new Player(
+    index, player.img, player.name, player.skills.split(', '), player.specialRules.split(', '),
+    Number(player.stats[3]), // ma
+    Number(player.stats[8]), // st
+    Number(player.stats[13]), // ag
+    Number(player.stats[19]), // pa
+    Number(player.stats[avIndex]), // av
+    'ready', team, player.x, player.y
+  );
+
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '1') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '0') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  return newPlayer;
+}
+/*
 export const makePlayer = (player, index, team) => {
   let avIndex = 25;
 
@@ -262,11 +297,11 @@ export const makePlayer = (player, index, team) => {
       pa: pa, av: av, status: status, team: team, x: x, y: y,
       gridX: Math.trunc( x / 35 ), gridY: Math.trunc( y / 35 ), activated: false, targeted: false,
       movementLeft: ma, rushes: 2, withBall: false,
-      refreshMovement: () => {
+      refreshMovement: function() {
         this.rushes = 2;
         this.movementLeft = this.ma;
       },
-      move: (newX, newY) => {
+      move: function(newX, newY) {
         this.x = newX;
         this.y = newY;
         this.gridX = Math.trunc( newX / 35 );
@@ -274,16 +309,16 @@ export const makePlayer = (player, index, team) => {
         this.movementLeft--;
         return this.movementLeft;
       },
-      setStatus: (newStatus) => {
+      setStatus: function(newStatus) {
         this.status = newStatus;
         if (newStatus === 'knocked out' || newStatus === 'dead') {
           this.move(1900, 1900);
         }
       },
-      getStats: () => {
+      getStats: function() {
         return this;
       },
-      skillTest: (skill, diceValue, modifier) => {
+      skillTest: function(skill, diceValue, modifier) {
         console.log('skillTest: ', skill, diceValue, modifier);
         const totalValue = diceValue + modifier;
         console.log('this[skill]: ', this[skill]);
@@ -330,6 +365,7 @@ export const makePlayer = (player, index, team) => {
   }
   return newPlayer;
 }
+*/
 
 export const checkLineUp = (lineUp, offence) => {
   console.log('line up to check: ', lineUp);
