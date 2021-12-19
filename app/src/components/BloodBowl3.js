@@ -528,13 +528,14 @@ const BloodBowl3 = ({game}) => {
             addToLog(`agility check passed. roll: ${agiCheck}, modifier: ${modifier}`);
           } else {
             // save old data if user selects reroll
+            /*
             item.preReroll = {
               gameObject: gO,
               reasonWas: 'dodge',
               skillWas: 'ag',
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
-            }
+            }*/
             // turn over!
             addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
             item.withBall = false;
@@ -570,12 +571,12 @@ const BloodBowl3 = ({game}) => {
         if (rushDice === 1) {
           if (sureFeetCheck.length === 1 && sureFeetDice > 1) {
             addToLog('sure feet saved');
-          } else {
+          } else {/*
             console.log('saving for possible reroll');
             item.preReroll = {
               gameObject: gO,
               reasonWas: 'rush',
-              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
             }
             item.withBall = false;
             // falls
@@ -665,12 +666,13 @@ const BloodBowl3 = ({game}) => {
             } else {
               // turn over!
               // save old data if user selects reroll
+              /*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'dodge',
                 skillWas: 'ag',
                 modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
               }
               addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
               item.withBall = false;
@@ -713,13 +715,13 @@ const BloodBowl3 = ({game}) => {
               // make modifier
               const markers = item.markedBy(opponentRoster);
               let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'pickUp',
                 skillWas: 'ag',
                 modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
               }
               gO.ball = (bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
@@ -895,12 +897,13 @@ const BloodBowl3 = ({game}) => {
             } else {
               // turn over!
               // save old data if user selects reroll
+              /*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'dodge',
                 skillWas: 'ag',
                 modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
               }
               addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
               item.withBall = false;
@@ -943,13 +946,13 @@ const BloodBowl3 = ({game}) => {
               // make modifier
               const markers = item.markedBy(opponentRoster);
               let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'pickUp',
                 skillWas: 'ag',
                 modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
               }
               gO.ball(bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
@@ -1119,12 +1122,13 @@ const BloodBowl3 = ({game}) => {
           } else {
             // turn over!
             // save old data if user selects reroll
+            /*
             item.preReroll = {
               gameObject: gO,
               reasonWas: 'dodge',
               skillWas: 'ag',
               modifierWas: modifier,
-              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
             }
             addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
             item.withBall = false;
@@ -1168,13 +1172,13 @@ const BloodBowl3 = ({game}) => {
             // make modifier
             const markers = item.markedBy(opponentRoster);
             let modifier = 0;
-            if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+            if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
             item.preReroll = {
               gameObject: gO,
               reasonWas: 'pickUp',
               skillWas: 'ag',
               modifierWas: modifier,
-              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
+              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
             }
             // ball bounces
             gO.ball = (bounce(callDice(8), gO.ball));
@@ -1323,12 +1327,12 @@ const BloodBowl3 = ({game}) => {
     //let mightyBlow = false;
     //let claws = false;
     let turnOverComing = false;
-
+/*
     foundBlocker.preReroll = {
       reasonWas: '',
       modifierWas: 0
     }
-
+*/
     if (decision === '(player down)') {
       if (blockerStunty.length === 1) {
         stunty = true;
@@ -1356,8 +1360,8 @@ const BloodBowl3 = ({game}) => {
         gO.ball = bounce(callDice(8), gO.ball);
       }
       // player down and turn over
-      foundBlocker.preReroll.reasonWas = 'block';
-      foundBlocker.preReroll.modifierWas = 0;
+  //    foundBlocker.preReroll.reasonWas = 'block';
+    //  foundBlocker.preReroll.modifierWas = 0;
       gO.phase = 'turnOver';
       console.log('calling turn over phase from failed block ');
       // when reroll for blocks is done, change true to false
@@ -1855,6 +1859,11 @@ const BloodBowl3 = ({game}) => {
     const selectedAction = e.target.id;
 
     // move ball
+    if (selectedAction === 'gameplay') {
+      gO.phase = 'gameplay';
+      setGameObject(gO);
+    }
+    // move ball
     if (selectedAction === 'moveBall') {
       setAction('moveBall');
     }
@@ -1943,6 +1952,7 @@ const BloodBowl3 = ({game}) => {
         <button id= "d8" onClick= {diceThrow}>d8</button>
         <button id= "d16" onClick= {diceThrow}>d16</button>
         <button id= "moveBall" onClick= {statuses}>move ball</button>
+        <button id= "gameplay" onClick= {statuses}>gameplay phase</button>
         <button id= "setCarrier" onClick= {statuses}>set carrier</button>
         <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
         <button id= "statusChange" onClick = {statuses}>move selected to reserves</button>{/*
