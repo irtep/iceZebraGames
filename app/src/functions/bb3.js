@@ -254,6 +254,22 @@ export const bloodBowlDices = (dicesSelect) => {
   return results;
 }
 
+export const switchActiveTeam = (gO) => {
+  gO.team1.active = !gO.team1.active;
+  gO.team2.active = !gO.team2.active;
+  return gO;
+}
+
+export const checkIfBallLocation = (loc, ball) => {
+  const gridLocOfBall = {x: Math.trunc( ball.x / 35 ), y: Math.trunc( ball.y / 35 )};
+  if (gridLocOfBall.x === loc.x && gridLocOfBall.y === loc.y) {
+    return true;
+  } else {
+    console.log("ball not here: ", loc, " vs ", gridLocOfBall);
+    return false;
+  }
+}
+
 export const makePlayer = (player, index, team) => {
   let avIndex = 25;
   // passsing skill - might mess, so need to do this:
