@@ -40,6 +40,7 @@ const BloodBowl3 = ({game}) => {
   const [actionButtons, setActionButtons] = useState('');
   const [forceStatus, setForceStatus] = useState('off');
   const [dices, setDices] = useState('');
+  const [action, setAction] = useState('nothing');
   const squareSize = 35;
 
   // when this component is loaded
@@ -550,7 +551,8 @@ const BloodBowl3 = ({game}) => {
             } else {
               item.setStatus('fallen');
               addToLog(`armour holds with roll: ${armourRoll}`);
-            }/*
+            }
+            /*
             console.log('setting old data: ', preReroll);
             gO.phase = 'turnOver';
             setOldData(preReroll);
@@ -1349,6 +1351,10 @@ const BloodBowl3 = ({game}) => {
         foundBlocker.setStatus('fallen');
         addToLog(`armour holds with roll: ${armourRoll}`);
       }
+      if (foundBlocker.withBall) {
+        foundBlocker.withBall = false;
+        gO.ball = bounce(callDice(8), gO.ball);
+      }
       // player down and turn over
       foundBlocker.preReroll.reasonWas = 'block';
       foundBlocker.preReroll.modifierWas = 0;
@@ -1410,6 +1416,14 @@ const BloodBowl3 = ({game}) => {
           addToLog('target has Block skill. Not knocked down');
         }
       }
+      if (foundBlocker.withBall) {
+        foundBlocker.withBall = false;
+        gO.ball = bounce(callDice(8), gO.ball);
+      }
+      if (foundTarget.withBall) {
+        foundTarget.withBall = false;
+        gO.ball = bounce(callDice(8), gO.ball);
+      }
     }
     else if (decision === '(push back)') {
       addToLog(`it is a push!`);
@@ -1470,6 +1484,10 @@ const BloodBowl3 = ({game}) => {
           addToLog(`targets armour holds with roll: ${armourRoll}`);
           // later gotta add so that can be pushed too if didnt ko or die
         }
+        if (foundTarget.withBall) {
+          foundTarget.withBall = false;
+          gO.ball = bounce(callDice(8), gO.ball);
+        }
       } else {
         setMsg('set place for pushed player')
         addToLog('target has dodge, so converted to push.');
@@ -1504,6 +1522,10 @@ const BloodBowl3 = ({game}) => {
           if (targetFend.length === 0) {
             foundBlocker.setStatus('pushing');
           }
+        }
+        if (foundTarget.withBall) {
+          foundTarget.withBall = false;
+          gO.ball = bounce(callDice(8), gO.ball);
         }
       } else {
         addToLog(`armour holds with roll ${armourRoll}`);
@@ -1600,6 +1622,40 @@ const BloodBowl3 = ({game}) => {
     let currentRoster = gO.team1.roster;
     if (gO.team2.active) { currentRoster = gO.team2.roster }
     let activeButtons = '';
+
+    if (action === 'moveBall') {
+      const newPosition = {x: mousePosition.x, y: mousePosition.y};
+      // set withBall to false from old carrier
+      gO.team1.roster.forEach((item, i) => {
+        if (item.withBall) { item.withBall = false; }
+      });
+      gO.team2.roster.forEach((item, i) => {
+        if (item.withBall) { item.withBall = false; }
+      });
+
+      gO.ball = newPosition;
+      setAction('nothing');
+      setGameObject(gO);
+    }
+
+    if (action === 'setCarrier') {
+      const convertedPosition = convertPosition(mousePosition, squareSize);
+      // set withBall to new carrier if any
+      gO.team1.roster.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to ball carrier');
+          item.withBall = true;
+        }
+      });
+      gO.team2.roster.forEach((item, i) => {
+        if (item.gridX === convertedPosition.x && item.gridY === convertedPosition.y) {
+          console.log('setting ', item.number, ' to ball carrier');
+          item.withBall = true;
+        }
+      });
+      setGameObject(gO);
+      setAction('nothing');
+    }
 
     // set defence and offence
     if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
@@ -1797,6 +1853,15 @@ const BloodBowl3 = ({game}) => {
     if (gO.team2.active) { activeIndex = 'team2' }
     let currentRoster = gO[activeIndex].roster;
     const selectedAction = e.target.id;
+
+    // move ball
+    if (selectedAction === 'moveBall') {
+      setAction('moveBall');
+    }
+    // set Carrier
+    if (selectedAction === 'setCarrier') {
+      setAction('setCarrier');
+    }
 
     if (selectedAction === 'reserveThis') {
       currentRoster.forEach((item, i) => {
