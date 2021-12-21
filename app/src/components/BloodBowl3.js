@@ -577,7 +577,7 @@ const BloodBowl3 = ({game}) => {
               gameObject: gO,
               reasonWas: 'rush',
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-            }
+
             item.withBall = false;
             // falls
             // turn over!
@@ -609,8 +609,8 @@ const BloodBowl3 = ({game}) => {
           console.log('calling turnOverPhase from gamePlay (rush)');
           turnOverPhase(gO, item, true);
         }
-      }
 
+      }
       else if (item.status === 'foul') {
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
@@ -722,15 +722,16 @@ const BloodBowl3 = ({game}) => {
                 skillWas: 'ag',
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-              }
+
               gO.ball = (bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
               // at the moment cant be rerolled as not coded and tested
               turnOverPhase(gO, item, true);
             }
           }
-        } // blitzh move ends
+         // blitzh move ends
         // foul i think....
+
         else {
           console.log('foul: move check is not 1: ', moveChecking);
           const actionButtons = [];
@@ -904,7 +905,7 @@ const BloodBowl3 = ({game}) => {
                 skillWas: 'ag',
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-              }
+
               addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
               item.withBall = false;
               // armour check
@@ -953,7 +954,7 @@ const BloodBowl3 = ({game}) => {
                 skillWas: 'ag',
                 modifierWas: modifier,
                 oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-              }
+
               gO.ball(bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
               // at the moment cant be rerolled as not coded and tested
@@ -1129,7 +1130,7 @@ const BloodBowl3 = ({game}) => {
               skillWas: 'ag',
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-            }
+
             addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
             item.withBall = false;
             // armour check
@@ -1179,7 +1180,7 @@ const BloodBowl3 = ({game}) => {
               skillWas: 'ag',
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-            }
+            
             // ball bounces
             gO.ball = (bounce(callDice(8), gO.ball));
             gO.phase = 'turnOver';
