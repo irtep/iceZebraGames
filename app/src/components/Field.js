@@ -26,7 +26,7 @@ const Field = ({game}) => {
   } else if (game === 'Blood Bowl2') {
     return(
       <>
-      <BloodBowl2 />
+      <BloodBowl />
       </>
     );
   } else if (game === 'Blood Bowl3') {

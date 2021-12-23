@@ -1,5 +1,5 @@
 /*
-
+ NOT IN USE, i use now 1 and 3
 Missing:
 - start of second half
 - pass, hand off, end turn

@@ -3,7 +3,6 @@ export const gameOptions = [
   'Kill Team',
   '40k',
   'Warmachine',
-  'Blood Bowl2',
   'Setup',
   'Blood Bowl3'
 ];

@@ -2,8 +2,14 @@ import { blockDices } from '../constants/constants';
 import { Player } from '../constants/classes';
 import { callDice } from './supportFuncs';
 
+///////////////////////////////////////
+///     BLOOD BOWL VERSION 3  ////////
+/////////////////////////////////////
+
 // draw a grid to football field
-export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball, gameObject) => {
+export const drawBBfield = (kanv, gameObject) => {
+  const xLines = 16;
+  const yLines = 27;
   const baseSize = 15;
   const grid_size = 35;
   const canvas = document.getElementById(kanv);
@@ -16,11 +22,17 @@ export const drawBBfield = (kanv, xLines, yLines, team1, team2, ball, gameObject
   let color12 = "white";
   let color21 = "rgb(70,70,70)";
   let color22 = "silver";
+  let team1 = undefined;
+  let team2 = undefined;
+  let ball = undefined;
   if (gameObject !== undefined) {
     color11 = gameObject.team1.colors[0];
     color12 = gameObject.team1.colors[1];
     color21 = gameObject.team2.colors[0];
     color22 = gameObject.team2.colors[1];
+    team1 = gameObject.team1.roster;
+    team2 = gameObject.team2.roster;
+    ball = gameObject.ball;
   }
 
   // call clear
@@ -242,6 +254,22 @@ export const bloodBowlDices = (dicesSelect) => {
   return results;
 }
 
+export const switchActiveTeam = (gO) => {
+  gO.team1.active = !gO.team1.active;
+  gO.team2.active = !gO.team2.active;
+  return gO;
+}
+
+export const checkIfBallLocation = (loc, ball) => {
+  const gridLocOfBall = {x: Math.trunc( ball.x / 35 ), y: Math.trunc( ball.y / 35 )};
+  if (gridLocOfBall.x === loc.x && gridLocOfBall.y === loc.y) {
+    return true;
+  } else {
+    console.log("ball not here: ", loc, " vs ", gridLocOfBall);
+    return false;
+  }
+}
+
 export const makePlayer = (player, index, team) => {
   let avIndex = 25;
   // passsing skill - might mess, so need to do this:
@@ -275,6 +303,85 @@ export const makePlayer = (player, index, team) => {
   }
   return newPlayer;
 }
+/*
+export const makePlayer = (player, index, team) => {
+  let avIndex = 25;
+
+  const creatingPlayer = (number, img, name, skills, specialRules, ma, st, ag, pa, av, status, team, x, y) => {
+    const createdPlayer = {
+      number: number, img: img, name: name, skills: skills, specialRules: specialRules, ma: ma, st: st, ag: ag,
+      pa: pa, av: av, status: status, team: team, x: x, y: y,
+      gridX: Math.trunc( x / 35 ), gridY: Math.trunc( y / 35 ), activated: false, targeted: false,
+      movementLeft: ma, rushes: 2, withBall: false,
+      refreshMovement: function() {
+        this.rushes = 2;
+        this.movementLeft = this.ma;
+      },
+      move: function(newX, newY) {
+        this.x = newX;
+        this.y = newY;
+        this.gridX = Math.trunc( newX / 35 );
+        this.gridY = Math.trunc( newY / 35 );
+        this.movementLeft--;
+        return this.movementLeft;
+      },
+      setStatus: function(newStatus) {
+        this.status = newStatus;
+        if (newStatus === 'knocked out' || newStatus === 'dead') {
+          this.move(1900, 1900);
+        }
+      },
+      getStats: function() {
+        return this;
+      },
+      skillTest: function(skill, diceValue, modifier) {
+        console.log('skillTest: ', skill, diceValue, modifier);
+        const totalValue = diceValue + modifier;
+        console.log('this[skill]: ', this[skill]);
+        if (this[skill] <= totalValue) {
+          console.log('pass, dice, modifier ', diceValue, modifier);
+          return true;
+        } else {
+          console.log('failed, dice, modifier', diceValue, modifier);
+          return false;
+        }
+      }
+    }
+    return createdPlayer;
+  }
+
+  // passsing skill - might mess, so need to do this:
+  if (player.stats[avIndex] === '+') {
+    avIndex--;
+  }
+  if (player.stats[avIndex] === '0') {
+    console.log('is + with: ', player.name);
+    avIndex--;
+  }
+
+  const newPlayer = creatingPlayer(
+    index, player.img, player.name, player.skills.split(', '), player.specialRules.split(', '),
+    Number(player.stats[3]), // ma
+    Number(player.stats[8]), // st
+    Number(player.stats[13]), // ag
+    Number(player.stats[19]), // pa
+    Number(player.stats[avIndex]), // av
+    'ready', team, player.x, player.y
+  );
+
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '1') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  // convert possible 10 and 11 AV
+  if (player.stats[avIndex] === '0') {
+    newPlayer.av = '1' + player.stats[avIndex + 1];
+    newPlayer.av = Number(newPlayer.av);
+  }
+  return newPlayer;
+}
+*/
 
 export const checkLineUp = (lineUp, offence) => {
   console.log('line up to check: ', lineUp);
