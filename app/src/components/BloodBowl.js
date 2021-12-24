@@ -262,7 +262,20 @@ const BloodBowl = ({game}) => {
           }
         } else {
           // continue from here !!
-
+          addToLog('rush roll 1!');
+          who.withBall = false;
+          // armour check
+          const armourRoll = callDice(12);
+          const armourCheck = who.skillTest('av', armourRoll, 0);
+          addToLog(`armour check: ${armourRoll} is ${armourCheck}`);
+          if (armourCheck) {
+            const getInjuryMessage = armourBroken(stunty, thickSkull);
+            who.setStatus(getInjuryMessage.msg);
+            addToLog(`player is: ${getInjuryMessage.msg}`);
+            addToLog(`injury roll was: ${getInjuryMessage.roll}`);
+          } else {
+            who.setStatus('fallen');
+          }
         }
       }
 
