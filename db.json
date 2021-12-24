@@ -662,6 +662,28 @@
       "cost": "280000",
       "img": "goblin",
       "id": 59
+    },
+    {
+      "name": "Fabio",
+      "team": "Skaven",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+      "skills": "Block",
+      "specialRules": "-",
+      "cost": "90000",
+      "img": "fabio",
+      "id": 60
+    },
+    {
+      "name": "Gold Digger",
+      "team": "Skaven",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+      "skills": "Block",
+      "specialRules": "-",
+      "cost": "90000",
+      "img": "fabio",
+      "id": 61
     }
   ],
   "teams": [
@@ -2301,6 +2323,158 @@
       "color1": "red",
       "color2": "black",
       "id": 22
+    },
+    {
+      "teamName": "Ratpool A",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Thrower",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 2+ AV 8+",
+          "skills": "Pass, Sure Hands",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 38
+        },
+        {
+          "name": "Thrower",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 2+ AV 8+",
+          "skills": "Pass, Sure Hands",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 38
+        },
+        {
+          "name": "Gutter Runner",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
+          "specialRules": "-",
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
+        },
+        {
+          "name": "Rat Ogre",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 5 AG 4+ PA - AV 9+",
+          "skills": "Animal Savagery, Frenzy, Loner (4+), Mighty Blow (+1), Prehensile Tail",
+          "specialRules": "-",
+          "cost": "150000",
+          "img": "ratogre",
+          "id": 41
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Skaven Lineman",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
+          "skills": "-",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "skavenLineman",
+          "id": 37
+        },
+        {
+          "name": "Fabio",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "fabio",
+          "id": 60
+        },
+        {
+          "name": "Gold Digger",
+          "team": "Skaven",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Block",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "fabio",
+          "id": 61
+        }
+      ],
+      "color1": "red",
+      "color2": "black",
+      "id": 23
     }
   ],
   "whArmies": [
