@@ -29,7 +29,7 @@ import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
 import '../styles/bloodBowl2.css';
 
-const BloodBowl3 = ({game}) => {
+const BloodBowl = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
   const [log, setLog] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -207,6 +207,80 @@ const BloodBowl3 = ({game}) => {
   }
 
   /////////// FUNCTIONS //////////////
+
+  const diceAction = (gO, action, who, modifier, rerollOk) => {
+    const stuntyCheck = who.skills.filter( skill => skill === 'Stunty');
+    const thickSkullCheck = who.skills.filter( skill => skill === 'Thick Skull');
+    let stunty = false;
+    let thickSkull = false;
+    if (stuntyCheck.length > 0) { stunty = true }
+    if (thickSkullCheck.length > 0) { thickSkull = true }
+    // show dices and reroll options
+    let activeTeamIndex = 'team1';
+    if (gO.team2.active) {
+      activeTeamIndex = 'team2';
+    }
+
+    if (action === 'pickUp') {
+
+    }
+    else if (action === 'rush') {
+      // check if sureFeet
+      const sureFeetCheck = who.skills.filter( skill => skill === 'Sure Feet');
+      const rolledDice = callDice(6);
+      const sureFeetRoll = callDice(6);
+      setDices(rolledDice);
+
+      // if rush roll ok. all is good
+      if (rolledDice > 1) {
+        addToLog(`rush roll ok! rolled: ${rolledDice}`);
+        console.log('trying to change status');
+        who.setStatus('activated');
+        setGameObject(gO);
+      } else {
+        // check sure feet
+        if (sureFeetCheck.length === 1) {
+          if (sureFeetRoll > 1) {
+            addToLog(`rush roll was 1, but sure feet roll: ${sureFeetRoll}`);
+            who.setStatus('activated');
+            setGameObject(gO);
+          } else {
+            addToLog('rush roll and sure feet both 1!');
+            who.withBall = false;
+            // armour check
+            const armourRoll = callDice(12);
+            const armourCheck = who.skillTest('av', armourRoll, 0);
+            addToLog(`armour check: ${armourRoll} is ${armourCheck}`);
+            if (armourCheck) {
+              const getInjuryMessage = armourBroken(stunty, thickSkull);
+              who.setStatus(getInjuryMessage.msg);
+              addToLog(`player is: ${getInjuryMessage.msg}`);
+              addToLog(`injury roll was: ${getInjuryMessage.roll}`);
+            } else {
+              who.setStatus('fallen');
+            }
+          }
+        } else {
+          // continue from here !!
+
+        }
+      }
+
+      if (gO[activeTeamIndex].rerolls > 0) {
+
+      } else {
+
+      }
+    }
+    else if (action === 'rushDodge') {
+
+
+    }
+    else if (action === 'dodge') {
+
+    }
+  }
+
   const addToLog = (newMessage) => {
     const logs = document.getElementById('log');
     const copyOfLog = log.concat([]);
@@ -361,7 +435,7 @@ const BloodBowl3 = ({game}) => {
       // check if stunty and thick skull
       const stuntyCheck = item.skills.filter( skill => skill === 'Stunty');
       const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
-      const sureFeetCheck = item.skills.filter( skill => skill === 'Thick Skull');
+      const sureFeetCheck = item.skills.filter( skill => skill === 'Sure Feet');
       const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
       //const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
       //const blockCheck = item.skills.filter( skill => skill === 'Block');
@@ -453,7 +527,6 @@ const BloodBowl3 = ({game}) => {
                            (blockerSt + blockerModifier) > ((targetSt + targetModifier) * 2)) {
                         dices.push(bloodBowlDices('1bd'));
                       }
-                      console.log('blocker decides, dices: ', blockerDecides, dices);
                       gO.phase = 'blockQuery';
                       const blocker = JSON.parse(JSON.stringify(item));
                       const target = JSON.parse(JSON.stringify(itemm));
@@ -492,7 +565,7 @@ const BloodBowl3 = ({game}) => {
       // rush query
       else if (item.status === 'rush') {
         const rushDice = callDice(6);
-        const sureFeetDice = callDice(6);
+      //  const sureFeetDice = callDice(6);
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
         const convertedPosition = convertPosition(mousePosition, squareSize);
@@ -518,24 +591,22 @@ const BloodBowl3 = ({game}) => {
           if (stunty.length > 0) {
             modifier = 0;
           }
-
+/*        nämä diceActionin jälkeen
           const agiCheck = callDice(6);
           const dexCheck = item.skillTest('ag', agiCheck, modifier);
           addToLog(`dex check and mod: ${agiCheck} ${modifier}`);
+*/
+          /*
+diceAction = (gO, action, who, modifier, rerollOk)
+          */
+          diceAction(gO, 'rushDodge', item, modifier, true);
 
+          /*
           if (dexCheck) {
             item.move(mousePosition.x, mousePosition.y);
             addToLog(`agility check passed. roll: ${agiCheck}, modifier: ${modifier}`);
           } else {
-            // save old data if user selects reroll
-            /*
-            item.preReroll = {
-              gameObject: gO,
-              reasonWas: 'dodge',
-              skillWas: 'ag',
-              modifierWas: modifier,
-              oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
-            }*/
+
             // turn over!
             addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
             item.withBall = false;
@@ -560,8 +631,11 @@ const BloodBowl3 = ({game}) => {
             setRoster1(copyOfRoster1);
             setRoster2(copyOfRoster2);
             setGameObject(gO);*/
+      //    }
+          }  else {
+            diceAction(gO, 'rush', item, 0, true);
           }
-        }  // if marked ends
+          /*
         if (item.rushes > 0) {
           item.setStatus('moved');
         } else {
@@ -577,7 +651,7 @@ const BloodBowl3 = ({game}) => {
               gameObject: gO,
               reasonWas: 'rush',
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-
+/*
             item.withBall = false;
             // falls
             // turn over!
@@ -609,7 +683,7 @@ const BloodBowl3 = ({game}) => {
           console.log('calling turnOverPhase from gamePlay (rush)');
           turnOverPhase(gO, item, true);
         }
-
+*/
       }
       else if (item.status === 'foul') {
         const checkIfMarked = item.markedBy(opponentRoster);
@@ -1294,13 +1368,13 @@ const BloodBowl3 = ({game}) => {
     const gO = {...gameObject};
     let currentRoster = gO.team1.roster;
     let opponentRoster = gO.team2.roster;
-    let activeTeamIndex = 'team1';
+//    let activeTeamIndex = 'team1';
 
     console.log('blocker decides: ', blockData.blockerDecides);
     if (gO.team2.active) {
       currentRoster = gO.team2.roster;
       opponentRoster = gO.team1.roster;
-      activeTeamIndex = 'team2';
+//      activeTeamIndex = 'team2';
     }
     let searchBlocker = currentRoster.filter( player => player.number === blockData.blocker.number);
     let searchTarget = opponentRoster.filter( player => player.number === blockData.target.number);
@@ -2005,7 +2079,7 @@ const BloodBowl3 = ({game}) => {
     );
 }
 
-export default BloodBowl3;
+export default BloodBowl;
 
 /*
 the arena should be

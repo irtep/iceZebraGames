@@ -1,6 +1,6 @@
 import BloodBowl from './BloodBowl';
 import Warmachine from './Warmachine';
-import BloodBowl2 from './BloodBowl2';
+//import BloodBowl2 from './BloodBowl2';
 import BloodBowl3 from './BloodBowl3';
 import Setups from './Setups';
 
