@@ -45,14 +45,12 @@ const ManageTeam = () => {
   useEffect( () => {
     console.log('state change');
     if (idLoaded !== '') {
-      console.log('idLoaded is not empty');
       document.getElementById('deleteOld').disabled = false;
       document.getElementById('editOld').disabled = false;
     } else {
       document.getElementById('deleteOld').disabled = true;
       document.getElementById('editOld').disabled = true;
     }
-    console.log('active id: ', idLoaded);
   });
 
   const addFunc = (e) => {
