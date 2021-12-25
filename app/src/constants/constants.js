@@ -3,8 +3,7 @@ export const gameOptions = [
   'Kill Team',
   '40k',
   'Warmachine',
-  'Setup',
-  'Blood Bowl3'
+  'Setup'
 ];
 
 export const initialBloodBowlObject = {
