@@ -70,15 +70,15 @@ const NewBBcard = () => {
   return(
     <div>
       <div style = {style}>
-        add new blood bowl card <br/>
-        example card:      "name": "Imperial Thrower",
-              "team": "Imperial Nobility",
-              "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
-              "skills": "Pass, Running Pass",
-              "specialRules": "-",
-              "cost": "75000",
-              "img": "imperialLineman"
-        <br/>
+        add new blood bowl card <br/><br/>
+        example card:      "name": "Imperial Thrower",<br/>
+              "team": "Imperial Nobility",<br/>
+              "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",<br/>
+              "skills": "Pass, Running Pass",<br/>
+              "specialRules": "-",<br/>
+              "cost": "75000",<br/>
+              "img": "imperialLineman"<br/>
+        <br/><br/>
         <form id= "addCard" onSubmit={ addBBcard }>
 
           <div>

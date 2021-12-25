@@ -208,13 +208,69 @@ const BloodBowl = ({game}) => {
 
   /////////// FUNCTIONS //////////////
 
-  const diceAction = (gO, action, who, modifier, rerollOk) => {
+  const reRerollQuery = (e) => {
+    const decision = e.target.id;
+    const gO = {...gameObject};
+    const d6reroll = callDice(6);
+    let activeTeamIndex = 'team1';
+    let playerInCase = undefined;
+    if (gO.team2.active) {
+      activeTeamIndex = 'team2';
+    }
+
+    if (decision === 'rerollRush') {
+      gO[activeTeamIndex].roster.forEach((item, i) => {
+        if (item.status === 'rush') {
+          playerInCase = gO[activeTeamIndex].roster[i];
+        }
+      });
+
+      addToLog(`reroll result: ${d6reroll}`);
+
+      if (d6reroll !== 1) {
+        if (playerInCase.rushes > 0) {
+          playerInCase.setStatus('moved');
+        } else {
+          playerInCase.setStatus('activated');
+        }
+      } else {
+        // change of turn
+        armourRolls(gO, playerInCase, 'rushFailed');
+      }
+    }
+  }
+
+  const armourRolls = (gO, who, reason) => {
     const stuntyCheck = who.skills.filter( skill => skill === 'Stunty');
     const thickSkullCheck = who.skills.filter( skill => skill === 'Thick Skull');
     let stunty = false;
     let thickSkull = false;
     if (stuntyCheck.length > 0) { stunty = true }
     if (thickSkullCheck.length > 0) { thickSkull = true }
+
+    who.withBall = false;
+    // armour check
+    const armourRoll = callDice(12);
+    const armourCheck = who.skillTest('av', armourRoll, 0);
+    addToLog(`armour check: ${armourRoll} is ${armourCheck}`);
+    if (armourCheck) {
+      const getInjuryMessage = armourBroken(stunty, thickSkull);
+      who.setStatus(getInjuryMessage.msg);
+      addToLog(`player is: ${getInjuryMessage.msg}`);
+      addToLog(`injury roll was: ${getInjuryMessage.roll}`);
+    } else {
+      who.setStatus('fallen');
+    }
+
+    if (reason === 'rushFailed') {
+      gO.phase = 'startTurn';
+      switchActiveTeam(gO);
+      console.log('calling startTurn from TurnOverPhase');
+      startTurn(gO);
+    }
+  }
+
+  const diceAction = (gO, action, who, modifier, rerollOk) => {
     // show dices and reroll options
     let activeTeamIndex = 'team1';
     if (gO.team2.active) {
@@ -224,19 +280,24 @@ const BloodBowl = ({game}) => {
     if (action === 'pickUp') {
 
     }
+
     else if (action === 'rush') {
       // check if sureFeet
       const sureFeetCheck = who.skills.filter( skill => skill === 'Sure Feet');
       const rolledDice = callDice(6);
       const sureFeetRoll = callDice(6);
-      setDices(rolledDice);
+      setDices(`rush roll: ${rolledDice}`);
 
       // if rush roll ok. all is good
       if (rolledDice > 1) {
         addToLog(`rush roll ok! rolled: ${rolledDice}`);
         console.log('trying to change status');
-        who.setStatus('activated');
-        setGameObject(gO);
+        if (who.rushes > 0) {
+          who.setStatus('moved');
+        } else {
+          who.setStatus('activated');
+          setGameObject(gO);
+        }
       } else {
         // check sure feet
         if (sureFeetCheck.length === 1) {
@@ -246,44 +307,27 @@ const BloodBowl = ({game}) => {
             setGameObject(gO);
           } else {
             addToLog('rush roll and sure feet both 1!');
-            who.withBall = false;
-            // armour check
-            const armourRoll = callDice(12);
-            const armourCheck = who.skillTest('av', armourRoll, 0);
-            addToLog(`armour check: ${armourRoll} is ${armourCheck}`);
-            if (armourCheck) {
-              const getInjuryMessage = armourBroken(stunty, thickSkull);
-              who.setStatus(getInjuryMessage.msg);
-              addToLog(`player is: ${getInjuryMessage.msg}`);
-              addToLog(`injury roll was: ${getInjuryMessage.roll}`);
-            } else {
-              who.setStatus('fallen');
-            }
+            armourRolls(gO, who, 'rushFailed');
           }
         } else {
-          // continue from here !!
-          addToLog('rush roll 1!');
-          who.withBall = false;
-          // armour check
-          const armourRoll = callDice(12);
-          const armourCheck = who.skillTest('av', armourRoll, 0);
-          addToLog(`armour check: ${armourRoll} is ${armourCheck}`);
-          if (armourCheck) {
-            const getInjuryMessage = armourBroken(stunty, thickSkull);
-            who.setStatus(getInjuryMessage.msg);
-            addToLog(`player is: ${getInjuryMessage.msg}`);
-            addToLog(`injury roll was: ${getInjuryMessage.roll}`);
+          if (gO[activeTeamIndex].rerolls > 0) {
+            gO.phase = 'reRerollQuery';
+            const envelope = 'placeHolder';
+            const buttons = [];
+            const option1 = <button key = {callDice(9999)} id = 'rerollRush' value= {envelope} onClick= {reRerollQuery}>reroll rush dice</button>
+            const option2 = <button key = {callDice(9999)} id = 'dontRerollRush' value= {envelope} onClick= {reRerollQuery}>do not reroll</button>
+            buttons.push(option1);
+            buttons.push(option2);
+            setActionButtons(buttons);
+            setGameObject(gO);
           } else {
-            who.setStatus('fallen');
+            addToLog('rush roll 1 and no rerolls available, that is turn over!');
+            armourRolls(gO, who, 'rushFailed');
           }
         }
       }
 
-      if (gO[activeTeamIndex].rerolls > 0) {
 
-      } else {
-
-      }
     }
     else if (action === 'rushDodge') {
 
@@ -1668,7 +1712,7 @@ diceAction = (gO, action, who, modifier, rerollOk)
       gO.phase = 'startTurn';
       switchActiveTeam(gO);
       console.log('calling startTurn from TurnOverPhase');
-      startTurn(gO) ;
+      startTurn(gO);
 //    }
   }
 
