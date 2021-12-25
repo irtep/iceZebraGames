@@ -210,6 +210,7 @@ const BloodBowl = ({game}) => {
 
   const reRerollQuery = (e) => {
     const decision = e.target.id;
+    const modifier = Number(e.target.value);
     const gO = {...gameObject};
     const d6reroll = callDice(6);
     let activeTeamIndex = 'team1';
@@ -218,8 +219,12 @@ const BloodBowl = ({game}) => {
       activeTeamIndex = 'team2';
     }
 
+    gO.phase = 'gameplay';
+    console.log('modifier at rrq ', modifier);
+
     switch (decision) {
       case 'rerollRush':
+        gO[activeTeamIndex].rerolls--;
         gO[activeTeamIndex].roster.forEach((item, i) => {
           if (item.status === 'rush') {
             playerInCase = gO[activeTeamIndex].roster[i];
@@ -234,11 +239,13 @@ const BloodBowl = ({game}) => {
           } else {
             playerInCase.setStatus('activated');
           }
+          setGameObject(gO);
         } else {
           // change of turn
           armourRolls(gO, playerInCase, 'rushFailed');
         }
         break;
+
       case 'dontRerollRush':
         gO[activeTeamIndex].roster.forEach((item, i) => {
           if (item.status === 'rush') {
@@ -249,24 +256,31 @@ const BloodBowl = ({game}) => {
         break;
 
       case 'rerollDodge':
+        gO[activeTeamIndex].rerolls--;
         gO[activeTeamIndex].roster.forEach((item, i) => {
           if (item.status === 'move') {
             playerInCase = gO[activeTeamIndex].roster[i];
           }
         });
         addToLog(`reroll result: ${d6reroll}`);
-// continue with these... need new test not vs 1 etc..
-        if (d6reroll !== 1) {
-          if (playerInCase.rushes > 0) {
-            playerInCase.setStatus('moved');
+        const dexCheck = playerInCase.skillTest('ag', d6reroll, modifier);
+
+        if (dexCheck) {
+          if (playerInCase.movementLeft > 0) {
+            playerInCase.setStatus('move');
           } else {
-            playerInCase.setStatus('activated');
+            if (playerInCase.rushes > 0) {
+              playerInCase.setStatus('moved');
+            } else {
+              playerInCase.setStatus('activated');
+            }
           }
+          setGameObject(gO);
         } else {
-          // change of turn
-          armourRolls(gO, playerInCase, 'rushFailed');
+          armourRolls(gO, playerInCase, 'dodgeFailed');
         }
         break;
+
       case 'dontRerollDodge':
         gO[activeTeamIndex].roster.forEach((item, i) => {
           if (item.status === 'move') {
@@ -277,12 +291,6 @@ const BloodBowl = ({game}) => {
         break;
       default: console.log('cant find decision at reRerollQuery');
     }
-
-    if (decision === 'rerollRush') {
-
-    }
-
-
   }
 
   const armourRolls = (gO, who, reason, mightyBlow1, mightyBlow2) => {
@@ -403,10 +411,7 @@ const BloodBowl = ({game}) => {
 
 
     }
-    else if (action === 'rushDodge') {
 
-
-    }
     else if (action === 'dodge') {
       const dodgeCheck = who.skills.filter( skill => skill === 'Dodge');
       const agiCheck = callDice(6);
@@ -422,7 +427,7 @@ const BloodBowl = ({game}) => {
           const rerollingDodge = callDice(6);
           addToLog(`${who.number} has dodge skill...`);
           /*
-            NEED ADD TACKLE CHECK
+            NEED TO ADD TACKLE CHECK
           */
           const dexCheck = who.skillTest('ag', rerollingDodge, modifier);
           addToLog(`rerolling: ${rerollingDodge} modifier: ${modifier}`);
@@ -437,7 +442,7 @@ const BloodBowl = ({game}) => {
         } else {
           if (gO[activeTeamIndex].rerolls > 0) {
             gO.phase = 'reRerollQuery';
-            const envelope = 'placeHolder';
+            const envelope = modifier;
             const buttons = [];
             const option1 = <button key = {callDice(9999)} id = 'rerollDodge' value= {envelope} onClick= {reRerollQuery}>reroll dodge dice</button>
             const option2 = <button key = {callDice(9999)} id = 'dontRerollDodge' value= {envelope} onClick= {reRerollQuery}>do not reroll</button>
@@ -451,47 +456,6 @@ const BloodBowl = ({game}) => {
           }
         }
       }
-
-      /*
-                const agiCheck = callDice(6);
-                const dexCheck = item.skillTest('ag', agiCheck, modifier);
-                addToLog(`dex check and mod: ${agiCheck} ${modifier}`);
-
-                if (dexCheck) {
-                  item.move(mousePosition.x, mousePosition.y);
-                  addToLog(`agility check passed. roll: ${agiCheck}, modifier: ${modifier}`);
-                } else {
-                  // turn over!
-                  // save old data if user selects reroll
-                  /*
-                  item.preReroll = {
-                    gameObject: gO,
-                    reasonWas: 'dodge',
-                    skillWas: 'ag',
-                    modifierWas: modifier,
-                    oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-      /*
-                  addToLog(`falls! agility check ${agiCheck} modifier: ${modifier}`);
-                  item.withBall = false;
-                  // armour check
-                  const armourRoll = callDice(12);
-                  const armourCheck = item.skillTest('av', armourRoll, 0);
-                  console.log('armour test: ', armourCheck, armourRoll);
-                  if (armourCheck) {
-                    const getInjuryMessage = armourBroken(stunty, thickSkull);
-                    item.setStatus(getInjuryMessage.msg);
-                    addToLog(`injuryroll: ${getInjuryMessage.roll}`);
-                    addToLog(`player is: ${getInjuryMessage.msg}`);
-                    addToLog(`roll was: ${armourRoll}`);
-                  } else {
-                    item.setStatus('fallen');
-                    addToLog(`armour holds with roll: ${armourRoll}`);
-                  }
-      //            preReroll.who = item;
-        //          setOldData(preReroll);
-                  gO.phase = 'turnOver';
-                }
-                */
     }
   }
 
@@ -808,7 +772,7 @@ const BloodBowl = ({game}) => {
             modifier = 0;
           }
 
-          diceAction(gO, 'rushDodge', item, modifier, true);
+          diceAction(gO, 'dodge', item, modifier, true);
         }  else {
 
           diceAction(gO, 'rush', item, 0, true);
@@ -1917,7 +1881,7 @@ const BloodBowl = ({game}) => {
     const deviationRoll = callDice(8);
     const deviationDistance = callDice(5);
     const bounceRoll = callDice(8);
-    let placeOfBall = deviate(deviationRoll, deviationDistance, {x: mousePosition.x, y: mousePosition.y});
+    let placeOfBall = deviate(deviationRoll, deviationDistance, {x: 258, y: 294});
     gO.ball = placeOfBall;
     addToLog(`deviation direction: ${deviationRoll}. deviation distance: ${deviationDistance}.`);
     if (gO.team1.active) {
