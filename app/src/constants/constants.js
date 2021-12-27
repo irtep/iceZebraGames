@@ -5,7 +5,7 @@ export const gameOptions = [
   'Warmachine',
   'Setup'
 ];
-
+/*
 export const initialBloodBowlObject = {
   phase: 'Select teams',
   forLog: [],
@@ -37,9 +37,10 @@ export const initialBloodBowlObject = {
     colors: []
   },
 };
-
+*/
 export const bb3InitialGameObject = {
   phase: 'Select teams',
+  forLog: [],
   half: 1,
   team1: {
     rerolls: 0,

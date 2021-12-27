@@ -31,7 +31,7 @@ import '../styles/bloodBowl2.css';
 
 const BloodBowl = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
-  const [log, setLog] = useState([]);
+//  const [log, setLog] = useState([]);
   const [teams, setTeams] = useState([]);
   const [players, setPlayers] = useState([]);
   const [mousePosition, setMp] = useState('');
@@ -152,7 +152,7 @@ const BloodBowl = ({game}) => {
   }
 
   const startGame = () => {
-    const gO ={...gameObject} ;
+    const gO = {...gameObject};
 
     const roster1 = gO.team1.roster.concat([]);
     const roster2 = gO.team2.roster.concat([]);
@@ -162,7 +162,7 @@ const BloodBowl = ({game}) => {
     if (roster1.length < 1 || roster2.length < 1) {
       return null;
     }
-
+    console.log('go at start: ', gO);
     setMsg('dice roll off:');
     let playerDice = 0;
     let aiDice = 0;
@@ -170,12 +170,8 @@ const BloodBowl = ({game}) => {
     do {
       playerDice = callDice(6);
       aiDice = callDice(6);
-      gO.forLog.push(<br/>);
       gO.forLog.push(`player rolled: ${playerDice}, ai rolled: ${aiDice}`);
     } while (playerDice === aiDice);
-
-    gO.forLog.push(<br/>);
-    gO.forLog.push(<br key= {playerDice+callDice(999)+aiDice}/>);
 
     if (playerDice > aiDice) {
       gO.forLog.push(<br/>);
@@ -273,6 +269,7 @@ const BloodBowl = ({game}) => {
         });
         gO.forLog.push(<br/>);
         gO.forLog.push(`reroll result: ${d6reroll}`);
+        console.log('got bug here, did not find player in case.. gO: ', gO);
         const dexCheck = playerInCase.skillTest('ag', d6reroll, modifier);
 
         if (dexCheck) {
@@ -781,7 +778,7 @@ const BloodBowl = ({game}) => {
         gO.forLog.push(<br/>);
         gO.forLog.push(`${item.number} is rushing... dice: ${rushDice}`);
         if (moveChecking.length === 1) {
-          item.move(mousePosition.x, mousePosition.y);          
+          item.move(mousePosition.x, mousePosition.y);
           item.rushes--;
         }
 
@@ -823,7 +820,7 @@ const BloodBowl = ({game}) => {
           console.log('foul: move check is 1: ', moveChecking);
           if (moveChecking.length === 1 && item.movementLeft > 0) {
             item.move(mousePosition.x, mousePosition.y);
-        
+
           }
 
           if (item.movementLeft < 1) {
