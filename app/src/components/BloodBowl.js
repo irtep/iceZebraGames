@@ -61,7 +61,6 @@ const BloodBowl = ({game}) => {
   const hovering = (e) => {
     // get mouse locations offsets to get where mouse is hovering.
     const gO = {...gameObject};
-
     let r = document.getElementById('bloodBowlStadium').getBoundingClientRect();
     let x = e.clientX - r.left;
     let y = e.clientY - r.top;
@@ -86,6 +85,7 @@ const BloodBowl = ({game}) => {
         if (gO.ball.x !== item.x && gO.bally !== item.y) {
           gO.ball.x = item.x;
           gO.ball.y = item.y;
+          console.log('set location of ball');
         }
       }
     });
@@ -917,9 +917,10 @@ const BloodBowl = ({game}) => {
               // turn over if does not choose to reroll
               // save old data if user selects reroll
               // make modifier
-              const markers = item.markedBy(opponentRoster);
-              let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
+            //  const markers = item.markedBy(opponentRoster);
+            //  let modifier = 0;
+            //  if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+            /*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'pickUp',
@@ -1162,9 +1163,10 @@ const BloodBowl = ({game}) => {
               // turn over if does not choose to reroll
               // save old data if user selects reroll
               // make modifier
-              const markers = item.markedBy(opponentRoster);
-              let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
+            //  const markers = item.markedBy(opponentRoster);
+            //  let modifier = 0;
+            //  if (markers.length > 0) {modifier = -Math.abs(markers.length)}
+            /*
               item.preReroll = {
                 gameObject: gO,
                 reasonWas: 'pickUp',
@@ -1474,10 +1476,7 @@ const BloodBowl = ({game}) => {
     const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
     const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
     const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
-    //const blockerTackle = foundBlocker.skills.filter( skill => skill === 'Tackle');
     // targets skills
-    //const targetStunty = foundTarget.skills.filter( skill => skill === 'Stunty');
-    //const targetThickskull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
     const targetBlock = foundTarget.skills.filter( skill => skill === 'Block');
     const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
     const targetDodge = foundTarget.skills.filter( skill => skill === 'Dodge');
@@ -1486,15 +1485,9 @@ const BloodBowl = ({game}) => {
     const targetSideStep = foundTarget.skills.filter( skill => skill === 'Side Step');
     let stunty = false;
     let thickSkull = false;
-    //let mightyBlow = false;
-    //let claws = false;
+
     let turnOverComing = false;
-/*
-    foundBlocker.preReroll = {
-      reasonWas: '',
-      modifierWas: 0
-    }
-*/
+
     if (decision === '(player down)') {
       if (blockerStunty.length === 1) {
         stunty = true;
@@ -1840,6 +1833,7 @@ const BloodBowl = ({game}) => {
 
       gO.ball = newPosition;
       setAction('nothing');
+      console.log('moveBall action go: ', gO);
       setGameObject(gO);
     }
 
@@ -1862,38 +1856,40 @@ const BloodBowl = ({game}) => {
       setAction('nothing');
     }
 
-    // set defence and offence
-    if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
-      let actionDone = false;
-      activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
+    if (action === 'nothing') {
+      // set defence and offence
+      if (gameObject.phase === 'set defence' || gameObject.phase === 'set offence') {
+        let actionDone = false;
+        activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "defenceReady" onClick = {statuses}>defence formation is ready</button></>;
 
-      // check if someone is item.movementLeft
-      currentRoster.forEach((item, i) => {
-        if (item.status === 'move' && !actionDone) {
-          item.setStatus('activated');
-          item.move(mousePosition.x, mousePosition.y);
-          actionDone = true;
-        }
-      });
-      if (!actionDone) {
+        // check if someone is item.movementLeft
         currentRoster.forEach((item, i) => {
-          const collision = arcVsArc(mousePosition, item, 10, 15);
-          //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
-          if (collision) {
-        //    item.setStatus('move');
-          console.log('collising with: ', item);
-          item.setStatus('move');
+          if (item.status === 'move' && !actionDone) {
+            item.setStatus('activated');
+            item.move(mousePosition.x, mousePosition.y);
+            actionDone = true;
           }
         });
+        if (!actionDone) {
+          currentRoster.forEach((item, i) => {
+            const collision = arcVsArc(mousePosition, item, 10, 15);
+            //console.log('item and mouse ', item.x, item.y, mousePosition.x, mousePosition.y);
+            if (collision) {
+          //    item.setStatus('move');
+            console.log('collising with: ', item);
+            item.setStatus('move');
+            }
+          });
+        }
+        if (gameObject.phase === 'set offence') {
+          activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "offenceReady" onClick = {statuses}>offence formation is ready</button></>
+        }
+        setActionButtons(activeButtons);
+        setGameObject(gO);
       }
-      if (gameObject.phase === 'set offence') {
-        activeButtons = <><button id= "reserveThis" onClick = {statuses}>move selected to reserves</button><button id= "offenceReady" onClick = {statuses}>offence formation is ready</button></>
+      else if (gO.phase === 'gameplay') {
+        gamePlay();
       }
-      setActionButtons(activeButtons);
-      setGameObject(gO);
-    }
-    else if (gO.phase === 'gameplay') {
-      gamePlay();
     }
   }
 
@@ -2069,7 +2065,7 @@ const BloodBowl = ({game}) => {
     let currentRoster = gO[activeIndex].roster;
     const selectedAction = e.target.id;
 
-    // move ball
+    // set to gameplay phase as something gets stuck in queries
     if (selectedAction === 'gameplay') {
       gO.phase = 'gameplay';
       setGameObject(gO);
