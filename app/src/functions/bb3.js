@@ -273,6 +273,7 @@ export const checkIfBallLocation = (loc, ball) => {
 export const makePlayer = (player, index, team) => {
   let avIndex = 25;
   // passsing skill - might mess, so need to do this:
+  console.log('debug: ', player.stats);
   if (player.stats[avIndex] === '+') {
     avIndex--;
   }

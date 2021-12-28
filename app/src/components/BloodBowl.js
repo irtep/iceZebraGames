@@ -27,7 +27,7 @@ import { bb3InitialGameObject, /*rerollPrices*/ } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
-import '../styles/bloodBowl2.css';
+import '../styles/bloodBowl.css';
 
 const BloodBowl = ({game}) => {
   const [msg, setMsg] = useState('select first teams');
@@ -215,14 +215,24 @@ const BloodBowl = ({game}) => {
     const decision = e.target.id;
     const modifier = Number(e.target.value);
     const gO = {...gameObject};
-
     const d6reroll = callDice(6);
     let activeTeamIndex = 'team1';
     let opponentTeamIndex = 'team2';
     let playerInCase = undefined;
+
     if (gO.team2.active) {
       activeTeamIndex = 'team2';
       opponentTeamIndex = 'team1';
+    }
+
+    const convertedPosition = convertPosition(gO.ball, squareSize);
+    let pickerIndex = 0;
+
+    for (let i = 0; i < gO[activeTeamIndex].roster.length; i++) {
+      if (convertedPosition.x === gO[activeTeamIndex].roster[i].gridX &&
+          convertedPosition.y === gO[activeTeamIndex].roster[i].gridy) {
+            pickerIndex = i;
+      }
     }
 
     gO.phase = 'gameplay';
@@ -230,11 +240,12 @@ const BloodBowl = ({game}) => {
 
     switch (decision) {
       case 'rerollPick':
+        const who = gO[activeTeamIndex].roster[pickerIndex];
         const tryingToPick = pickUpAction(who, gO[opponentTeamIndex].roster);
         if (tryingToPick) {
           gO.forLog.push(<br/>);
-          gO.forLog.push(item.number, '...reroll helps, he got the ball');
-          item.withBall = true;
+          gO.forLog.push(who.number, '...reroll helps, he got the ball');
+          who.withBall = true;
         } else {
             gO.forLog.push(<br/>);
             gO.forLog.push('reroll pick up failed, that is turn over!');
@@ -374,8 +385,8 @@ const BloodBowl = ({game}) => {
       const tryingToPick = pickUpAction(who, gO[opponentTeamIndex].roster);
       if (tryingToPick) {
         gO.forLog.push(<br/>);
-        gO.forLog.push(item.number, ' got the ball');
-        item.withBall = true;
+        gO.forLog.push(who.number, ' got the ball');
+        who.withBall = true;
       } else {
         // turn over if does not choose to reroll
         // save old data if user selects reroll
@@ -654,7 +665,7 @@ const BloodBowl = ({game}) => {
       const thickSkullCheck = item.skills.filter( skill => skill === 'Thick Skull');
 //      const sureFeetCheck = item.skills.filter( skill => skill === 'Sure Feet');
       const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
-      //const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
+      const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
       //const blockCheck = item.skills.filter( skill => skill === 'Block');
       //const frenzyCheck = item.skills.filter( skill => skill === 'Frenzy');
       let stunty = false;
@@ -759,6 +770,16 @@ const BloodBowl = ({game}) => {
                         const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
                         actionButtons.push(dice);
                       });
+                      // reroll option
+                      if (gO[activeTeamIndex].rerolls > 0) {
+                        const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollAll' value= {envelope} onClick= {block}>'reroll all'</button>
+                        actionButtons.push(rerollDice);
+                      }
+                      // brawl option
+                      if (brawlCheck.length > 0) {
+                        const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollBothDown' value= {envelope} onClick= {block}>'reroll both down'</button>
+                        actionButtons.push(rerollDice);
+                      }
                       if (blockerDecides) {
                         setMsg('active team, choose the dice!');
                       } else {
@@ -1035,6 +1056,16 @@ const BloodBowl = ({game}) => {
                           const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
                           actionButtons.push(dice);
                         });
+                        // reroll option
+                        if (gO[activeTeamIndex].rerolls > 0) {
+                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollAll' value= {envelope} onClick= {block}>'reroll all'</button>
+                          actionButtons.push(rerollDice);
+                        }
+                        // brawl option
+                        if (brawlCheck.length > 0) {
+                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollBothDown' value= {envelope} onClick= {block}>'reroll both down'</button>
+                          actionButtons.push(rerollDice);
+                        }
                         if (blockerDecides) {
                           setMsg('active team, choose the dice!');
                         } else {
@@ -1265,6 +1296,16 @@ const BloodBowl = ({game}) => {
                           const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
                           actionButtons.push(dice);
                         });
+                        // reroll option
+                        if (gO[activeTeamIndex].rerolls > 0) {
+                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollAll' value= {envelope} onClick= {block}>'reroll all'</button>
+                          actionButtons.push(rerollDice);
+                        }
+                        // brawl option
+                        if (brawlCheck.length > 0) {
+                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollBothDown' value= {envelope} onClick= {block}>'reroll both down'</button>
+                          actionButtons.push(rerollDice);
+                        }
                         if (blockerDecides) {
                           setMsg('active team, choose the dice!');
                         } else {
@@ -1515,6 +1556,15 @@ const BloodBowl = ({game}) => {
       // when reroll for blocks is done, change true to false
       turnOverPhase(gO, foundBlocker, true);
     }
+    else if (decision === 'rerollAll') {
+      console.log('reroll all dices: ', dices);
+    }
+
+    else if (decision === 'rerollBothDown') {
+      console.log('reroll bothdown dices: ', dices);
+
+    }
+
     else if (decision === '(both down)') {
       // depends if get block or wrestle
       if (blockerWrestle.length === 1) {
