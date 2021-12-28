@@ -218,15 +218,39 @@ const BloodBowl = ({game}) => {
 
     const d6reroll = callDice(6);
     let activeTeamIndex = 'team1';
+    let opponentTeamIndex = 'team2';
     let playerInCase = undefined;
     if (gO.team2.active) {
       activeTeamIndex = 'team2';
+      opponentTeamIndex = 'team1';
     }
 
     gO.phase = 'gameplay';
     console.log('modifier at rrq ', modifier);
 
     switch (decision) {
+      case 'rerollPick':
+        const tryingToPick = pickUpAction(who, gO[opponentTeamIndex].roster);
+        if (tryingToPick) {
+          gO.forLog.push(<br/>);
+          gO.forLog.push(item.number, '...reroll helps, he got the ball');
+          item.withBall = true;
+        } else {
+            gO.forLog.push(<br/>);
+            gO.forLog.push('reroll pick up failed, that is turn over!');
+            gO.phase = 'startTurn';
+            gO.ball = (bounce(callDice(8), gO.ball));
+            switchActiveTeam(gO);
+            startTurn(gO);
+          }
+        break;
+
+      case 'dontRerollPick':
+        gO.ball = (bounce(callDice(8), gO.ball));
+        gO.phase = 'startTurn';
+        switchActiveTeam(gO);
+        startTurn(gO);
+        break;
       case 'rerollRush':
         gO[activeTeamIndex].rerolls--;
         gO[activeTeamIndex].roster.forEach((item, i) => {
@@ -340,39 +364,41 @@ const BloodBowl = ({game}) => {
   const diceAction = (gO, action, who, modifier, rerollOk) => {
     // show dices and reroll options
     let activeTeamIndex = 'team1';
+    let opponentTeamIndex = 'team2';
     if (gO.team2.active) {
       activeTeamIndex = 'team2';
+      opponentTeamIndex = 'team1';
     }
 
     if (action === 'pickUp') {
-      /*
-      const tryingToPick = pickUpAction(item, opponentRoster);
+      const tryingToPick = pickUpAction(who, gO[opponentTeamIndex].roster);
       if (tryingToPick) {
-      gO.forLog.push(<br/>);
+        gO.forLog.push(<br/>);
         gO.forLog.push(item.number, ' got the ball');
         item.withBall = true;
       } else {
         // turn over if does not choose to reroll
         // save old data if user selects reroll
         // make modifier
-        const markers = item.markedBy(opponentRoster);
-        let modifier = 0;
-        if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
-        item.preReroll = {
-          gameObject: gO,
-          reasonWas: 'pickUp',
-          skillWas: 'ag',
-          modifierWas: modifier,
-          oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-
-        // ball bounces
-        /*
-        gO.ball = (bounce(callDice(8), gO.ball));
-        gO.phase = 'turnOver';
-        // disabled reroll posibility for now as not yet coded
-        turnOverPhase(gO, item, true);
+        if (gO[activeTeamIndex].rerolls > 0) {
+          gO.phase = 'reRerollQuery';
+          const envelope = 'placeHolder';
+          const buttons = [];
+          const option1 = <button key = {callDice(9999)} id = 'rerollPick' value= {envelope} onClick= {reRerollQuery}>reroll pick up dice</button>
+          const option2 = <button key = {callDice(9999)} id = 'dontRerollPick' value= {envelope} onClick= {reRerollQuery}>do not reroll</button>
+          buttons.push(option1);
+          buttons.push(option2);
+          setActionButtons(buttons);
+          setGameObject(gO);
+        } else {
+          gO.forLog.push(<br/>);
+          gO.forLog.push('pick up failed, that is a turn over , that is turn over!');
+          gO.phase = 'startTurn';
+          gO.ball = (bounce(callDice(8), gO.ball));
+          switchActiveTeam(gO);
+          startTurn(gO);
+        }
       }
-      */
     }
 
     else if (action === 'rush') {
@@ -481,17 +507,7 @@ const BloodBowl = ({game}) => {
       }
     }
   }
-/*
-  const addToLog = (newMessage) => {
-    console.log('to log', newMessage);
-    const logs = document.getElementById('log');
-    const copyOfLog = log.concat([]);
-    copyOfLog.push(<br key= {callDice(9999)}/>);
-    copyOfLog.push(newMessage);
-    setLog(copyOfLog);
-    logs.scrollTop = logs.scrollHeight;
-  }
-*/
+
   const pickUpAction = (who, opponentRoster) => {
     const sureHands = who.skills.filter( skill => skill === 'Sure Hands');
     const noHands = who.skills.filter( skill => skill === 'No Hands');
@@ -787,7 +803,7 @@ const BloodBowl = ({game}) => {
           const newMarkCheck = item.markedBy(opponentRoster);
           let modifier = 0;
 
-          if (newMarkCheck.length > 0) {
+          if (newMarkCheck.length > 0 && stunty === false) {
             modifier = -Math.abs(newMarkCheck.length);
           }
 
@@ -842,7 +858,7 @@ const BloodBowl = ({game}) => {
             const newMarkCheck = item.markedBy(opponentRoster);
             let modifier = 0;
             console.log('new mark check: ', newMarkCheck);
-            if (newMarkCheck.length > 0) {
+            if (newMarkCheck.length > 0 && stunty === false) {
               modifier = -Math.abs(newMarkCheck.length);
             }
             gO.forLog.push(<br/>);
@@ -914,20 +930,6 @@ const BloodBowl = ({game}) => {
               gO.forLog.push('he/she gets the ball');
               item.withBall = true;
             } else {
-              // turn over if does not choose to reroll
-              // save old data if user selects reroll
-              // make modifier
-            //  const markers = item.markedBy(opponentRoster);
-            //  let modifier = 0;
-            //  if (markers.length > 0) {modifier = -Math.abs(markers.length)}
-            /*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'pickUp',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-
               gO.ball = (bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
               // at the moment cant be rerolled as not coded and tested
@@ -1088,7 +1090,7 @@ const BloodBowl = ({game}) => {
             const newMarkCheck = item.markedBy(opponentRoster);
             let modifier = 0;
 
-            if (newMarkCheck.length > 0) {
+            if (newMarkCheck.length > 0 && stunty === false) {
               modifier = -Math.abs(newMarkCheck.length);
             }
             gO.forLog.push(<br/>);
@@ -1160,20 +1162,6 @@ const BloodBowl = ({game}) => {
               gO.forLog.push('he got the ball');
               item.withBall = true;
             } else {
-              // turn over if does not choose to reroll
-              // save old data if user selects reroll
-              // make modifier
-            //  const markers = item.markedBy(opponentRoster);
-            //  let modifier = 0;
-            //  if (markers.length > 0) {modifier = -Math.abs(markers.length)}
-            /*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'pickUp',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-
               gO.ball(bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
               // at the moment cant be rerolled as not coded and tested
@@ -1325,7 +1313,7 @@ const BloodBowl = ({game}) => {
           const newMarkCheck = item.markedBy(opponentRoster);
           let modifier = 0;
           console.log('new mark check: ', newMarkCheck);
-          if (newMarkCheck.length > 0) {
+          if (newMarkCheck.length > 0 && stunty === false) {
             modifier = -Math.abs(newMarkCheck.length);
           }
           gO.forLog.push(<br/>);
