@@ -714,14 +714,6 @@ const BloodBowl3 = ({game}) => {
               // save old data if user selects reroll
               // make modifier
               const markers = item.markedBy(opponentRoster);
-              let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'pickUp',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
 
               gO.ball = (bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
@@ -946,14 +938,6 @@ const BloodBowl3 = ({game}) => {
               // save old data if user selects reroll
               // make modifier
               const markers = item.markedBy(opponentRoster);
-              let modifier = 0;
-              if (markers.length > 0) {modifier = -Math.abs(markers.length)}/*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'pickUp',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
 
               gO.ball(bounce(callDice(8), gO.ball));
               gO.phase = 'turnOver';
@@ -1180,7 +1164,7 @@ const BloodBowl3 = ({game}) => {
               skillWas: 'ag',
               modifierWas: modifier,
               oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-            
+
             // ball bounces
             gO.ball = (bounce(callDice(8), gO.ball));
             gO.phase = 'turnOver';

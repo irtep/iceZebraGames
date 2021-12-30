@@ -2,6 +2,7 @@ import axios from 'axios';
 const cardUrl = 'http://localhost:3001/cards';
 const teamUrl = 'http://localhost:3001/teams';
 const whArmiesUrl = 'http://localhost:3001/whArmies';
+const ktUrl = 'http://localhost:3001/killTeams';
 
 // gets football players
 export const getAll = () => {
@@ -21,6 +22,11 @@ export const getWhArmies = () => {
   return request.then(response => response.data);
 }
 
+// get saved kill teams
+export const getKillTeams = () => {
+  const request = axios.get(ktUrl);
+  return request.then(response => response.data);
+}
 // creates players and units
 export const createCard = newObject => {
   const request = axios.post(cardUrl, newObject);
@@ -34,6 +40,11 @@ export const saveTeam = newObject => {
 
 export const saveWhArmy = newObject => {
   const request = axios.post(whArmiesUrl, newObject);
+  return request.then(response => response.data);
+}
+
+export const saveKillTeam = newObject => {
+  const request = axios.post(ktUrl, newObject);
   return request.then(response => response.data);
 }
 

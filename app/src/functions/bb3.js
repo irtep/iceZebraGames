@@ -544,17 +544,3 @@ export const convertPosition = (location, squareSize) => {
   const y = Math.trunc(location.y /squareSize);
   return {x, y};
 }
-/*
-d6,
-d6 with reroll,
-random dir nw,n,ne,e,se,s,sw,w,
-d3
-block dice 1, 2, 3x : player down, both down, push back, stumble, pow!
-d8
-d16
-deviate
-scatter
-bounce
-add stunned to statuses (they become prone after own turn)
-
-*/

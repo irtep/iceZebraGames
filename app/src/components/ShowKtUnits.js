@@ -2,7 +2,7 @@ import React from 'react';
 import Player from './Player';
 import ActionButton from './ActionButton';
 
-const ShowWhUnits = ({showThese, addFunc, selectedFaction}) => {
+const ShowKtUnits = ({showThese, addFunc, selectedFaction}) => {
   if (showThese === []) {
     return null;
   } else {
@@ -39,4 +39,4 @@ const ShowWhUnits = ({showThese, addFunc, selectedFaction}) => {
 
 }
 
-export default ShowWhUnits;
+export default ShowKtUnits;

@@ -684,6 +684,149 @@
       "cost": "90000",
       "img": "fabio",
       "id": 61
+    },
+    {
+      "name": "trooper",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 2, DF 3, SV 5+, W 7",
+      "specialRules": "-",
+      "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+      "img": "trooperVeteran",
+      "id": 62
+    },
+    {
+      "name": "sergeant",
+      "factions": "veteran ig",
+      "hitpoints": "8",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 8",
+      "specialRules": "-",
+      "weapons": "Boltgun: 4, 3+, 3/4. Bayonet: 3, 4+, 2/3",
+      "img": "sergeant",
+      "id": 63
+    },
+    {
+      "name": "sniper",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "Sniper: each time is activated, if not move, charge or fall back. its long-las gains Silent special",
+      "weapons": "Long-las: 4, 2+, 3/3 crit: MW3. Bayonet: 3, 4+, 2/3",
+      "img": "sniper",
+      "id": 64
+    },
+    {
+      "name": "medic",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "medic: when visible and 3'' and not in melee, this can revive. not incapacitaed, with 1 w, then that revived need to dash, but need to be 1'' of medic. both lose 1 apl. MEDIKIT: 1AP range 1'', regains 2d3 wounds, cant use same as used Medic! ability in same turn, cant do in melee",
+      "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3",
+      "img": "medic",
+      "id": 65
+    },
+    {
+      "name": "zealot",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "EMPEROR PROTECTS: reroll any def dices vs ranged. UPLIFT: 1AP withing 3'' target is uplifted one 5+ is critical to him in attack",
+      "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3",
+      "img": "zealot",
+      "id": 66
+    },
+    {
+      "name": "demolition man",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "DETONATE: shoots 3'' from mine, all that are in range. all visible, covers normal, cant overwatch with this. PLANT MINE: 1AP place mine 1'' and then dash for free.",
+      "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3, Remote Mine: 4, 2+, 5/6, AP1, Detonate, Silent",
+      "img": "demolition",
+      "id": 67
+    },
+    {
+      "name": "confidant",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "SECOND IN COMMAND, DIRECTIVE: target visible 6'' activate that with GA 1",
+      "weapons": "Bolt pistol: 4, 3+, 3/4 . RNG 6''  Chainsword: 4, 4+, 3/4, Balanced",
+      "img": "confidant",
+      "id": 68
+    },
+    {
+      "name": "comms trooper",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "RELAY ORDERS: -1 APL, and all gets order. SIGNAL: 1AP, target 6'' vet, visible, +1APL to it",
+      "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+      "img": "comms",
+      "id": 69
+    },
+    {
+      "name": "bruiser",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "BRUISER: once per turn ignore damage from one normal hit",
+      "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 3+, 2/3, Club: 3, 3+, 3/3, Crit: Stun",
+      "img": "bruiser",
+      "id": 70
+    },
+    {
+      "name": "hardenet vet",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "HARDENED: 5+ feel no pain, ignores all mods to APL",
+      "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3, Bionic arm: 3, 4+, 4/5",
+      "img": "hardened",
+      "id": 71
+    },
+    {
+      "name": "spotter",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+      "specialRules": "SPOTTER: AP2, target visible enemy and friend within 2'', treat enemy as engage",
+      "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3, Mortar barrage: 5, 4+, 2/3, Barrage, unwieldy, blast 2'', silent",
+      "img": "spotter",
+      "id": 72
+    },
+    {
+      "name": "plasma gunner",
+      "factions": "veteran ig",
+      "hitpoints": "7",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W7",
+      "specialRules": "-",
+      "weapons": "Plasma gun: 4, 4+, 5/6, AP1/AP2, hot, Bayonet: 3, 4+, 2/3",
+      "img": "plasmagunner",
+      "id": 73
+    },
+    {
+      "name": "boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+",
+      "specialRules": "-",
+      "weapons": "Slugga: 4, 4+, 3/4, RNG: 6. Choppa: 4, 3+, 4/5",
+      "img": "orkboy",
+      "id": 74
     }
   ],
   "teams": [
@@ -2738,6 +2881,154 @@
         }
       ],
       "id": 5
+    }
+  ],
+  "killTeams": [
+    {
+      "teamName": "PSD Special",
+      "roster": [
+        {
+          "name": "sergeant",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 8",
+          "specialRules": "-",
+          "weapons": "Boltgun: 4, 3+, 3/4. Bayonet: 3, 4+, 2/3",
+          "img": "sergeant",
+          "id": 63
+        },
+        {
+          "name": "sniper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "Sniper: each time is activated, if not move, charge or fall back. its long-las gains Silent special",
+          "weapons": "Long-las: 4, 2+, 3/3 crit: MW3. Bayonet: 3, 4+, 2/3",
+          "img": "sniper",
+          "id": 64
+        },
+        {
+          "name": "medic",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "medic: when visible and 3'' and not in melee, this can revive. not incapacitaed, with 1 w, then that revived need to dash, but need to be 1'' of medic. both lose 1 apl. MEDIKIT: 1AP range 1'', regains 2d3 wounds, cant use same as used Medic! ability in same turn, cant do in melee",
+          "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3",
+          "img": "medic",
+          "id": 65
+        },
+        {
+          "name": "zealot",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "EMPEROR PROTECTS: reroll any def dices vs ranged. UPLIFT: 1AP withing 3'' target is uplifted one 5+ is critical to him in attack",
+          "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3",
+          "img": "zealot",
+          "id": 66
+        },
+        {
+          "name": "demolition man",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "DETONATE: shoots 3'' from mine, all that are in range. all visible, covers normal, cant overwatch with this. PLANT MINE: 1AP place mine 1'' and then dash for free.",
+          "weapons": "Lasgun: 4, 4+, 2/3 . Bayonet: 3, 4+, 2/3, Remote Mine: 4, 2+, 5/6, AP1, Detonate, Silent",
+          "img": "demolition",
+          "id": 67
+        },
+        {
+          "name": "confidant",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "SECOND IN COMMAND, DIRECTIVE: target visible 6'' activate that with GA 1",
+          "weapons": "Bolt pistol: 4, 3+, 3/4 . RNG 6''  Chainsword: 4, 4+, 3/4, Balanced",
+          "img": "confidant",
+          "id": 68
+        },
+        {
+          "name": "comms trooper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "RELAY ORDERS: -1 APL, and all gets order. SIGNAL: 1AP, target 6'' vet, visible, +1APL to it",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+          "img": "comms",
+          "id": 69
+        },
+        {
+          "name": "bruiser",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "BRUISER: once per turn ignore damage from one normal hit",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 3+, 2/3, Club: 3, 3+, 3/3, Crit: Stun",
+          "img": "bruiser",
+          "id": 70
+        },
+        {
+          "name": "hardenet vet",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "HARDENED: 5+ feel no pain, ignores all mods to APL",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3, Bionic arm: 3, 4+, 4/5",
+          "img": "hardened",
+          "id": 71
+        },
+        {
+          "name": "spotter",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W 7",
+          "specialRules": "SPOTTER: AP2, target visible enemy and friend within 2'', treat enemy as engage",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3, Mortar barrage: 5, 4+, 2/3, Barrage, unwieldy, blast 2'', silent",
+          "img": "spotter",
+          "id": 72
+        },
+        {
+          "name": "trooper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 2, DF 3, SV 5+, W 7",
+          "specialRules": "-",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+          "img": "trooperVeteran",
+          "id": 62
+        },
+        {
+          "name": "trooper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 2, DF 3, SV 5+, W 7",
+          "specialRules": "-",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+          "img": "trooperVeteran",
+          "id": 62
+        },
+        {
+          "name": "trooper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 2, DF 3, SV 5+, W 7",
+          "specialRules": "-",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+          "img": "trooperVeteran",
+          "id": 62
+        },
+        {
+          "name": "trooper",
+          "factions": "veteran ig",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 2, DF 3, SV 5+, W 7",
+          "specialRules": "-",
+          "weapons": "Lasgun: 4, 4+, 2/3. Bayonet: 3, 4+, 2/3",
+          "img": "trooperVeteran",
+          "id": 62
+        }
+      ],
+      "id": 1
     }
   ]
 }

@@ -1,7 +1,7 @@
 import BloodBowl from './BloodBowl';
 import Warmachine from './Warmachine';
-//import BloodBowl2 from './BloodBowl2';
-import BloodBowl3 from './BloodBowl3';
+import KillTeam from './KillTeam';
+import Wh40k from './Wh40k';
 import Setups from './Setups';
 
 const Field = ({game}) => {
@@ -23,16 +23,16 @@ const Field = ({game}) => {
       <Setups />
       </>
     );
-  } else if (game === 'Blood Bowl2') {
+  } else if (game === 'Kill Team') {
     return(
       <>
-      <BloodBowl />
+      <KillTeam />
       </>
     );
-  } else if (game === 'Blood Bowl3') {
+  } else if (game === '40k') {
     return(
       <>
-      <BloodBowl3 />
+      <Wh40k />
       </>
     );
   }

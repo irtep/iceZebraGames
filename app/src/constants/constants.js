@@ -5,39 +5,7 @@ export const gameOptions = [
   'Warmachine',
   'Setup'
 ];
-/*
-export const initialBloodBowlObject = {
-  phase: 'Select teams',
-  forLog: [],
-  half: 1,
-  team1: {
-    rerolls: 0,
-    team: 'Select team',
-    value: 0,
-    score: 0,
-    turn: 0,
-    blitz: true,
-    foul: true,
-    argue: true,
-    pass: true,
-    handOff: true,
-    colors: []
-  },
-  team2: {
-    rerolls: 0,
-    team: 'Select team',
-    value: 0,
-    score: 0,
-    turn: 0,
-    blitz: true,
-    foul: true,
-    argue: true,
-    pass: true,
-    handOff: true,
-    colors: []
-  },
-};
-*/
+
 export const bb3InitialGameObject = {
   phase: 'Select teams',
   forLog: [],
@@ -146,6 +114,14 @@ export const rerollPrices = [
 // warmachine factions
 export const factions = [
   'cryx', 'circle', 'trollbloods', 'cygnar', 'khador'
+];
+
+export const killTeamFactions = [
+  {name: 'veteran ig', stratagems:`sgt: movemovemove, take aim, hold position, fix bayonets.
+  strategic: overcharge, take cover, into the breach, clear the line.
+  tactical: inspirational ld, in readh, atonement, combined arms`},
+  {name: 'kommandos', stratagems:`strategic: sssh!, dakka!, waagh!, skulk about.
+  tactical: just a scratch, krump em, sneaky git`}
 ];
 
 export const blockDices = [
