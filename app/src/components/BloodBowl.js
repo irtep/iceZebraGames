@@ -245,6 +245,7 @@ const BloodBowl = ({game}) => {
         if (tryingToPick) {
           gO.forLog.push(<br/>);
           gO.forLog.push(who.number, '...reroll helps, he got the ball');
+          // bug: it seems the ball goes to wrong person after successfull reroll 
           who.withBall = true;
         } else {
             gO.forLog.push(<br/>);
