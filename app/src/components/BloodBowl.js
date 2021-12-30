@@ -1,25 +1,9 @@
 /*
 
-gotta find clear and smooth game flow.....something like where gameObject rolls around etc.
-this state based does not work that well as it comes late when it should not be late
-
-bugs:
-Continue:
-move ball does not work (button)
-when player remove, does not lose ball
-
-pre-game:
-something..
-
-start game:
-kickoff => startTurn (phase: gameplay)
-
-clicked => if gamePlay
-
 */
 import { drawBBfield, bloodBowlDices, makePlayer, checkLineUp, deviate, bounce, convertPosition, armourBroken,
 switchActiveTeam, checkIfBallLocation }
-from '../functions/bb3';
+from '../functions/bloodBowl';
 import { arcVsArc, callDice } from '../functions/supportFuncs';
 //import { setDefence/*, setOffence*/} from '../functions/ai/ai';
 import { bb3InitialGameObject, /*rerollPrices*/ } from '../constants/constants';
@@ -245,7 +229,7 @@ const BloodBowl = ({game}) => {
         if (tryingToPick) {
           gO.forLog.push(<br/>);
           gO.forLog.push(who.number, '...reroll helps, he got the ball');
-          // bug: it seems the ball goes to wrong person after successfull reroll 
+          // bug: it seems the ball goes to wrong person after successfull reroll
           who.withBall = true;
         } else {
             gO.forLog.push(<br/>);
