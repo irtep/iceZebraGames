@@ -1,10 +1,10 @@
 import { arcVsArc, diceThrows } from '../functions/supportFuncs';
-import { drawWMfield } from '../functions/warmachine';
+import { drawKTfield } from '../functions/killteam';
 import { initialWarmachineObject } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getWhArmies, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
-import '../styles/warmachine.css';
+import '../styles/killteam.css';
 
 const KillTeam = ({game}) => {
   const [players, setPlayers] = useState([]);
@@ -22,7 +22,7 @@ const KillTeam = ({game}) => {
   // when this app is loaded
   useEffect( () => {
     // size of table is: 22 x 30 ''
-    drawWMfield("warmachineField", 23, 31);
+    drawKTfield("killteamField", 23, 31);
     getWhArmies().then(initialData => {
        setTeams(initialData);
      }).catch(err => {
@@ -41,7 +41,7 @@ const KillTeam = ({game}) => {
 
   const hovering = (e) => {
     // get mouse locations offsets to get where mouse is hovering.
-    let r = document.getElementById('warmachineField').getBoundingClientRect();
+    let r = document.getElementById('killteamField').getBoundingClientRect();
     let x = e.clientX - r.left;
     let y = e.clientY - r.top;
     const hoverDetails = {x: x, y: y};
@@ -57,7 +57,7 @@ const KillTeam = ({game}) => {
         setDetails(presenting);
       }
     });
-    drawWMfield("warmachineField", 23, 31, roster1, roster2, ball);
+    drawKTfield("killteamField", 23, 31, roster1, roster2, ball);
     setMp(hoverDetails)
   }
 
@@ -227,7 +227,7 @@ const KillTeam = ({game}) => {
     }
 
     setGameObject(copyOfgameObject);
-    drawWMfield("warmachineField", 23, 31, roster1, roster2, ball);
+    drawKTfield("killteamField", 23, 31, roster1, roster2, ball);
   }
 
   return(
@@ -294,9 +294,9 @@ const KillTeam = ({game}) => {
         <canvas
           onMouseMove= {hovering}
           onClick= {clicked}
-          id= "warmachineField"
+          id= "killteamField"
           width = {1000}
-          height = {1300}>
+          height = {1000}>
         </canvas>
       </div>
       <div id= "rules">
