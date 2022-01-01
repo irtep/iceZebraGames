@@ -1,6 +1,6 @@
 import { arcVsArc, diceThrows } from '../functions/supportFuncs';
 import { drawKTfield } from '../functions/killteam';
-import { initialWarmachineObject } from '../constants/constants';
+import { initialWarmachineObject, ktMissions } from '../constants/constants';
 import { useEffect, useState } from 'react';
 import { getKillTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
@@ -18,11 +18,19 @@ const KillTeam = ({game}) => {
   const [attackDices, setAttackDices] = useState('');
   const [defenceDices, setDefenceDices] = useState('');
   const [details, setDetails] = useState('');
-  const [ball, setBall] = useState({x:10, y:10});
+  const [map, setMap] = useState('');
+  const [mission, setMission] = useState('');
 
   // when this app is loaded
   useEffect( () => {
-    // size of table is: 22 x 30 ''
+    // size of table is: 22 x 30 ''    // create options menu
+    ktMissions.forEach( (item) => {
+      const o = document.createElement("option");
+      o.text = item.name;
+      o.value = item.name;
+      o.key = item.name
+      document.getElementById("chooseMap").appendChild(o);
+    });
     drawKTfield("killteamField", 23, 31);
     getKillTeams().then(initialData => {
        setTeams(initialData);
@@ -43,6 +51,12 @@ const KillTeam = ({game}) => {
     setDefenceDices(diceThrows(e.target.id));
   }
 
+  const changeMap = (e) => {
+    const findTheMap = ktMissions.filter( mission => mission.name === e.target.value);
+    setMap(findTheMap[0]);
+    setMission(findTheMap[0].desc);
+  }
+
   const hovering = (e) => {
     // get mouse locations offsets to get where mouse is hovering.
     let r = document.getElementById('killteamField').getBoundingClientRect();
@@ -61,7 +75,7 @@ const KillTeam = ({game}) => {
         setDetails(presenting);
       }
     });
-    drawKTfield("killteamField", 23, 31, roster1, roster2, ball);
+    drawKTfield("killteamField", 23, 31, roster1, roster2, map);
     setMp(hoverDetails)
   }
 
@@ -131,6 +145,33 @@ const KillTeam = ({game}) => {
         setRoster1(copyOfRoster1);
       }
       else if (collision && action === 'switchOrder') {
+        if (item.order === 'engage') {
+          item.order = 'hide';
+        } else {
+          item.order = 'engage';
+        }
+        setAction('nothing');
+        setRoster1(copyOfRoster1);
+      }
+      else if (collision && action === 'hpReduce') {
+        if (item.order === 'engage') {
+          item.order = 'hide';
+        } else {
+          item.order = 'engage';
+        }
+        setAction('nothing');
+        setRoster1(copyOfRoster1);
+      }
+      else if (collision && action === 'hpAdd') {
+        if (item.order === 'engage') {
+          item.order = 'hide';
+        } else {
+          item.order = 'engage';
+        }
+        setAction('nothing');
+        setRoster1(copyOfRoster1);
+      }
+      else if (collision && action === 'switchZ') {
         if (item.order === 'engage') {
           item.order = 'hide';
         } else {
@@ -250,7 +291,7 @@ const KillTeam = ({game}) => {
     }
 
     setGameObject(copyOfgameObject);
-    drawKTfield("killteamField", 23, 31, roster1, roster2, ball);
+    drawKTfield("killteamField", 23, 31, roster1, roster2, map);
   }
 
   return(
@@ -259,6 +300,9 @@ const KillTeam = ({game}) => {
         <div id= "leftSide">
         mouse: {mousePosition.x} {mousePosition.y}<br/>
         <br/>
+        <select id = "chooseMap" onChange = {changeMap}>
+          <option value = "Choose the map">Choose the map</option>
+        </select>
         <button onClick= {checki}>
           checki
         </button>
@@ -292,6 +336,7 @@ const KillTeam = ({game}) => {
           <button id= "switchOrder" onClick= {statuses}>switch order</button>
           <button id= "hpReduce" className = "greenBg" onClick= {statuses}>hp -</button>
           <button id= "hpAdd" className= "greenBg" onClick= {statuses}>hp +</button>
+          <button id= "switchZ" className= "yellowBg" onClick= {statuses}>climb/down</button>
           <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
           <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
           <br/>
@@ -338,16 +383,15 @@ const KillTeam = ({game}) => {
       </div>
       <div id= "rules">
         {details}
+        <br/><br/><br/>
+        {mission}
       </div>
-
       <div id= "teams">
         select team:<br/>
         <ShowAllTeams
          showThese = {teams}
          addFunc = {addTeam}/>
-
       </div>
-
     </div>
     );
 }

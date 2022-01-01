@@ -1,7 +1,7 @@
-import { wmTerrain1 } from '../constants/constants';
+//import { wmTerrain1 } from '../constants/constants';
 
 // draw a grid to warmachine field
-export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
+export const drawKTfield = (kanv, xLines, yLines, team1, team2, map) => {
   const baseSize = 15;
   const grid_size = 35.4 / 1.25;
   const canvas = document.getElementById(kanv);
@@ -15,28 +15,30 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
   ctx.clearRect(0, 0, canvas_width, canvas_height);
 
   // draw the terrain
-  wmTerrain1.forEach((item, i) => {
-//    console.log('item: ', item);
-    if (item.form === 'square') {
-      ctx.beginPath();
-      ctx.fillStyle = item.color;
-      ctx.rect(item.x, item.y, item.w, item.h);
-      ctx.fill();
-      ctx.closePath();
-    }
-    if (item.form === 'circle') {
-      ctx.beginPath();
-      ctx.fillStyle = item.color;
-      ctx.arc(item.x, item.y, item.s, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.closePath();
-    }
-  });
+ if (map !== undefined && map.terrain !== undefined) {
+   map.terrain.forEach((item, i) => {
+     /*
+     if (item.type === 'arc') {
+
+     }
+     */
+     if (item.type === 'rect') {
+       ctx.beginPath();
+       ctx.fillStyle = 'black';
+       ctx.rect(item.x, item.y, item.w, item.h);
+       ctx.fill();
+       ctx.fillStyle = 'white';
+       ctx.fillText(item.name, item.x - 30, item.y - 10);
+       ctx.fillText(`levels: ${item.levels}`, item.x - 30, item.y);
+       ctx.closePath();
+     }
+   });
+ }
 
   // Draw grid lines along X-axis
   for(let i = 0; i <= num_lines_x; i++) {
     ctx.beginPath();
-    if (i === 8 || i === 37) { // depo zonet 7 ja 10 inchiin
+    if (i === 4 || i === 20) { // depo zonet 7 ja 10 inchiin
       ctx.strokeStyle = "blue";
       ctx.lineWidth = 3;
     }
@@ -82,27 +84,13 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
       ctx.stroke();
     }
 
-    // draw objectives:
-      ctx.beginPath();
-      ctx.strokeStyle = 'yellow';
-      ctx.arc(200, 490, 20, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.strokeStyle = 'yellow';
-      ctx.arc(490, 490, 20, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.strokeStyle = 'yellow';
-      ctx.arc(800, 490, 20, 0, 2 * Math.PI);
-      ctx.stroke();
-
     //draw teams
     if (team1 !== undefined) {
       //console.log('drawing teams');
       team1.forEach((item, i) => {
         //console.log('first guy: ', item.x, item.y);
         ctx.beginPath();
-        ctx.fillStyle = "rgb(010,010,010)";
+        ctx.fillStyle = "darkred";
         ctx.arc(item.x, item.y, baseSize, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();

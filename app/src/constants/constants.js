@@ -6,6 +6,114 @@ export const gameOptions = [
   'Setup'
 ];
 
+export const ktMissions = [
+  {
+    name: 'reconnoitre',
+    desc: 'with 1 ap can recon recon points, getting 1,2,3,4 points, depends how far of your zone',
+    terrain: [
+      {
+        name: 'recon point a',
+        type: 'rect',
+        x: 138,
+        y: 123,
+        w: 175,
+        h: 120,
+        levels: 2
+      },
+      {
+        name: 'recon point b',
+        type: 'rect',
+        x: 630,
+        y: 172,
+        w: 175,
+        h: 120,
+        levels: 2
+      },
+      {
+        name: 'recon point c',
+        type: 'rect',
+        x: 138,
+        y: 396,
+        w: 175,
+        h: 120,
+        levels: 2
+      },
+      {
+        name: 'recon point d',
+        type: 'rect',
+        x: 600,
+        y: 450,
+        w: 175,
+        h: 120,
+        levels: 2
+      },
+      {
+        name: 'oil pump',
+        type: 'rect',
+        x: 440,
+        y: 316,
+        w: 100,
+        h: 90,
+        levels: 2
+      },
+      {
+        name: 'small platform',
+        type: 'rect',
+        x: 440,
+        y: 470,
+        w: 55,
+        h: 55,
+        levels: 2
+      },
+      {
+        name: 'wall',
+        type: 'rect',
+        x: 711,
+        y: 100,
+        w: 100,
+        h: 10,
+        levels: 1
+      },
+      {
+        name: 'wall',
+        type: 'rect',
+        x: 424,
+        y: 177,
+        w: 100,
+        h: 10,
+        levels: 1
+      },
+      {
+        name: 'wall',
+        type: 'rect',
+        x: 90,
+        y: 560,
+        w: 150,
+        h: 10,
+        levels: 1
+      },
+      {
+        name: 'rumble',
+        type: 'rect',
+        x: 207,
+        y: 290,
+        w: 77,
+        h: 77,
+        levels: 1
+      },
+      {
+        name: 'rumble',
+        type: 'rect',
+        x: 680,
+        y: 350,
+        w: 77,
+        h: 77,
+        levels: 1
+      },
+    ]
+  }
+]
+
 export const bb3InitialGameObject = {
   phase: 'Select teams',
   forLog: [],
@@ -72,7 +180,7 @@ export const wmTerrain1 = [
     form: 'circle',
     s: 80,
     color: 'darkGreen',
-    x: 250,
+    x: 100,
     y: 370
   },
   {

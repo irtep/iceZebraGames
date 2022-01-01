@@ -827,6 +827,116 @@
       "weapons": "Slugga: 4, 4+, 3/4, RNG: 6. Choppa: 4, 3+, 4/5",
       "img": "orkboy",
       "id": 74
+    },
+    {
+      "name": "slasha boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "DAT ALL YOU GOT? if gets melee wounds, but not dead, on 4+ opponent gets 2 MW",
+      "weapons": "Throw knife: 4, 3+, 2/5, RNG 6, Silent. Twin choppas: 4, 3+, 4/5, Relentless",
+      "img": "boy",
+      "id": 75
+    },
+    {
+      "name": "breacha boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "BULL CHARGE: if charges: ram gets critical hit rule. BREACH: can normal move, dash and charge throug terrain",
+      "weapons": "Slugga: 4, 4+, 3/4, RNG 6. Ram: 3, 3+, 5/5, critical: Brutal",
+      "img": "boy",
+      "id": 76
+    },
+    {
+      "name": "snipa boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "AV IT: 2AP: free shoot, after that free shoot vs all that are 2'' of target, but always -2 attacks DA BEST SPOT: 2AP:  shoot even if hiding",
+      "weapons": "Scoped big shoota: 6, 3+, 2/2, crit: MW2. Fists: 3, 3+, 3/4",
+      "img": "boy",
+      "id": 77
+    },
+    {
+      "name": "dakka boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "UNLOAD SLUGS: reroll dices if 6'' or less distance. DAKKADAKKA: 1AP: free shoot + dash in any order",
+      "weapons": "Dakka shoota: 5, 4+, 3/4, Fists: 3, 3+, 3/4",
+      "img": "boy",
+      "id": 78
+    },
+    {
+      "name": "comms boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "I GOT A PLAN, LADZ: once per turn -1 ap to perform a mission. LISTEN IN: 1AP: +1 ap to friend inside 6''",
+      "weapons": "Shokka pistol: 6, 4+, 1/1, RNG 6, crit: STUN, MW2. Fists: 3, 3+, 3/4",
+      "img": "boy",
+      "id": 79
+    },
+    {
+      "name": "burna boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "-",
+      "weapons": "Burna: 5, 2+, 2/2, RNG 6, torrent2. Fists: 3, 3+, 3/4",
+      "img": "boy",
+      "id": 80
+    },
+    {
+      "name": "rokkit boy",
+      "factions": "kommandos",
+      "hitpoints": "10",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+      "specialRules": "BOOM BOY: reroll hit dices if not moved",
+      "weapons": "rokkit launcha: 5, 4+, 4/5, AP1, crit: Splash1. Fists: 3, 3+, 3/4",
+      "img": "boy",
+      "id": 81
+    },
+    {
+      "name": "grot",
+      "factions": "kommandos",
+      "hitpoints": "5",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W5",
+      "specialRules": "SNEAKY ZOGGER: can use only conceal order and always in conceal order",
+      "weapons": "Grot choppa: 3, 5+, 1/4",
+      "img": "grot",
+      "id": 82
+    },
+    {
+      "name": "nob",
+      "factions": "kommandos",
+      "hitpoints": "13",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 4+, W13",
+      "specialRules": "GET IT DONE: once per activation +1 AP to friend inside 6''",
+      "weapons": "Slugga: 4, 4+, 3/4, RNG6. Power klaw: 4, 3+, 5/7, Brutal",
+      "img": "nob",
+      "id": 83
+    },
+    {
+      "name": "bomb squig",
+      "factions": "kommandos",
+      "hitpoints": "6",
+      "game": "killTeam",
+      "stats": "M 6, APL 2, GA 1, DF 3, SV 6+, W6",
+      "specialRules": "BOMB: all vs 2'' cover does not work, visible, dies. BOOM: if dies on 3+ uses dynamite. STOOPID: cant make actions etc.",
+      "weapons": "Dynamite: 4, 3+, 5/6, AP1, bomb squig. Vicious bite: 3, 4+, 4/5",
+      "img": "squig",
+      "id": 84
     }
   ],
   "teams": [
@@ -3029,6 +3139,122 @@
         }
       ],
       "id": 1
+    },
+    {
+      "teamName": "kommandos",
+      "roster": [
+        {
+          "name": "nob",
+          "factions": "kommandos",
+          "hitpoints": "13",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 4+, W13",
+          "specialRules": "GET IT DONE: once per activation +1 AP to friend inside 6''",
+          "weapons": "Slugga: 4, 4+, 3/4, RNG6. Power klaw: 4, 3+, 5/7, Brutal",
+          "img": "nob",
+          "id": 83
+        },
+        {
+          "name": "bomb squig",
+          "factions": "kommandos",
+          "hitpoints": "6",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 6+, W6",
+          "specialRules": "BOMB: all vs 2'' cover does not work, visible, dies. BOOM: if dies on 3+ uses dynamite. STOOPID: cant make actions etc.",
+          "weapons": "Dynamite: 4, 3+, 5/6, AP1, bomb squig. Vicious bite: 3, 4+, 4/5",
+          "img": "squig",
+          "id": 84
+        },
+        {
+          "name": "grot",
+          "factions": "kommandos",
+          "hitpoints": "5",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W5",
+          "specialRules": "SNEAKY ZOGGER: can use only conceal order and always in conceal order",
+          "weapons": "Grot choppa: 3, 5+, 1/4",
+          "img": "grot",
+          "id": 82
+        },
+        {
+          "name": "rokkit boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "BOOM BOY: reroll hit dices if not moved",
+          "weapons": "rokkit launcha: 5, 4+, 4/5, AP1, crit: Splash1. Fists: 3, 3+, 3/4",
+          "img": "boy",
+          "id": 81
+        },
+        {
+          "name": "burna boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "-",
+          "weapons": "Burna: 5, 2+, 2/2, RNG 6, torrent2. Fists: 3, 3+, 3/4",
+          "img": "boy",
+          "id": 80
+        },
+        {
+          "name": "comms boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "I GOT A PLAN, LADZ: once per turn -1 ap to perform a mission. LISTEN IN: 1AP: +1 ap to friend inside 6''",
+          "weapons": "Shokka pistol: 6, 4+, 1/1, RNG 6, crit: STUN, MW2. Fists: 3, 3+, 3/4",
+          "img": "boy",
+          "id": 79
+        },
+        {
+          "name": "dakka boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "UNLOAD SLUGS: reroll dices if 6'' or less distance. DAKKADAKKA: 1AP: free shoot + dash in any order",
+          "weapons": "Dakka shoota: 5, 4+, 3/4, Fists: 3, 3+, 3/4",
+          "img": "boy",
+          "id": 78
+        },
+        {
+          "name": "snipa boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "AV IT: 2AP: free shoot, after that free shoot vs all that are 2'' of target, but always -2 attacks DA BEST SPOT: 2AP:  shoot even if hiding",
+          "weapons": "Scoped big shoota: 6, 3+, 2/2, crit: MW2. Fists: 3, 3+, 3/4",
+          "img": "boy",
+          "id": 77
+        },
+        {
+          "name": "breacha boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "BULL CHARGE: if charges: ram gets critical hit rule. BREACH: can normal move, dash and charge throug terrain",
+          "weapons": "Slugga: 4, 4+, 3/4, RNG 6. Ram: 3, 3+, 5/5, critical: Brutal",
+          "img": "boy",
+          "id": 76
+        },
+        {
+          "name": "slasha boy",
+          "factions": "kommandos",
+          "hitpoints": "10",
+          "game": "killTeam",
+          "stats": "M 6, APL 2, GA 1, DF 3, SV 5+, W10",
+          "specialRules": "DAT ALL YOU GOT? if gets melee wounds, but not dead, on 4+ opponent gets 2 MW",
+          "weapons": "Throw knife: 4, 3+, 2/5, RNG 6, Silent. Twin choppas: 4, 3+, 4/5, Relentless",
+          "img": "boy",
+          "id": 75
+        }
+      ],
+      "id": 2
     }
   ]
 }
