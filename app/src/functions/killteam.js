@@ -126,6 +126,7 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, map) => {
         ctx.fillStyle = 'white';
         ctx.fillText(item.status, item.x - 20, item.y);
         ctx.fillText(`hp: ${item.hitpoints}`, item.x - 20, item.y + 10);
+        ctx.fillText(`z: ${item.z}`, item.x + 7, item.y + 10);
         ctx.fillStyle = 'white';
         ctx.fillText(`${item.order}`, item.x - 20, item.y + 20);
         ctx.shadowOffsetX = 0;
