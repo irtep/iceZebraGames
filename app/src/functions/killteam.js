@@ -96,50 +96,28 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
       ctx.arc(800, 490, 20, 0, 2 * Math.PI);
       ctx.stroke();
 
-    // draw endZones
-    /*
-    ctx.beginPath();
-    ctx.fillStyle = "navy";
-    ctx.rect(35, 35, grid_size, grid_size * xLines - 35);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.fillStyle = "darkRed";
-    ctx.rect(35 * yLines - 35, 35, grid_size, grid_size * xLines - 35);
-    ctx.fill();
-
-    // draw center circle
-    ctx.beginPath();
-    ctx.strokeStyle = "rgb(190,190,190)";
-    ctx.arc(490, 300, 50, 0, 2 * Math.PI);
-    ctx.stroke();
-*/
-/*
-    // draw the ball
-    if (ball !== undefined) {
-      ctx.beginPath();
-      ctx.strokeStyle = 'yellow';
-      ctx.arc(ball.x, ball.y, 20, 0, 2 * Math.PI);
-      ctx.stroke();
-    }
-*/
     //draw teams
     if (team1 !== undefined) {
       //console.log('drawing teams');
       team1.forEach((item, i) => {
         //console.log('first guy: ', item.x, item.y);
         ctx.beginPath();
-        ctx.fillStyle = "rgb(190,190,190)";
+        ctx.fillStyle = "rgb(010,010,010)";
         ctx.arc(item.x, item.y, baseSize, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
         ctx.shadowOffsetX = 1;
         ctx.shadowOffsetY = 1;
-        ctx.shadowColor = 'red';
+        ctx.shadowColor = 'gray';
         ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'silver';
+        ctx.fillStyle = 'orange';
         ctx.fillText(item.name, item.x - 30, item.y - 10);
         ctx.fillStyle = 'white';
         ctx.fillText(item.status, item.x - 20, item.y);
+        ctx.fillText(`hp: ${item.hitpoints}`, item.x - 20, item.y + 10);
+        ctx.fillText(`z: ${item.z}`, item.x + 7, item.y + 10);
+        ctx.fillStyle = 'white';
+        ctx.fillText(`${item.order}`, item.x - 20, item.y + 20);
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
       });
@@ -147,7 +125,7 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
       team2.forEach((item, i) => {
         //console.log('first guy: ', item.x, item.y);
         ctx.beginPath();
-        ctx.fillStyle = "rgb(70,70,70)";
+        ctx.fillStyle = "rgb(030,030,030)";
         ctx.arc(item.x, item.y, baseSize, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -155,10 +133,13 @@ export const drawKTfield = (kanv, xLines, yLines, team1, team2, ball) => {
         ctx.shadowOffsetY = 1;
         ctx.shadowColor = 'blue';
         ctx.font = '12px Times New Roman';
-        ctx.fillStyle = 'silver';
+        ctx.fillStyle = 'gold';
         ctx.fillText(item.name, item.x - 30, item.y - 10);
         ctx.fillStyle = 'white';
         ctx.fillText(item.status, item.x - 20, item.y);
+        ctx.fillText(`hp: ${item.hitpoints}`, item.x - 20, item.y + 10);
+        ctx.fillStyle = 'white';
+        ctx.fillText(`${item.order}`, item.x - 20, item.y + 20);
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
       });

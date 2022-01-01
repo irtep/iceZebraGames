@@ -14,6 +14,16 @@
     grid-gap: 1px;
 }
 
+#attackDices {
+  background: black;
+  color: orange;
+}
+
+#defenceDices {
+  background: orange;
+  color: black;
+}
+
 #controls {
   grid-area: ctrl;
   display: grid;
@@ -37,6 +47,14 @@
 #teams {
   grid-area: play;
   height: auto;
+}
+
+.yellowBg {
+  background: yellow;
+}
+
+.greenBg {
+  background: green;
 }
 
 #leftSide {

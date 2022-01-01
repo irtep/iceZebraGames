@@ -2,7 +2,7 @@ import { arcVsArc, diceThrows } from '../functions/supportFuncs';
 import { drawKTfield } from '../functions/killteam';
 import { initialWarmachineObject } from '../constants/constants';
 import { useEffect, useState } from 'react';
-import { getWhArmies, getAll } from '../services/dbControl';
+import { getKillTeams, getAll } from '../services/dbControl';
 import ShowAllTeams from './ShowAllTeams';
 import '../styles/killteam.css';
 
@@ -15,7 +15,8 @@ const KillTeam = ({game}) => {
   const [gameObject, setGameObject] = useState (initialWarmachineObject);
   const [mousePosition, setMp] = useState('');
   const [action, setAction] = useState('nothing');
-  const [dices, setDices] = useState('');
+  const [attackDices, setAttackDices] = useState('');
+  const [defenceDices, setDefenceDices] = useState('');
   const [details, setDetails] = useState('');
   const [ball, setBall] = useState({x:10, y:10});
 
@@ -23,7 +24,7 @@ const KillTeam = ({game}) => {
   useEffect( () => {
     // size of table is: 22 x 30 ''
     drawKTfield("killteamField", 23, 31);
-    getWhArmies().then(initialData => {
+    getKillTeams().then(initialData => {
        setTeams(initialData);
      }).catch(err => {
        console.log('error', err.response);
@@ -35,8 +36,11 @@ const KillTeam = ({game}) => {
       });
   }, []);
 
-  const diceThrow = (e) => {
-    setDices(diceThrows(e.target.id));
+  const attackDiceThrow = (e) => {
+    setAttackDices(diceThrows(e.target.id));
+  }
+  const defenceDiceThrow = (e) => {
+    setDefenceDices(diceThrows(e.target.id));
   }
 
   const hovering = (e) => {
@@ -52,7 +56,7 @@ const KillTeam = ({game}) => {
       if (collision) {
         const presenting = `(${item.name})
         (${item.stats})
-        (${item.skills})
+        (${item.status})(${item.hitpoints})
         (${item.specialRules})`;
         setDetails(presenting);
       }
@@ -116,20 +120,41 @@ const KillTeam = ({game}) => {
   const clicked = () => {
     const copyOfRoster1 = roster1.concat([]);
     const copyOfRoster2 = roster2.concat([]);
+
     // check if someone is moving
     copyOfRoster1.forEach((item, i) => {
+      const collision = arcVsArc(mousePosition, item, 10, 15);
       if (item.status === 'move') {
         item.status = 'activated';
         item.x = mousePosition.x;
         item.y = mousePosition.y;
         setRoster1(copyOfRoster1);
       }
+      else if (collision && action === 'switchOrder') {
+        if (item.order === 'engage') {
+          item.order = 'hide';
+        } else {
+          item.order = 'engage';
+        }
+        setAction('nothing');
+        setRoster1(copyOfRoster1);
+      }
     });
     copyOfRoster2.forEach((item, i) => {
+      const collision = arcVsArc(mousePosition, item, 10, 15);
       if (item.status === 'move') {
         item.status = 'activated';
         item.x = mousePosition.x;
         item.y = mousePosition.y;
+        setRoster2(copyOfRoster2);
+      }
+      else if (collision && action === 'switchOrder') {
+        if (item.order === 'engage') {
+          item.order = 'hide';
+        } else {
+          item.order = 'engage';
+        }
+        setAction('nothing');
         setRoster2(copyOfRoster2);
       }
     });
@@ -147,11 +172,7 @@ const KillTeam = ({game}) => {
         setAction('nothing');
       });
     }
-    // move ball
-    if (action === 'moveBall') {
-      const newPosition = {x: mousePosition.x, y: mousePosition.y};
-      setBall(newPosition);
-    }
+
   }
 
   const statuses = (e) => {
@@ -217,6 +238,8 @@ const KillTeam = ({game}) => {
       newPlayer.x = startPoint.x + (activeRoster.length + 1) * 36;
       newPlayer.y = startPoint.y;
       newPlayer.status = 'ready';
+      newPlayer.order = 'engage';
+      newPlayer.z = 1;
       activeRoster.push(newPlayer);
     });
 
@@ -262,27 +285,41 @@ const KillTeam = ({game}) => {
         </div>
         <div id= "rightSide">
           <button id= "move" onClick= {statuses}>move</button>
-          <button id= "acid" onClick= {statuses}>acid</button>
-          <button id= "knocked down" onClick= {statuses}>knocked down</button>
-
-          <button id= "frozen" onClick= {statuses}>frozen</button>
       {/*    <button id= "lostBlockZone" onClick= {statuses}>lostBlockZone</button>
           */}
           <button id= "activated" onClick= {statuses}>activated</button>
-
           <button id= "ready" onClick= {statuses}>ready</button>
-
+          <button id= "switchOrder" onClick= {statuses}>switch order</button>
+          <button id= "hpReduce" className = "greenBg" onClick= {statuses}>hp -</button>
+          <button id= "hpAdd" className= "greenBg" onClick= {statuses}>hp +</button>
           <button id= "team1ready" onClick= {statuses}>team 1 ready</button>
           <button id= "team2ready" onClick= {statuses}>team 2 ready</button>
           <br/>
-          <button id= "d6" onClick= {diceThrow}>d6</button>
-          <button id= "2d6" onClick= {diceThrow}>2d6</button>
-          <button id= "3d6" onClick= {diceThrow}>3d6</button>
-          <button id= "4d6" onClick= {diceThrow}>4d6</button>
-          <button id= "d3" onClick= {diceThrow}>d3</button>
+          attack dices
+          <button id= "d6" onClick= {attackDiceThrow}>d6</button>
+          <button id= "2d6" onClick= {attackDiceThrow}>2d6</button>
+          <button id= "3d6" onClick= {attackDiceThrow}>3d6</button>
+          <button id= "4d6" onClick= {attackDiceThrow}>4d6</button>
+          <button id= "5d6" onClick= {attackDiceThrow}>5d6</button>
+          <button id= "6d6" onClick= {attackDiceThrow}>6d6</button>
+          <button id= "d3" onClick= {attackDiceThrow}>d3</button>
           <br/>
-          <button id= "moveBall" onClick= {statuses}>move ball</button>
-          {dices}
+          <div id= "attackDices">
+          {attackDices}
+          </div>
+          <br/>
+          defence dices
+          <button id= "d6" onClick= {defenceDiceThrow}>d6</button>
+          <button id= "2d6" onClick= {defenceDiceThrow}>2d6</button>
+          <button id= "3d6" onClick= {defenceDiceThrow}>3d6</button>
+          <button id= "4d6" onClick= {defenceDiceThrow}>4d6</button>
+          <button id= "5d6" onClick= {defenceDiceThrow}>5d6</button>
+          <button id= "6d6" onClick= {defenceDiceThrow}>6d6</button>
+          <button id= "d3" onClick= {defenceDiceThrow}>d3</button>
+          <br/>
+          <div id= "defenceDices">
+          {defenceDices}
+          </div>
         </div>
         <div id= "infos">
           Activated team: {activeTeam}<br/>
