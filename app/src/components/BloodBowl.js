@@ -446,12 +446,12 @@ const BloodBowl = ({game}) => {
           }
         }
       }
-
-
     }
 
     else if (action === 'dodge') {
       const dodgeCheck = who.skills.filter( skill => skill === 'Dodge');
+      const markers = who.markedBy(gO[opponentTeamIndex].roster);
+      let tacklers = false;
       const agiCheck = callDice(6);
       const dexCheck = who.skillTest('ag', agiCheck, modifier);
       gO.forLog.push(<br/>);
@@ -462,8 +462,19 @@ const BloodBowl = ({game}) => {
         gO.forLog.push(`...that is ok`);
         setGameObject(gO);
       } else {
+        // check if tackers around
+        markers.forEach((item, i) => {
+          const tackleCheck = item.skills.filter( skill => skill === 'Tackle');
+
+          if (tackleCheck.length === 1) {
+            tacklers = true;
+          }
+        });
         // check if has dodge skill
-        if (dodgeCheck.length > 0) {
+        if (tacklers) {
+          gO.forLog.push(`${who.number} tackler negates possible dodge skill use`);
+        }
+        if (dodgeCheck.length > 0 && tacklers === false) {
           const rerollingDodge = callDice(6);
           gO.forLog.push(<br/>);
           gO.forLog.push(`${who.number} has dodge skill...`);
@@ -651,6 +662,7 @@ const BloodBowl = ({game}) => {
 //      const sureFeetCheck = item.skills.filter( skill => skill === 'Sure Feet');
       const dauntlessCheck = item.skills.filter( skill => skill === 'Dauntless');
       const brawlCheck = item.skills.filter( skill => skill === 'Brawl');
+      const titchyCheck = item.skills.filter( skill => skill === 'Titchy');
       //const blockCheck = item.skills.filter( skill => skill === 'Block');
       //const frenzyCheck = item.skills.filter( skill => skill === 'Frenzy');
       let stunty = false;
@@ -813,6 +825,17 @@ const BloodBowl = ({game}) => {
             modifier = -Math.abs(newMarkCheck.length);
           }
 
+          // check if there are titchy markers
+          newMarkCheck.forEach((itemT) => {
+            const titchyCheckO = itemT.skills.filter( skill => skill === 'Titchy');
+            if (modifier < 0 && titchyCheckO.length === 1) {
+              modifier++;
+            }
+          });
+
+          // +1 if titchy
+          if (titchyCheck) { modifier++; }
+
           gO.forLog.push(<br/>);
           gO.forLog.push('... he is marked');
 
@@ -827,6 +850,7 @@ const BloodBowl = ({game}) => {
         }
 
       }
+      /* foul not yet coded
       else if (item.status === 'foul') {
         const checkIfMarked = item.markedBy(opponentRoster);
         const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
@@ -892,7 +916,7 @@ const BloodBowl = ({game}) => {
                 reasonWas: 'dodge',
                 skillWas: 'ag',
                 modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
+                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
               }
               gO.forLog.push(<br/>);
               gO.forLog.push(`falls! agility check ${agiCheck} modifier: ${modifier}`);
@@ -1066,6 +1090,7 @@ const BloodBowl = ({game}) => {
           });
         } // blitz block ends
       }
+      */
 
       // blitz
       else if (item.status === 'blitz') {
@@ -1109,6 +1134,20 @@ const BloodBowl = ({game}) => {
             if (newMarkCheck.length > 0 && stunty === false) {
               modifier = -Math.abs(newMarkCheck.length);
             }
+
+            // check if there are titchy markers
+            newMarkCheck.forEach((itemT) => {
+              const titchyCheckO = itemT.skills.filter( skill => skill === 'Titchy');
+              if (modifier < 0 && titchyCheckO.length === 1) {
+                modifier++;
+              }
+            });
+
+            // +1 if titchy
+            if (titchyCheck) {
+              modifier++;
+            }
+
             gO.forLog.push(<br/>);
             gO.forLog.push('... he is marked');
 
@@ -1126,17 +1165,7 @@ const BloodBowl = ({game}) => {
               gO.forLog.push(<br/>);
               gO.forLog.push(`agility check passed. roll: ${agiCheck}, modifier: ${modifier}`);
             } else {
-              // turn over!
-              // save old data if user selects reroll
-              /*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'dodge',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}*/
-
-                gO.forLog.push(<br/>);
+              gO.forLog.push(<br/>);
               gO.forLog.push(`falls! agility check ${agiCheck} modifier: ${modifier}`);
               item.withBall = false;
               // armour check
@@ -1157,16 +1186,11 @@ const BloodBowl = ({game}) => {
                 gO.forLog.push(<br/>);
                 gO.forLog.push(`armour holds with roll: ${armourRoll}`);
               }
-  //            preReroll.who = item;
-    //          setOldData(preReroll);
               gO.phase = 'turnOver';
             }
           }  // if marked when start to move ends
-          //console.log('phase is: ', gO.phase);
+
           if (gO.phase === 'turnOver') {
-            //console.log('phase is turn over');
-            // (gO, activeTeamIndex, copyOfRoster1, copyOfRoster2)
-            console.log('calling turnOverPhase from gamePlay (movement)');
             turnOverPhase(gO, item, false);
           }
           // try to pick up the ball if at same place
@@ -1342,6 +1366,17 @@ const BloodBowl = ({game}) => {
           if (newMarkCheck.length > 0 && stunty === false) {
             modifier = -Math.abs(newMarkCheck.length);
           }
+          // check if there are titchy markers
+          newMarkCheck.forEach((itemT) => {
+            const titchyCheckO = itemT.skills.filter( skill => skill === 'Titchy');
+            if (modifier < 0 && titchyCheckO.length === 1) {
+              modifier++;
+            }
+          });
+
+          // +1 if titchy
+          if (titchyCheck) { modifier++; }
+
           gO.forLog.push(<br/>);
           gO.forLog.push('... he is marked');
 
@@ -1487,9 +1522,11 @@ const BloodBowl = ({game}) => {
     const blockerStunty = foundBlocker.skills.filter( skill => skill === 'Stunty');
     const blockerThickskull = foundBlocker.skills.filter( skill => skill === 'Thick Skull');
     const blockerMightyBlow1 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (1+)');
+    const blockerMightyBlow2 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (2+)');
     const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
     const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
     const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
+    const blockerTackle = foundBlocker.skills.filter( skill => skill === 'Tackle');
     // targets skills
     const targetBlock = foundTarget.skills.filter( skill => skill === 'Block');
     const targetWrestle = foundTarget.skills.filter( skill => skill === 'Wrestle');
@@ -1651,16 +1688,22 @@ const BloodBowl = ({game}) => {
       gO.forLog.push(<br/>);
       gO.forLog.push('stumble!');
       // push + kd or just push if has Dodge
-      if (targetDodge.length === 0) {
+      if (targetDodge.length === 0 || blockerTackle.length === 1) {
         let modifier = 0;
         if (blockerMightyBlow1.length === 1) {
           modifier = 1;
+        }
+        if (blockerMightyBlow2.length === 1) {
+          modifier = 2;
+        }
+        if (targetDodge.length === 1) {
+          gO.forLog.push('targets dodge is negated by blockers tackle');
         }
         // armour check
         const armourRoll = callDice(12);
         let armourCheck = foundTarget.skillTest('av', armourRoll, modifier);
         if (blockerClaws.length === 1 && armourRoll > 7) {
-          console.log('claws effective');
+          gO.forLog.push('claws effective');
           armourCheck = true;
         }
         console.log('armour test: ', armourCheck, armourRoll);
