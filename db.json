@@ -2888,15 +2888,15 @@
           "id": 23
         },
         {
-          "name": "Gnoblar Lineman",
+          "name": "Ogre Blocker",
           "team": "Ogre",
           "game": "blood bowl",
-          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
-          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
           "specialRules": "-",
-          "cost": "15000",
-          "img": "gnoblar",
-          "id": 23
+          "cost": "140000",
+          "img": "ogre",
+          "id": 25
         }
       ],
       "color1": "crimson",

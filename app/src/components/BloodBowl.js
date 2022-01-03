@@ -828,13 +828,14 @@ const BloodBowl = ({game}) => {
           // check if there are titchy markers
           newMarkCheck.forEach((itemT) => {
             const titchyCheckO = itemT.skills.filter( skill => skill === 'Titchy');
+            console.log('checking for titchy, mod: ', modifier);
             if (modifier < 0 && titchyCheckO.length === 1) {
               modifier++;
             }
           });
 
           // +1 if titchy
-          if (titchyCheck) { modifier++; }
+          if (titchyCheck.length === 1) { modifier++; }
 
           gO.forLog.push(<br/>);
           gO.forLog.push('... he is marked');
@@ -1144,7 +1145,7 @@ const BloodBowl = ({game}) => {
             });
 
             // +1 if titchy
-            if (titchyCheck) {
+            if (titchyCheck.length === 1) {
               modifier++;
             }
 
@@ -1375,7 +1376,7 @@ const BloodBowl = ({game}) => {
           });
 
           // +1 if titchy
-          if (titchyCheck) { modifier++; }
+          if (titchyCheck.length === 1) { modifier++; }
 
           gO.forLog.push(<br/>);
           gO.forLog.push('... he is marked');
@@ -1521,8 +1522,8 @@ const BloodBowl = ({game}) => {
     // blockers skills
     const blockerStunty = foundBlocker.skills.filter( skill => skill === 'Stunty');
     const blockerThickskull = foundBlocker.skills.filter( skill => skill === 'Thick Skull');
-    const blockerMightyBlow1 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (1+)');
-    const blockerMightyBlow2 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (2+)');
+    const blockerMightyBlow1 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (+1)');
+    const blockerMightyBlow2 = foundBlocker.skills.filter( skill => skill === 'Mighty Blow (+2)');
     const blockerClaws = foundBlocker.skills.filter( skill => skill === 'Claws');
     const blockerBlock = foundBlocker.skills.filter( skill => skill === 'Block');
     const blockerWrestle = foundBlocker.skills.filter( skill => skill === 'Wrestle');
