@@ -948,6 +948,72 @@
       "weapons": "Dynamite: 4, 3+, 5/6, AP1, bomb squig. Vicious bite: 3, 4+, 4/5",
       "img": "squig",
       "id": 84
+    },
+    {
+      "name": "Lineorc",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+      "skills": "Animosity (Orc Lineman)",
+      "specialRules": "-",
+      "cost": "50000",
+      "img": "orc",
+      "id": 85
+    },
+    {
+      "name": "Thrower",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 3 AG 3+ PA 3+ AV 9+",
+      "skills": "Animosity (Orc Lineman), Pass, Sure Hands",
+      "specialRules": "-",
+      "cost": "65000",
+      "img": "orc",
+      "id": 86
+    },
+    {
+      "name": "Blitzer",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+      "skills": "Animosity (all), Block",
+      "specialRules": "-",
+      "cost": "80000",
+      "img": "orc",
+      "id": 87
+    },
+    {
+      "name": "Big Un",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
+      "skills": "Animosity (big uns)",
+      "specialRules": "-",
+      "cost": "90000",
+      "img": "orc",
+      "id": 88
+    },
+    {
+      "name": "goblin",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+      "skills": "Dodge, Right Stuff, Stunty",
+      "specialRules": "-",
+      "cost": "40000",
+      "img": "orc",
+      "id": 89
+    },
+    {
+      "name": "troll",
+      "team": "Orc",
+      "game": "blood bowl",
+      "stats": "MA 4 ST 5 AG 5+ PA 5+ AV 10+",
+      "skills": "Always Hungry, Loner (4+), Mighty Blow (+1), Really Stupid, Projectile Vomit, Stupid, Regeneration, Throw Team-mate",
+      "specialRules": "-",
+      "cost": "115000",
+      "img": "orc",
+      "id": 90
     }
   ],
   "teams": [
@@ -2913,6 +2979,321 @@
       "color1": "crimson",
       "color2": "white",
       "id": 24
+    },
+    {
+      "teamName": "Orkaneers",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Blitzer",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (all), Block",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "orc",
+          "id": 87
+        },
+        {
+          "name": "Blitzer",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (all), Block",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "orc",
+          "id": 87
+        },
+        {
+          "name": "Blitzer",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (all), Block",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "orc",
+          "id": 87
+        },
+        {
+          "name": "Blitzer",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (all), Block",
+          "specialRules": "-",
+          "cost": "80000",
+          "img": "orc",
+          "id": 87
+        },
+        {
+          "name": "Thrower",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Animosity (Orc Lineman), Pass, Sure Hands",
+          "specialRules": "-",
+          "cost": "65000",
+          "img": "orc",
+          "id": 86
+        },
+        {
+          "name": "Big Un",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
+          "skills": "Animosity (big uns)",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "orc",
+          "id": 88
+        },
+        {
+          "name": "Big Un",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
+          "skills": "Animosity (big uns)",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "orc",
+          "id": 88
+        },
+        {
+          "name": "Big Un",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
+          "skills": "Animosity (big uns)",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "orc",
+          "id": 88
+        },
+        {
+          "name": "Big Un",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
+          "skills": "Animosity (big uns)",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "orc",
+          "id": 88
+        },
+        {
+          "name": "Lineorc",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (Orc Lineman)",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "orc",
+          "id": 85
+        },
+        {
+          "name": "Lineorc",
+          "team": "Orc",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 3 AG 3+ PA 4+ AV 10+",
+          "skills": "Animosity (Orc Lineman)",
+          "specialRules": "-",
+          "cost": "50000",
+          "img": "orc",
+          "id": 85
+        }
+      ],
+      "color1": "lightgoldenrodyellow",
+      "color2": "red",
+      "id": 26
+    },
+    {
+      "teamName": "Cienciano v2",
+      "reRolls": 2,
+      "roster": [
+        {
+          "name": "Griff Oberwald",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 4 AG 2+ PA 3+ AV 9+",
+          "skills": "Block, Dodge, Fend, Loner (3+), Sprint, Sure Feet",
+          "specialRules": "Once per game re-roll free, can't be armour, injury or casualty",
+          "cost": "280000",
+          "img": "griff",
+          "id": 7
+        },
+        {
+          "name": "Ogre Punter",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+          "skills": "Bone Head, Kick Team-mate, Mighty Blow (+1), Thick Skull",
+          "specialRules": "-",
+          "cost": "145000",
+          "img": "ogre",
+          "id": 24
+        },
+        {
+          "name": "Ogre Blocker",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "specialRules": "-",
+          "cost": "140000",
+          "img": "ogre",
+          "id": 25
+        },
+        {
+          "name": "Ogre Blocker",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "specialRules": "-",
+          "cost": "140000",
+          "img": "ogre",
+          "id": 25
+        },
+        {
+          "name": "Ogre Blocker",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
+          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "specialRules": "-",
+          "cost": "140000",
+          "img": "ogre",
+          "id": 25
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        },
+        {
+          "name": "Gnoblar Lineman",
+          "team": "Ogre",
+          "game": "blood bowl",
+          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
+          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "specialRules": "-",
+          "cost": "15000",
+          "img": "gnoblar",
+          "id": 23
+        }
+      ],
+      "color1": "black",
+      "color2": "red",
+      "id": 27
     }
   ],
   "whArmies": [
