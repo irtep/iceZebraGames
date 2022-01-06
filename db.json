@@ -63,7 +63,18 @@
       "skills": "Block, Dodge, Fend, Loner (3+), Sprint, Sure Feet",
       "specialRules": "Once per game re-roll free, can't be armour, injury or casualty",
       "cost": "280000",
-      "img": "imperialLineman",
+      "img": "griff",
+      "id": 7
+    },
+    {
+      "name": "Griff Oberwald",
+      "team": "Ogre",
+      "game": "blood bowl",
+      "stats": "MA 7 ST 4 AG 2+ PA 3+ AV 9+",
+      "skills": "Block, Dodge, Fend, Loner (3+), Sprint, Sure Feet",
+      "specialRules": "Once per game re-roll free, can't be armour, injury or casualty",
+      "cost": "280000",
+      "img": "griff",
       "id": 7
     },
     {
