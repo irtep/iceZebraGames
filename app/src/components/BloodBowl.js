@@ -195,6 +195,22 @@ const BloodBowl = ({game}) => {
 
   /////////// FUNCTIONS //////////////
 
+  const resets = (e) => {
+    const clickedBtn = e.target.id;
+    const gO = {...gameObject};
+    console.log(clickedBtn);
+    if (clickedBtn === 'goalTeam1') {
+      gO['team1'].score++;
+    }
+    else if (clickedBtn === 'goalTeam2') {
+      gO['team2'].score++;
+
+    }
+    else if (clickedBtn === 'startSecondHalf') {
+
+    }
+  }
+
   const reRerollQuery = (e) => {
     const decision = e.target.id;
     const modifier = Number(e.target.value);
@@ -851,247 +867,6 @@ const BloodBowl = ({game}) => {
         }
 
       }
-      /* foul not yet coded
-      else if (item.status === 'foul') {
-        const checkIfMarked = item.markedBy(opponentRoster);
-        const checkLegalSquares = item.checkForMove(currentRoster, opponentRoster);
-        const convertedPosition = convertPosition(mousePosition, squareSize);
-        const moveChecking = checkLegalSquares.filter( loc => loc.x === convertedPosition.x && loc.y === convertedPosition.y);
-
-        //console.log('marked: ', checkIfMarked);
-        gO[activeTeamIndex].blitz = false;
-        gO.forLog.push(<br/>);
-        gO.forLog.push(`${item.number} is fouling...`);
-        // move
-        if (moveChecking.length === 1) {
-          console.log('foul: move check is 1: ', moveChecking);
-          if (moveChecking.length === 1 && item.movementLeft > 0) {
-            item.move(mousePosition.x, mousePosition.y);
-
-          }
-
-          if (item.movementLeft < 1) {
-            if (item.rushes > 0) {
-              item.setStatus('moved');
-              // remove all others moved to activated
-              currentRoster.forEach((item2, i2) => {
-                if (i !== i2 && item2.status === 'moved') {
-                  item2.setStatus('activated');
-                }
-              });
-            } else {
-              item.setStatus('activated');
-            }
-          }
-
-          if (checkIfMarked.length > 0) {
-            // item.movementLeft from marked place
-            const newMarkCheck = item.markedBy(opponentRoster);
-            let modifier = 0;
-            console.log('new mark check: ', newMarkCheck);
-            if (newMarkCheck.length > 0 && stunty === false) {
-              modifier = -Math.abs(newMarkCheck.length);
-            }
-            gO.forLog.push(<br/>);
-            gO.forLog.push('... he is marked');
-
-            if (stunty.length > 0) {
-              modifier = 0;
-            }
-
-            const agiCheck = callDice(6);
-            const dexCheck = item.skillTest('ag', agiCheck, modifier);
-            gO.forLog.push(<br/>);
-            gO.forLog.push(`dex check and mod: ${agiCheck} ${modifier}`);
-
-            if (dexCheck) {
-              item.move(mousePosition.x, mousePosition.y);
-              gO.forLog.push(<br/>);
-              gO.forLog.push(`agility check passed. roll: ${agiCheck}, modifier: ${modifier}`);
-            } else {
-              // turn over!
-              // save old data if user selects reroll
-              /*
-              item.preReroll = {
-                gameObject: gO,
-                reasonWas: 'dodge',
-                skillWas: 'ag',
-                modifierWas: modifier,
-                oldLoc: {x: JSON.parse(JSON.stringify(item.x)), y: JSON.parse(JSON.stringify(item.y))}
-              }
-              gO.forLog.push(<br/>);
-              gO.forLog.push(`falls! agility check ${agiCheck} modifier: ${modifier}`);
-              item.withBall = false;
-              // armour check
-              const armourRoll = callDice(12);
-              const armourCheck = item.skillTest('av', armourRoll, 0);
-              console.log('armour test: ', armourCheck, armourRoll);
-              if (armourCheck) {
-                const getInjuryMessage = armourBroken(stunty, thickSkull);
-                item.setStatus(getInjuryMessage.msg);
-                gO.forLog.push(<br/>);
-                gO.forLog.push(`player is: ${getInjuryMessage.msg}`);
-                gO.forLog.push(<br/>);
-                gO.forLog.push(`roll was: ${armourRoll}`);
-                gO.forLog.push(<br/>);
-                gO.forLog.push(`injury roll was: ${getInjuryMessage.roll}`);
-              } else {
-                item.setStatus('fallen');
-                gO.forLog.push(<br/>);
-                gO.forLog.push(`armour holds with roll: ${armourRoll}`);
-              }
-  //            preReroll.who = item;
-    //          setOldData(preReroll);
-              gO.phase = 'turnOver';
-            }
-          }  // if marked when start to move ends
-          //console.log('phase is: ', gO.phase);
-          if (gO.phase === 'turnOver') {
-            //console.log('phase is turn over');
-            // (gO, activeTeamIndex, copyOfRoster1, copyOfRoster2)
-            console.log('calling turnOverPhase from gamePlay (foul)');
-            turnOverPhase(gO, item, false);
-          }
-          // try to pick up the ball if at same place
-          const ifAtBall = checkIfBallLocation(item.getLocation(), gO.ball);
-          if (ifAtBall) {
-            const tryingToPick = pickUpAction(item, opponentRoster);
-            if (tryingToPick) {
-              gO.forLog.push(<br/>);
-              gO.forLog.push('he/she gets the ball');
-              item.withBall = true;
-            } else {
-              gO.ball = (bounce(callDice(8), gO.ball));
-              gO.phase = 'turnOver';
-              // at the moment cant be rerolled as not coded and tested
-              turnOverPhase(gO, item, true);
-            }
-          }
-         // blitzh move ends
-        // foul i think....
-
-        else {
-          console.log('foul: move check is not 1: ', moveChecking);
-          const actionButtons = [];
-          // set status to block
-          item.setStatus('fouling');
-          // remove older possible block statuses from friends
-          currentRoster.forEach((itemB, ib) => {
-            if (itemB.status === 'block' && ib !== i) {
-              item.setStatus('activated');
-            }
-          });
-          // also for move and blitz
-          currentRoster.forEach((itemB, ib) => {
-            if ((itemB.status === 'move' || item.status === 'blitz' || item.status === 'foul') && ib !== i) {
-              item.setStatus('activated');
-            }
-          });
-          // CONTINUE FROM HERE IN FOUL ACTION!
-          opponentRoster.forEach((itemx, ix) => {
-            // check from here if it was clicked
-              const collision = arcVsArc(mousePosition, itemx, 10, 15);
-
-              if (collision) {
-                const markers = item.markedBy(opponentRoster);
-                console.log('block targets: ', markers);
-
-                if (markers.length > 0) {
-                  markers.forEach((itemm, im) => {
-                    if (itemm.number === itemx.number && itemm.name === itemx.name) {
-                      itemm.setStatus('target');
-                      targetClicked = true;
-
-                      if (targetClicked) {
-                        // get strengths
-                        let blockerSt = item.st;
-                        let targetSt = itemm.st;
-                        let blockerModifier = 0;
-                        let targetModifier = 0;
-                        let dices = [bloodBowlDices('1bd')];
-                        let blockerDecides = true;
-
-                        if (dauntlessCheck.length > 0 && targetSt > blockerSt) {
-                          const dauntlessDice = callDice(6);
-                          console.log('dauntless');
-                          if (dauntlessDice > (targetSt - blockerSt)) {
-                            blockerSt = targetSt
-                            gO.forLog.push(<br/>);
-                            gO.forLog.push(`dauntless evens up with roll: ${dauntlessDice}`);
-                          } else {
-                            gO.forLog.push(<br/>);
-                            gO.forLog.push(`dauntless did not help: ${dauntlessDice}`);
-                          }
-                        }
-
-                        // check helpers
-                        const blockersFriends = itemm.markedBy(currentRoster);
-                        const targetsFriends = item.markedBy(opponentRoster);
-                        blockersFriends.forEach((itemBf) => {
-                          const markingThis = itemBf.markedBy(opponentRoster);
-                          if (markingThis.length === 0) {
-                            blockerModifier++;
-                          }
-                        });
-                        targetsFriends.forEach((itemBf) => {
-                          const markingThis = itemBf.markedBy(currentRoster);
-                          if (markingThis.length === 0) {
-                            targetModifier++;
-                          }
-                        });
-                        // block dices
-                        if ( (blockerSt + blockerModifier) < (targetSt + targetModifier) ) {
-                          blockerDecides = false;
-                        }
-                        // second dice
-                        if ( (blockerSt + blockerModifier) !== (targetSt + targetModifier) ) {
-                          dices.push(bloodBowlDices('1bd'));
-                        }
-                        // third dice
-                        if ( ((blockerSt + blockerModifier) * 2) < (targetSt + targetModifier) ||
-                             (blockerSt + blockerModifier) > ((targetSt + targetModifier) * 2)) {
-                          dices.push(bloodBowlDices('1bd'));
-                        }
-                        console.log('blocker decides, dices: ', blockerDecides, dices);
-                        gO.phase = 'blockQuery';
-                        const blocker = JSON.parse(JSON.stringify(item));
-                        const target = JSON.parse(JSON.stringify(itemm));
-                        const blockData = {
-                          blocker: blocker,
-                          target: target,
-                          blockerDecides: blockerDecides
-                        };
-                        const envelope = JSON.stringify(blockData);
-                        dices.forEach((itemD) => {
-                          const dice = <button key = {callDice(9999)} id = {itemD} value= {envelope} onClick= {block}>{itemD}</button>
-                          actionButtons.push(dice);
-                        });
-                        // reroll option
-                        if (gO[activeTeamIndex].rerolls > 0) {
-                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollAll' value= {envelope} onClick= {block}>'reroll all'</button>
-                          actionButtons.push(rerollDice);
-                        }
-                        // brawl option
-                        if (brawlCheck.length > 0) {
-                          const rerollDice = <button className = 'yellowButtons' key = {callDice(9999)} id = 'rerollBothDown' value= {envelope} onClick= {block}>'reroll both down'</button>
-                          actionButtons.push(rerollDice);
-                        }
-                        if (blockerDecides) {
-                          setMsg('active team, choose the dice!');
-                        } else {
-                          setMsg('non active team, choose the dice!');
-                        }
-                        setActionButtons(actionButtons);
-                        // need to check that target and block are cleared too and complete this..
-                      } // target clicked ends
-                    }
-                  });
-                }
-              }
-          });
-        } // blitz block ends
-      }
-      */
 
       // blitz
       else if (item.status === 'blitz') {
@@ -1416,8 +1191,7 @@ const BloodBowl = ({game}) => {
 
             // if prone
             if (item.status === 'prone') {
-              // modificated to 2 as the move is lost elsewhere too
-              item.movementLeft = item.ma - 2;
+              item.movementLeft = item.ma - 3;
               console.log('prone, movemenLeft now: ', item.movementLeft);
             }
 
@@ -2210,6 +1984,15 @@ const BloodBowl = ({game}) => {
         </button>
         <button id= "activateTeam2" onClick= {activateTeam}>
         team2
+        </button>
+        <button id= "goalTeam1" onClick= {resets} className= "yellowButtons">
+          Goal team 1
+        </button>
+        <button id= "goalTeam2" onClick= {resets} className = "yellowButtons">
+          Goal team 2
+        </button>
+        <button id= "startSecondHalf" onClick= {resets} className = "yellowButtons">
+          start second half
         </button>
         <button id= "start" onClick= {startGame}>
           START GAME

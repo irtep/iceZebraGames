@@ -9,7 +9,7 @@ const ShowAllPlayers = ({showThese, addFunc, selectedTeam}) => {
     return (
       <>
       {showThese.map( person => {
-        if (person.team === selectedTeam) {
+        if (person.team === selectedTeam || person.team === 'all') {
           return(
             <div key= {person.name}>
               <Player

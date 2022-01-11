@@ -676,7 +676,7 @@
     },
     {
       "name": "Fabio",
-      "team": "Skaven",
+      "team": "all",
       "game": "blood bowl",
       "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
       "skills": "Block",
@@ -687,7 +687,7 @@
     },
     {
       "name": "Gold Digger",
-      "team": "Skaven",
+      "team": "all",
       "game": "blood bowl",
       "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
       "skills": "Block",
@@ -1017,7 +1017,7 @@
     },
     {
       "name": "OJ Elfson",
-      "team": "Dwarf",
+      "team": "all",
       "game": "blood bowl",
       "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 8+",
       "skills": "Dodge, Loner (4+)",
@@ -1028,7 +1028,7 @@
     },
     {
       "name": "Ironfist",
-      "team": "Dwarf",
+      "team": "all",
       "game": "blood bowl",
       "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
       "skills": "Block, Loner (4+)",
@@ -2803,7 +2803,7 @@
         },
         {
           "name": "Fabio",
-          "team": "Skaven",
+          "team": "all",
           "game": "blood bowl",
           "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
           "skills": "Block",
@@ -2814,7 +2814,7 @@
         },
         {
           "name": "Gold Digger",
-          "team": "Skaven",
+          "team": "all",
           "game": "blood bowl",
           "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 10+",
           "skills": "Block",
@@ -2996,6 +2996,17 @@
           "cost": "15000",
           "img": "gnoblar",
           "id": 23
+        },
+        {
+          "name": "OJ Elfson",
+          "team": "all",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge, Loner (4+)",
+          "specialRules": "-",
+          "cost": "120000",
+          "img": "elf",
+          "id": 91
         }
       ],
       "color1": "crimson",
@@ -3138,7 +3149,7 @@
       "roster": [
         {
           "name": "OJ Elfson",
-          "team": "Dwarf",
+          "team": "all",
           "game": "blood bowl",
           "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 8+",
           "skills": "Dodge, Loner (4+)",
@@ -3193,7 +3204,7 @@
         },
         {
           "name": "Ironfist",
-          "team": "Dwarf",
+          "team": "all",
           "game": "blood bowl",
           "stats": "MA 5 ST 4 AG 4+ PA 6+ AV 10+",
           "skills": "Block, Loner (4+)",
