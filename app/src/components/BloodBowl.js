@@ -1309,8 +1309,11 @@ const BloodBowl = ({game}) => {
     const targetFend = foundTarget.skills.filter( skill => skill === 'Fend');
     const targetStandFirm = foundTarget.skills.filter( skill => skill === 'Stand Firm');
     const targetSideStep = foundTarget.skills.filter( skill => skill === 'Side Step');
+    const targetThickSkull = foundTarget.skills.filter( skill => skill === 'Thick Skull');
     let stunty = false;
     let thickSkull = false;
+
+    if (targetThickSkull.length === 1) { thickSkull = true }
 
     let turnOverComing = false;
 
