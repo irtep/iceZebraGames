@@ -2650,26 +2650,15 @@
           "id": 37
         },
         {
-          "name": "Skaven Lineman",
+          "name": "Gutter Runner",
           "team": "Skaven",
           "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
-          "skills": "-",
+          "stats": "MA 9 ST 2 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge",
           "specialRules": "-",
-          "cost": "50000",
-          "img": "skavenLineman",
-          "id": 37
-        },
-        {
-          "name": "Skaven Lineman",
-          "team": "Skaven",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 8+",
-          "skills": "-",
-          "specialRules": "-",
-          "cost": "50000",
-          "img": "skavenLineman",
-          "id": 37
+          "cost": "85000",
+          "img": "skavenThrower",
+          "id": 39
         }
       ],
       "color1": "red",
@@ -2996,17 +2985,6 @@
           "cost": "15000",
           "img": "gnoblar",
           "id": 23
-        },
-        {
-          "name": "OJ Elfson",
-          "team": "all",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 8+",
-          "skills": "Dodge, Loner (4+)",
-          "specialRules": "-",
-          "cost": "120000",
-          "img": "elf",
-          "id": 91
         }
       ],
       "color1": "crimson",
@@ -3294,6 +3272,147 @@
       "color1": "purple",
       "color2": "gold",
       "id": 27
+    },
+    {
+      "teamName": "Predators v2",
+      "reRolls": 3,
+      "roster": [
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Goblin Bruiser Lineman",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right Stuff, Stunty, Thick Skull",
+          "specialRules": "-",
+          "cost": "45000",
+          "img": "imperialLineman",
+          "id": 8
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        },
+        {
+          "name": "Black Orc",
+          "team": "Black Orc",
+          "game": "blood bowl",
+          "stats": "MA 4 ST 4 AG 4+ PA 5+ AV 10+",
+          "skills": "Brawl, Grab",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 9
+        }
+      ],
+      "color1": "forestgreen",
+      "color2": "white",
+      "id": 28
     }
   ],
   "whArmies": [
