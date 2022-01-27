@@ -26,6 +26,11 @@ export class Player {
     this.movementLeft = this.ma;
   }
 
+  backFromKo() {
+    this.setStatus('ready');
+    this.move(100, 100);
+  }
+
   move(newX, newY) {
     this.x = newX;
     this.y = newY;
@@ -45,7 +50,7 @@ export class Player {
 
   setStatus(newStatus) {
     this.status = newStatus;
-    if (newStatus === 'knocked out' || newStatus === 'dead') {
+    if (newStatus === 'knocked out' || newStatus === 'dead' || newStatus === 'ko' || newStatus === 'casualty') {
       this.move(1900, 1900);
     }
   }

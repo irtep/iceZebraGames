@@ -191,6 +191,7 @@ const BloodBowl = ({game}) => {
   ///////////  DEBUG /////////////////
   const checki = () => {
     console.log('gameObject: ', gameObject);
+    console.log('teams: ', teams);
   }
 
   /////////// FUNCTIONS //////////////
@@ -200,15 +201,60 @@ const BloodBowl = ({game}) => {
     const gO = {...gameObject};
     console.log(clickedBtn);
     if (clickedBtn === 'goalTeam1') {
+      gO.forLog.push(`goal team!`);
       gO['team1'].score++;
     }
     else if (clickedBtn === 'goalTeam2') {
+      gO.forLog.push(`goal team!`);
       gO['team2'].score++;
-
     }
     else if (clickedBtn === 'startSecondHalf') {
+      gO.phase = 'set defence';
 
+      // reset rerolls
+      const team1 = teams.filter( team => team.teamName === gO.team1.team);
+      const team2 = teams.filter( team => team.teamName === gO.team2.team);
+
+      gO.team1.rerolls = team1[0].reRolls;
+      gO.team2.rerolls = team2[0].reRolls;
+
+      gO.half = 2;
+      gO.team1.turn = 0;
+      gO.team2.turn = 0;
     }
+    gO.phase = 'set defence';
+
+    // check if ko guys come back
+    gO.team1.roster.forEach((item, i) => {
+      if (item.status === 'ko' || item.status === 'knocked out') {
+        const checkIfBack = callDice(6);
+        if (checkIfBack > 3) {
+          item.backFromKo();
+          gO.forLog.push(`${item.number} rolls ${checkIfBack} and is back from bench!`);
+        } else {
+          gO.forLog.push(`${item.number} rolls ${checkIfBack} and is not back!`);
+        }
+      }
+      if (item.status === 'reserve') {
+        item.setStatus('ready');
+      }
+    });
+    gO.team2.roster.forEach((item, i) => {
+      if (item.status === 'ko' || item.status === 'knocked out') {
+        const checkIfBack = callDice(6);
+        if (checkIfBack > 3) {
+          item.backFromKo();
+          gO.forLog.push(`${item.number} rolls ${checkIfBack} and is back from bench!`);
+        } else {
+          gO.forLog.push(`${item.number} rolls ${checkIfBack} and is not back!`);
+        }
+      }
+      if (item.status === 'reserve') {
+        item.setStatus('ready');
+      }  
+    });
+
+    setGameObject(gO);
   }
 
   const reRerollQuery = (e) => {

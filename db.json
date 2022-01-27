@@ -291,7 +291,7 @@
       "team": "Ogre",
       "game": "blood bowl",
       "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
-      "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+      "skills": "Bone Head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
       "specialRules": "-",
       "cost": "140000",
       "img": "ogre",
@@ -1834,7 +1834,7 @@
     },
     {
       "teamName": "Pirates w/ogre (1M)",
-      "reRolls": 1,
+      "reRolls": 2,
       "roster": [
         {
           "name": "Imperial Lineman",
@@ -1870,70 +1870,15 @@
           "id": 2
         },
         {
-          "name": "Bodyguard",
+          "name": "Imperial Lineman",
           "team": "Imperial Nobility",
           "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
-          "skills": "Stand Firm, Wrestle",
+          "stats": "MA 6 ST 3 AG 4+ PA 4+ AV 8+",
+          "skills": "Fend",
           "specialRules": "-",
-          "cost": "90000",
+          "cost": "45000",
           "img": "imperialLineman",
-          "id": 5
-        },
-        {
-          "name": "Bodyguard",
-          "team": "Imperial Nobility",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
-          "skills": "Stand Firm, Wrestle",
-          "specialRules": "-",
-          "cost": "90000",
-          "img": "imperialLineman",
-          "id": 5
-        },
-        {
-          "name": "Bodyguard",
-          "team": "Imperial Nobility",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
-          "skills": "Stand Firm, Wrestle",
-          "specialRules": "-",
-          "cost": "90000",
-          "img": "imperialLineman",
-          "id": 5
-        },
-        {
-          "name": "Bodyguard",
-          "team": "Imperial Nobility",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
-          "skills": "Stand Firm, Wrestle",
-          "specialRules": "-",
-          "cost": "90000",
-          "img": "imperialLineman",
-          "id": 5
-        },
-        {
-          "name": "Noble Blitzer",
-          "team": "Imperial Nobility",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
-          "skills": "Block, Catch",
-          "specialRules": "-",
-          "cost": "105000",
-          "img": "imperialLineman",
-          "id": 4
-        },
-        {
-          "name": "Noble Blitzer",
-          "team": "Imperial Nobility",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
-          "skills": "Block, Catch",
-          "specialRules": "-",
-          "cost": "105000",
-          "img": "imperialLineman",
-          "id": 4
+          "id": 2
         },
         {
           "name": "Ogre",
@@ -1956,6 +1901,61 @@
           "cost": "75000",
           "img": "imperialLineman",
           "id": 3
+        },
+        {
+          "name": "Imperial Thrower",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 3+ AV 9+",
+          "skills": "Pass, Running Pass",
+          "specialRules": "-",
+          "cost": "75000",
+          "img": "imperialLineman",
+          "id": 3
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Noble Blitzer",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Block, Catch",
+          "specialRules": "-",
+          "cost": "105000",
+          "img": "imperialLineman",
+          "id": 4
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
+        },
+        {
+          "name": "Bodyguard",
+          "team": "Imperial Nobility",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 3 AG 3+ PA 5+ AV 9+",
+          "skills": "Stand Firm, Wrestle",
+          "specialRules": "-",
+          "cost": "90000",
+          "img": "imperialLineman",
+          "id": 5
         }
       ],
       "color1": "black",
@@ -2947,7 +2947,7 @@
           "team": "Ogre",
           "game": "blood bowl",
           "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
-          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "skills": "Bone Head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
           "specialRules": "-",
           "cost": "140000",
           "img": "ogre",
@@ -2958,7 +2958,7 @@
           "team": "Ogre",
           "game": "blood bowl",
           "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
-          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "skills": "Bone Head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
           "specialRules": "-",
           "cost": "140000",
           "img": "ogre",
@@ -2969,7 +2969,7 @@
           "team": "Ogre",
           "game": "blood bowl",
           "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
-          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "skills": "Bone Head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
           "specialRules": "-",
           "cost": "140000",
           "img": "ogre",
@@ -2980,7 +2980,7 @@
           "team": "Ogre",
           "game": "blood bowl",
           "stats": "MA 5 ST 5 AG 4+ PA 4+ AV 10+",
-          "skills": "Bone-head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
+          "skills": "Bone Head, Mighty Blow (+1), Thick Skull, Throw Team-Mate",
           "specialRules": "-",
           "cost": "140000",
           "img": "ogre",
@@ -3075,26 +3075,15 @@
           "id": 23
         },
         {
-          "name": "Gnoblar Lineman",
-          "team": "Ogre",
+          "name": "OJ Elfson",
+          "team": "all",
           "game": "blood bowl",
-          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
-          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
+          "stats": "MA 7 ST 3 AG 2+ PA 4+ AV 8+",
+          "skills": "Dodge, Loner (4+)",
           "specialRules": "-",
-          "cost": "15000",
-          "img": "gnoblar",
-          "id": 23
-        },
-        {
-          "name": "Gnoblar Lineman",
-          "team": "Ogre",
-          "game": "blood bowl",
-          "stats": "MA 5 ST 1 AG 3+ PA 5+ AV 6+",
-          "skills": "Dodge, Right Stuff, Side Step, Stunty, Titchy",
-          "specialRules": "-",
-          "cost": "15000",
-          "img": "gnoblar",
-          "id": 23
+          "cost": "120000",
+          "img": "elf",
+          "id": 91
         }
       ],
       "color1": "crimson",
@@ -3526,18 +3515,18 @@
     },
     {
       "teamName": "Jyp HT",
-      "reRolls": 3,
+      "reRolls": 2,
       "roster": [
         {
-          "name": "Treeman",
-          "team": "Wood Elf",
+          "name": "Ogre",
+          "team": "Imperial Nobility",
           "game": "blood bowl",
-          "stats": "MA 2 ST 6 AG 5+ PA 5+ AV 11+ ",
-          "skills": "Loner (4+), Mighty Blow (+1), Stand Firm, Strong Arm, Take Root, Thick Skull, Throw Team-Mate",
+          "stats": "MA 5 ST 5 AG 4+ PA 5+ AV 10+",
+          "skills": "Bone Head, Loner (4+), Mighty Blow (1+), Thick Skull, Throw Team-mate",
           "specialRules": "-",
-          "cost": "120000",
-          "img": "elf",
-          "id": 22
+          "cost": "140000",
+          "img": "imperialLineman",
+          "id": 6
         },
         {
           "name": "dwarf blocker",
@@ -3573,15 +3562,15 @@
           "id": 94
         },
         {
-          "name": "Lineman",
+          "name": "human blitzer",
           "team": "Old World Alliance",
           "game": "blood bowl",
-          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 9+",
-          "skills": "None",
+          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "Animosity (dwarf, halfling), Block",
           "specialRules": "-",
-          "cost": "50000",
+          "cost": "90000",
           "img": "human",
-          "id": 93
+          "id": 96
         },
         {
           "name": "dwarf blitzer",
@@ -3593,17 +3582,6 @@
           "cost": "80000",
           "img": "dwarf",
           "id": 99
-        },
-        {
-          "name": "human blitzer",
-          "team": "Old World Alliance",
-          "game": "blood bowl",
-          "stats": "MA 7 ST 3 AG 3+ PA 4+ AV 9+",
-          "skills": "Animosity (dwarf, halfling), Block",
-          "specialRules": "-",
-          "cost": "90000",
-          "img": "human",
-          "id": 96
         },
         {
           "name": "slayer",
@@ -3650,15 +3628,15 @@
           "id": 93
         },
         {
-          "name": "halfling",
+          "name": "Lineman",
           "team": "Old World Alliance",
           "game": "blood bowl",
-          "stats": "MA 5 ST 2 AG 3+ PA 4+ AV 7+",
-          "skills": "Animosity (human, dwarfs), Dodge, Right Stuff, Stunty",
+          "stats": "MA 6 ST 3 AG 3+ PA 4+ AV 9+",
+          "skills": "None",
           "specialRules": "-",
-          "cost": "30000",
-          "img": "halfling",
-          "id": 101
+          "cost": "50000",
+          "img": "human",
+          "id": 93
         }
       ],
       "color1": "white",
