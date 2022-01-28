@@ -385,7 +385,7 @@ export const makePlayer = (player, index, team) => {
 */
 
 export const checkLineUp = (lineUp, offence) => {
-  console.log('line up to check: ', lineUp);
+  console.log('line up to check: ', lineUp, offence);
   const wideZone1 = [];
   const wideZone2 = [];
   const scrimmage = [];
@@ -452,7 +452,7 @@ export const checkLineUp = (lineUp, offence) => {
   // check that 11 players
   if ((lineUp.length - reserves) > 11) { results = false; console.log('too many players');  }
   // illegals
-  if (illegals.length > 0) { results = false; console.log('illegals');  } /*
+  if (illegals.length > 0) { results = false; console.log('illegals:', illegals);  } /*
   console.log('results: ', 'w1 ', wideZone1, 'w2 ',  wideZone2, 's ',  scrimmage, 'i ',
    illegals, 'res ',  reserves, 'resu ',  results);*/
   return results;

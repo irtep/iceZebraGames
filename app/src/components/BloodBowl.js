@@ -199,7 +199,7 @@ const BloodBowl = ({game}) => {
   const resets = (e) => {
     const clickedBtn = e.target.id;
     const gO = {...gameObject};
-    console.log(clickedBtn);
+
     if (clickedBtn === 'goalTeam1') {
       gO.forLog.push(`goal team!`);
       gO['team1'].score++;
@@ -226,20 +226,27 @@ const BloodBowl = ({game}) => {
 
     // check if ko guys come back
     gO.team1.roster.forEach((item, i) => {
+      item.refreshMovement();
       if (item.status === 'ko' || item.status === 'knocked out') {
         const checkIfBack = callDice(6);
         if (checkIfBack > 3) {
+          console.log(`${item.number} is back from ko`);
           item.backFromKo();
           gO.forLog.push(`${item.number} rolls ${checkIfBack} and is back from bench!`);
         } else {
           gO.forLog.push(`${item.number} rolls ${checkIfBack} and is not back!`);
+          console.log(`${item.number} is not back from ko`);
         }
       }
       if (item.status === 'reserve') {
-        item.setStatus('ready');
+        item.backFromKo();
+        item.move(100,100);
+
+        console.log('back from res');
       }
     });
     gO.team2.roster.forEach((item, i) => {
+      item.refreshMovement();
       if (item.status === 'ko' || item.status === 'knocked out') {
         const checkIfBack = callDice(6);
         if (checkIfBack > 3) {
@@ -250,8 +257,10 @@ const BloodBowl = ({game}) => {
         }
       }
       if (item.status === 'reserve') {
-        item.setStatus('ready');
-      }  
+        item.backFromKo();
+        item.move(100,100);
+        console.log('back from res');
+      }
     });
 
     setGameObject(gO);
@@ -1704,6 +1713,18 @@ const BloodBowl = ({game}) => {
     }
   }
 
+  const rerollMinus = (e) => {
+    const gO = {...gameObject};
+    let theTeam = 'team1';
+
+    if (e.target.id = "t2rrM") {
+      theTeam = "team2";
+    }
+
+    gO[theTeam].reRolls--;
+    setGameObject(gO);
+  }
+
   const clicked = () => {
     const gO = { ...gameObject};
 
@@ -1956,6 +1977,12 @@ const BloodBowl = ({game}) => {
     const selectedAction = e.target.id;
 
     // set to gameplay phase as something gets stuck in queries
+    if (selectedAction === 'offensive') {
+      gO.phase = 'set offence';
+      setGameObject(gO);
+    }
+
+    // set to gameplay phase as something gets stuck in queries
     if (selectedAction === 'gameplay') {
       gO.phase = 'gameplay';
       setGameObject(gO);
@@ -2027,6 +2054,12 @@ const BloodBowl = ({game}) => {
         <button onClick= {checki}>
           checki
         </button>
+        <button id= "t1rrM" onClick= {rerollMinus}>
+          team 1 reroll-
+        </button>
+        <button id= "t2rrM" onClick= {rerollMinus}>
+          team 2 reroll-
+        </button>
         <br/>
         <button id= "activateTeam1" onClick= {activateTeam}>
         team1
@@ -2059,6 +2092,7 @@ const BloodBowl = ({game}) => {
         <button id= "d16" onClick= {diceThrow}>d16</button>
         <button id= "moveBall" onClick= {statuses}>move ball</button>
         <button id= "gameplay" onClick= {statuses}>gameplay phase</button>
+        <button id= "offensive" onClick= {statuses}>set offence</button>
         <button id= "setCarrier" onClick= {statuses}>set carrier</button>
         <button id= 'endTurn' onClick= {actions} key = {callDice(9999)}>End turn</button>
         <button id= "statusChange" onClick = {statuses}>move selected to reserves</button>{/*
