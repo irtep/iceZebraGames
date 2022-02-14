@@ -2246,7 +2246,7 @@
     },
     {
       "teamName": "Predators B (1M)",
-      "reRolls": 2,
+      "reRolls": 3,
       "roster": [
         {
           "name": "Troll",
@@ -2271,17 +2271,6 @@
           "id": 58
         },
         {
-          "name": "Varag",
-          "team": "Goblin",
-          "game": "blood bowl",
-          "stats": "MA 6 ST 5 AG 3+ PA 5+ AV 10+",
-          "skills": "Block, Jump Up, Loner (4+), Mighty Blow (+1), Thick Skull",
-          "specialRules": "Crushing Blow: if blocking and kd, can add +1 armour roll after. once per game",
-          "cost": "280000",
-          "img": "goblin",
-          "id": 59
-        },
-        {
           "name": "Looney",
           "team": "Goblin",
           "game": "blood bowl",
@@ -2291,6 +2280,39 @@
           "cost": "40000",
           "img": "goblin",
           "id": 53
+        },
+        {
+          "name": "Fanatic",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 3 ST 7 AG 3+ PA 6+ AV 8+",
+          "skills": "Ball & Chain, No Hands, Secret Weapon, Stunty",
+          "specialRules": "-",
+          "cost": "70000",
+          "img": "goblin",
+          "id": 54
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
+        },
+        {
+          "name": "Goblin Lineman",
+          "team": "Goblin",
+          "game": "blood bowl",
+          "stats": "MA 6 ST 2 AG 3+ PA 4+ AV 8+",
+          "skills": "Dodge, Right stuff, Stunty",
+          "specialRules": "-",
+          "cost": "40000",
+          "img": "goblin",
+          "id": 26
         },
         {
           "name": "Goblin Lineman",
